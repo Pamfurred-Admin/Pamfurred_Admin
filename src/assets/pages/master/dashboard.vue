@@ -1,4 +1,3 @@
-/* eslint-disable vue/multi-word-component-names */
 <template>
 <div>this is my Dashboard</div>
 </template>
