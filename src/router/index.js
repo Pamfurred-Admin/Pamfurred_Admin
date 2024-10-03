@@ -18,7 +18,7 @@ const routes = [
         name:'Pet-Owners',
         path: '/petowners',
         component: petowners 
-    }
+    },
 ];
 
 const router = Router();
