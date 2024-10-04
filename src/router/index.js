@@ -8,12 +8,12 @@ import settings from "@/pages/settings.vue";
 const routes = [
     {
         name:'Dashboard',
-        path: '/',
+        path: '/dashboard',
         component: dashboard 
     },
     {
         name:'LogIn',
-        path: '/login',
+        path: '/',
         component: login
     },
     {

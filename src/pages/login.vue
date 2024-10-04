@@ -30,7 +30,7 @@ export default {
     const router = useRouter();
 
     if (localStorage.getItem('token')){
-      router.push('/login');
+      router.push('/');
     }
     
     const handleLogin = async (event) => {
@@ -39,7 +39,7 @@ export default {
       if (Username.value === 'admin' && password.value === 'admin') {
         localStorage.setItem('token', 'authenticated');
         // If successful, redirect to the dashboard
-        router.push('/');
+        router.push('/dashboard');
       } else {
         alert('Invalid Login Credentials');
       }

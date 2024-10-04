@@ -20,7 +20,7 @@
       </nav>
     </div>
     <div class="p-5 border-t border-gray-400">
-      <button @click="handleLogout" class="w-full py-2 px-6 flex items-center text-custom-logout">
+      <button @click="handleLogout" class="w-full py-2 px-10 flex items-center text-custom-logout">
         <font-awesome-icon icon="sign-out-alt" class="mr-4" />
         Log out
       </button>
@@ -48,14 +48,14 @@ export default {
 
     const handleLogout = () => {
       localStorage.removeItem('token');
-      router.push('/login');
+      router.push('/');
     };
 
     return {
       isActiveRoute,
       handleLogout,
       menuItems: [
-        { name: 'Dashboard', path: '/', icon: 'house' },
+        { name: 'Dashboard', path: '/dashboard', icon: 'house' },
         { name: 'Service Providers', path: '/serviceprovider', icon: 'hand-holding-heart' },
         { name: 'Pet Owners', path: '/petowners', icon: 'user' },
         { name: 'Settings', path: '/settings', icon: 'cog' }
