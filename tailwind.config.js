@@ -7,7 +7,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        'custom-orange': '#D14C01',
+        'custom-orange': '#D14C01 !important',
         'custom-logout': '#8E0000'
       },
     },

@@ -10,26 +10,37 @@
             v-for="(item, index) in menuItems"
             :key="index"
             :to="item.path"
-            class="flex items-center py-2 px-6 text-gray-600 hover:bg-orange-100"
+            class="flex items-center py-2 px-6 text-gray-600"
             :class="{ 'text-custom-orange': isActiveRoute(item.path) }"
           >
-            <i :class="item.icon"></i>
-            <span class="ml-4">{{ item.name }}</span>
+          <font-awesome-icon :icon="item.icon" class="mr-4" />
+          <span class="menu-item-text">{{ item.name }}</span>
           </router-link>
         </ul>
       </nav>
     </div>
-    <div class="p-5">
-      <button @click="handleLogout" class="w-full py-2 px-6 flex items-center text-custom-logout">Log out</button>
+    <div class="p-5 border-t border-gray-400">
+      <button @click="handleLogout" class="w-full py-2 px-6 flex items-center text-custom-logout">
+        <font-awesome-icon icon="sign-out-alt" class="mr-4" />
+        Log out
+      </button>
     </div>
   </div>
 </template>
 
 <script>
 import { useRoute, useRouter } from 'vue-router';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { faHouse, faHandHoldingHeart, faUser, faCog, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
+
+library.add(faHouse, faHandHoldingHeart, faUser, faCog, faSignOutAlt);
 
 export default {
   name: 'SideBar',
+  components: {
+    FontAwesomeIcon
+  },
   setup() {
     const route = useRoute();
     const router = useRouter();
@@ -44,10 +55,10 @@ export default {
       isActiveRoute,
       handleLogout,
       menuItems: [
-        { name: 'Dashboard', path: '/', icon: 'fas fa-users' },
-        { name: 'Service Providers', path: '/serviceprovider', icon: 'fas fa-users' },
-        { name: 'Pet Owners', path: '/petowners', icon: 'fas fa-user' },
-        { name: 'Settings', path: '/settings', icon: 'fas fa-cog' }
+        { name: 'Dashboard', path: '/', icon: 'house' },
+        { name: 'Service Providers', path: '/serviceprovider', icon: 'hand-holding-heart' },
+        { name: 'Pet Owners', path: '/petowners', icon: 'user' },
+        { name: 'Settings', path: '/settings', icon: 'cog' }
       ]
     };
   }
