@@ -8,6 +8,7 @@ module.exports = {
     extend: {
       colors: {
         'custom-orange': '#D14C01',
+        'custom-logout': '#8E0000'
       },
     },
   },

@@ -3,12 +3,12 @@
     <img src="@/assets/img/PamfurredLogo.png" alt="Pamfurred Logo" class="logo" />
     <form class="login-form" @submit.prevent="handleLogin">
       <div class="input-group">
-        <i class="fas fa-user"></i>
+        <font-awesome-icon icon="user" class="icon"/>
         <!-- Bind input to the reactive Username variable -->
         <input type="text" placeholder="Username" v-model="Username" />
       </div>
       <div class="input-group">
-        <i class="fas fa-lock"></i>
+        <font-awesome-icon icon="key" class="icon"/>
         <!-- Bind input to the reactive password variable -->
         <input type="password" placeholder="Password" v-model="password" />
       </div>
