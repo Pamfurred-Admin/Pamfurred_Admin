@@ -10,10 +10,10 @@
             v-for="(item, index) in menuItems"
             :key="index"
             :to="item.path"
-            class="flex items-center py-2 px-6 text-gray-600"
+            class="flex items-center py-2 px-6 text-gray-600 justify-start text-left"
             :class="{ 'text-custom-orange': isActiveRoute(item.path) }"
           >
-          <font-awesome-icon :icon="item.icon" class="mr-4" />
+          <font-awesome-icon :icon="item.icon" class="sidetext" />
           <span class="menu-item-text">{{ item.name }}</span>
           </router-link>
         </ul>

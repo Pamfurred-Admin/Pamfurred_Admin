@@ -52,7 +52,7 @@
     outline: none;
     background: transparent;
     width: 100%;
-    padding-left: 5px; /* Add padding for better spacing */
+    padding-left: 5px; 
   }
   
   .forgot-password {
@@ -66,7 +66,7 @@
   .login-button {
     background-color: #A03E06;
     color: #ffffff;
-    padding: 12px; /* Increase padding for better button size */
+    padding: 12px; 
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -80,4 +80,13 @@
   .icon {
     margin-right: 10px;
     margin-left: 5px;
+  }
+
+  .menu-item-text {
+    flex-grow: 1;
+  }
+
+  .sidetext {
+    margin-right: 1rem;
+    width: 20px;
   }
