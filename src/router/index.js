@@ -1,13 +1,20 @@
 import { createRouter, createWebHistory } from "vue-router";
-import dashboard from "@/assets/pages/master/dashboard.vue";
-import serviceprovider from "@/assets/pages/serviceprovider.vue";
-import petowners from "@/assets/pages/petowners.vue";
+import dashboard from "@/pages/master/dashboard.vue";
+import login from "@/pages/login.vue";
+import serviceprovider from "@/pages/serviceprovider.vue";
+import petowners from "@/pages/petowners.vue";
+import settings from "@/pages/settings.vue";
 
 const routes = [
     {
         name:'Dashboard',
         path: '/',
         component: dashboard 
+    },
+    {
+        name:'LogIn',
+        path: '/login',
+        component: login
     },
     {
         name:'Service-Provider',
@@ -18,6 +25,11 @@ const routes = [
         name:'Pet-Owners',
         path: '/petowners',
         component: petowners 
+    },
+    {
+        name:'Settings',
+        path: '/settings',
+        component: settings 
     },
 ];
 
