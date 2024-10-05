@@ -1,5 +1,5 @@
 <template>
-  <div class="w-64 bg-white shadow h-screen flex flex-col justify-between">
+  <aside class="w-64 bg-white shadow h-screen flex flex-col justify-between">
     <div>
       <div class="p-5 border-b border-gray-200 shadow-md">
         <img src="@/assets/img/PamfurredLogo.png" alt="Pamfurred Logo" class="h-10" />
@@ -13,8 +13,8 @@
             class="flex items-center py-2 px-6 text-gray-600 justify-start text-left"
             :class="{ 'text-custom-orange': isActiveRoute(item.path) }"
           >
-          <font-awesome-icon :icon="item.icon" class="sidetext" />
-          <span class="menu-item-text">{{ item.name }}</span>
+            <font-awesome-icon :icon="item.icon" class="sidetext" />
+            <span class="menu-item-text">{{ item.name }}</span>
           </router-link>
         </ul>
       </nav>
@@ -25,7 +25,7 @@
         Log out
       </button>
     </div>
-  </div>
+  </aside>
 </template>
 
 <script>
