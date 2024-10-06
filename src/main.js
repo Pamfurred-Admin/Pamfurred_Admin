@@ -4,10 +4,9 @@ import './assets/css/app.css'
 import router from './router'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { faUser } from '@fortawesome/free-solid-svg-icons'
-import { faKey } from '@fortawesome/free-solid-svg-icons'
+import { faMagnifyingGlass, faUser , faKey} from '@fortawesome/free-solid-svg-icons'
 
-library.add(faUser, faKey)
+library.add(faUser, faKey, faMagnifyingGlass)
 
 const app = createApp(App).component('font-awesome-icon', FontAwesomeIcon);
 app.use(router)

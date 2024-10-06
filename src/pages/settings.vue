@@ -4,18 +4,20 @@
         <Sidebar />
       </div>
       <div class="w-full h-full bg-gray-100">
-        Settings
+        <HeadeR />
       </div>
     </div>
     </template>
 
     <script>
 import Sidebar from '@/components/sidebar.vue';
+import HeadeR from '@/components/header.vue';
 
     export default{
         name: 'SettingsPage',
         components: {
-            Sidebar
+            Sidebar,
+            HeadeR
     }
     };
     </script>

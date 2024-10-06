@@ -1,16 +1,20 @@
 <template>
-    <header class="flex justify-between items-center p-4 bg-white shadow-md">
+    <header class="flex justify-between items-center p-4 bg-white border-b border-gray-200 shadow-md" style="height: 80px;">
       <div class="flex items-center">
-        <h1 class="text-lg font-bold">{{ currentPage }}</h1>
+        <h1 class="text-2xl font-bold m-0 p-0 ml-6">{{ pageTitle }}</h1>
       </div>
       <div class="flex items-center">
-        <input type="search" placeholder="Search for something" class="p-2 border rounded-md" />
-        <font-awesome-icon icon="user" class="ml-4 text-gray-600" />
+        <div class="searchBar">
+          <font-awesome-icon icon="magnifying-glass" class="icon"/>
+          <input type="search" placeholder="Search for something" class="searchInput"/>
+        </div>
+        <!-- Profile logo added here -->
+      <img src="@/assets/img/Profile.jpg" alt="Profile Logo" class="profile-logo ml-4 rounded-full" />
       </div>
-    </header>
+    </header>      
   </template>
   
-  <script>
+  <script> 
   import { computed } from 'vue';
   import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
   import { useRoute } from 'vue-router';
@@ -29,16 +33,16 @@
         '/petowners': 'Pet Owners',
         '/settings': 'Settings'
       };
-
-      const currentPage = computed(() => pageNames[route.path] || '');
+  
+      const pageTitle = computed(() => pageNames[route.path] || '');
   
       return {
-        currentPage
+        pageTitle
       };
     }
   };
   </script>
   
-  <style scoped>
+  <style>
   </style>
   

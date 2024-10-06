@@ -1,9 +1,9 @@
 <template>
   <aside class="w-64 bg-white shadow h-screen flex flex-col justify-between">
     <div>
-      <div class="p-5 border-b border-gray-200 shadow-md">
+      <div class="flex items-center justify-between p-4 bg-white border-b border-gray-200 shadow-md" style="height: 80px;">
         <img src="@/assets/img/PamfurredLogo.png" alt="Pamfurred Logo" class="h-10" />
-      </div>
+      </div>   
       <nav class="mt-5">
         <ul>
           <router-link
