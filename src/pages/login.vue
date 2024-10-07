@@ -4,12 +4,10 @@
     <form class="login-form" @submit.prevent="handleLogin">
       <div class="input-group">
         <font-awesome-icon icon="user" class="icon"/>
-        <!-- Bind input to the reactive Username variable -->
         <input type="text" placeholder="Username" v-model="Username" />
       </div>
       <div class="input-group">
         <font-awesome-icon icon="key" class="icon"/>
-        <!-- Bind input to the reactive password variable -->
         <input type="password" placeholder="Password" v-model="password" />
       </div>
       <a href="#" class="forgot-password">Forgot password?</a>
@@ -35,10 +33,8 @@ export default {
     
     const handleLogin = async (event) => {
       event.preventDefault();
-      // Perform login logic here (e.g., check credentials)
       if (Username.value === 'admin' && password.value === 'admin') {
         localStorage.setItem('token', 'authenticated');
-        // If successful, redirect to the dashboard
         router.push('/dashboard');
       } else {
         alert('Invalid Login Credentials');

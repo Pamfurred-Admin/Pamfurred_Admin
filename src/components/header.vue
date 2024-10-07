@@ -8,7 +8,6 @@
           <font-awesome-icon icon="magnifying-glass" class="icon"/>
           <input type="search" placeholder="Search for something" class="searchInput"/>
         </div>
-        <!-- Profile logo added here -->
       <img src="@/assets/img/Profile.jpg" alt="Profile Logo" class="profile-logo ml-4 rounded-full" />
       </div>
     </header>      
