@@ -12,7 +12,7 @@ module.exports = {
         'custom-yellow': '#BD7E1B'
       },
       boxShadow: {
-        'bottom': "0 4px 4px -1px rgba(0, 0, 0, 0.1)"
+        'bottom': "1px 2px 2px 0 rgba(0.1, 0.1, 0.1, 0.1)"
       }
     },
   },
