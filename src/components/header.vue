@@ -1,5 +1,5 @@
 <template>
-    <header class="flex justify-between items-center p-4 bg-white border-b border-gray-200 shadow-md" style="height: 80px;">
+    <header class="flex justify-between items-center p-4 bg-white border-b border-gray-200 shadow-bottom" style="height: 80px;">
       <div class="flex items-center">
         <h1 class="text-2xl font-bold m-0 p-0 ml-6">{{ pageTitle }}</h1>
       </div>
