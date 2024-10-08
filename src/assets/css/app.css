@@ -80,6 +80,7 @@
   .icon {
     margin-right: 10px;
     margin-left: 5px;
+    color: gray;
   }
 
   .menu-item-text {
@@ -105,6 +106,7 @@
     background: transparent;
     margin-left: 8px;
     flex: 1;
+    color: gray;
   }
 
   .profile-logo {

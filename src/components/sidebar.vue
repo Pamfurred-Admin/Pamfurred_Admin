@@ -30,17 +30,9 @@
 
 <script>
 import { useRoute, useRouter } from 'vue-router';
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { faHouse, faHandHoldingHeart, faUser, faCog, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
-
-library.add(faHouse, faHandHoldingHeart, faUser, faCog, faSignOutAlt);
 
 export default {
   name: 'SideBar',
-  components: {
-    FontAwesomeIcon
-  },
   setup() {
     const route = useRoute();
     const router = useRouter();

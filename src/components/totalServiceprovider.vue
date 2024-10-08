@@ -1,22 +1,16 @@
 \<template>
-    <div class="bg-white rounded-lg shadow p-5 flex items-center">
-      <div class="ml-4">
-        <p class="totalnum">{{ totalServiceprovider }}</p>
-        <h3>Total Service Providers 
-            <font-awesome-icon icon="hand-holding-heart" size="2x" />
-        </h3>
+    <div class="bg-white rounded-lg p-5 flex justify-between items-center w-full">
+        <div class="flex flex-col items-start">
+        <p class="text-4xl font-medium text-custom-orange">{{ totalServiceprovider }}</p>
+        <h3 class="mt-1">Total Service Providers</h3>
       </div>
+      <font-awesome-icon icon="hand-holding-heart" size="3x" class="text-custom-yellow" />
     </div>
   </template>
   
-  <script>
-  import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-  
+  <script> 
   export default {
     name: 'totalServiceprovider',
-    components: {
-      FontAwesomeIcon
-    },
     props: {
       totalServiceprovider: {
         type: Number,

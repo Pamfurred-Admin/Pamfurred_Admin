@@ -15,14 +15,10 @@
   
   <script> 
   import { computed } from 'vue';
-  import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
   import { useRoute } from 'vue-router';
   
   export default {
     name: 'HeadeR',
-    components: {
-      FontAwesomeIcon
-    },
     setup() {
       const route = useRoute();
   
