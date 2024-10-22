@@ -114,3 +114,9 @@
     height: 73px; 
     border-radius: 50%; 
   }
+
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+  }

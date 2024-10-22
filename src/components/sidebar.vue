@@ -3,7 +3,7 @@
     <div>
       <div class="flex items-center justify-between p-4 bg-white border-b border-gray-200 shadow-bottom" style="height: 80px;">
         <img src="@/assets/img/PamfurredLogo.png" alt="Pamfurred Logo" class="h-10" />
-      </div>   
+      </div>
       <nav class="mt-5">
         <ul>
           <router-link
@@ -30,19 +30,16 @@
 
 <script>
 import { useRoute, useRouter } from 'vue-router';
-
 export default {
   name: 'SideBar',
   setup() {
     const route = useRoute();
     const router = useRouter();
     const isActiveRoute = (path) => route.path === path;
-
     const handleLogout = () => {
       localStorage.removeItem('token');
       router.push('/');
     };
-
     return {
       isActiveRoute,
       handleLogout,
