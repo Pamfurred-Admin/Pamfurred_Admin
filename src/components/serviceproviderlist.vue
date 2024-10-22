@@ -22,16 +22,16 @@
             class="bg-custom-red hover:bg-[#872F05] text-white px-6 py-2 rounded-md focus:outline-none"
             @click="addNewServiceprovider">Add Service Provider</button>
         </div>
-        <!-- Table -->
-        <div class="overflow-x-auto">
+       <!-- Table -->
+       <div class="overflow-x-auto">
           <table class="min-w-full table-fixed">
             <thead class="bg-gray-100">
               <tr>
-                <th class="w-1/12 px-4 py-2 text-left">User ID</th>
-                <th class="w-3/12 px-4 py-2 text-left">Full name</th>
-                <th class="w-2/12 px-4 py-2 text-left">Door No.</th>
-                <th class="w-4/12 px-4 py-2 text-left">Email address</th>
-                <th class="w-2/12 px-4 py-2 text-left">Action</th>
+                <th class="w-2/12 p-2 text-center">User ID</th>
+                <th class="w-3/12 p-2 text-center">Establishment name</th>
+                <th class="w-2/12 p-2 text-center">Contact No.</th>
+                <th class="w-4/12 p-2 text-center">Email address</th>
+                <th class="w-2/12 p-2 text-center">Action</th>
               </tr>
             </thead>
             <tbody>
@@ -40,22 +40,23 @@
                 :key="user.id"
                 :class="{ 'bg-gray-50': user.id % 2 === 0 }"
               >
-                <td class="w-1/12 px-4 py-2">{{ user.id }}</td>
-                <td class="w-3/12 px-4 py-2">{{ user.fullName }}</td>
-                <td class="w-2/12 px-4 py-2">{{ user.doorNo }}</td>
-                <td class="w-4/12 px-4 py-2">{{ user.email }}</td>
-                <td class="w-2/12 px-4 py-2 flex space-x-2">
-                  <button class="text-yellow-500">
-                    <font-awesome-icon icon="pencil-alt" />
+                <td class="w-2/12 p-2">{{ user.id }}</td>
+                <td class="w-3/12 p-2">{{ user.estName }}</td>
+                <td class="w-2/12 p-2">{{ user.contactNo }}</td>
+                <td class="w-4/12 p-2">{{ user.email }}</td>
+                <td class="w-1/12 p-4 flex space-x-4">
+                  <button class="text-custom-pencil">
+                    <font-awesome-icon icon="pencil" />
                   </button>
-                  <button class="text-red-500">
-                    <font-awesome-icon icon="trash-alt" />
+                  <button class="text-custom-delete">
+                    <font-awesome-icon icon="trash" />
                   </button>
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
+
         <!-- Pagination -->
         <div class="flex justify-between items-center mt-4">
           <p>
@@ -79,82 +80,90 @@
             </button>
           </div>
         </div>
-    </div>
-  </template>
-  
-  <script>
-  import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-  
-  export default {
+      </div>
+</template>
+
+<script>
+ export default {
     name: 'ServiceproviderList',
-    components: {
-      'font-awesome-icon': FontAwesomeIcon
-    },
-    data() {
-      return {
-        searchQuery: '',
-        currentPage: 1,
-        pageSize: 5,
-        users: [
-          { id: 16, fullName: 'Elisa Cruz', doorNo: '06-0123', email: 'elisa.cruz@example.com' },
-          { id: 17, fullName: 'Miguel Lopez', doorNo: '06-0426', email: 'miguel.lopez@example.com' },
-          { id: 18, fullName: 'Sofia Vargas', doorNo: '03-0457', email: 'sofia.vargas@example.com' },
-          { id: 19, fullName: 'Roberto Hernandez', doorNo: '01-0906', email: 'roberto.hernandez@gmail.com' },
-          { id: 20, fullName: 'Korakong', doorNo: '02-0430', email: 'patricia.flores@example.com' },
-          // more user entries...
-        ]
+  data() {
+    return {
+      searchQuery: '',
+      currentPage: 1,
+      pageSize: 10,
+      users: [
+        { id: 1, estName: 'PetVet Central', contactNo: '09561431724', email: 'petvetcentral@gmail.com' },
+        { id: 2, estName: 'Groomers on the Go', contactNo: '09772910283', email: 'groomersonthego@gmail.com' },
+        { id: 3, estName: 'Fur Care Veterinary', contactNo: '09128541729', email: 'furcare1@gmail.com' },
+        { id: 4, estName: 'Purrfect Furs Pet Grooming', contactNo: '09171234567', email: 'purrfectfur1@gmail.com' },
+        { id: 5, estName: 'Causin Veterinary Clinic', contactNo: '09281234568', email: 'causinvet1@example.com' },
+        { id: 6, estName: 'Care A Pet', contactNo: '09391234569', email: 'careapet1@example.com' },
+        { id: 7, estName: 'Agripet Shop', contactNo: '09181234570', email: 'agripetshop@example.com' },
+        { id: 8, estName: 'Petz Planet Pet Station', contactNo: '09291234571', email: 'petzplanet@example.com' },
+        { id: 9, estName: 'Golden Pet', contactNo: '09171234567', email: 'goldenpet1@example.com' },
+        { id: 10, estName: 'Pet Parent Grooming Services', contactNo: '09381234572', email: 'petparent1@example.com' },
+        { id: 11, estName: 'Family Pets', contactNo: '09191234573', email: 'familypets@example.com' },
+        { id: 12, estName: 'Pet Express', contactNo: '09201234574', email: 'petexpress@example.com' },
+        { id: 13, estName: 'Grooming on Wheels', contactNo: '09371234575', email: 'groomingonwheels@example.com' },
+        { id: 14, estName: 'Sassy Pets', contactNo: '09101234576', email: 'sassypets@example.com' },
+        { id: 15, estName: 'Barks and Bubbles', contactNo: '09211234577', email: 'barksandbubbles@example.com' },
+        { id: 16, estName: 'Furry Friends Salon', contactNo: '09361234578', email: 'furryfriendssalon@example.com' },
+        { id: 17, estName: 'Neat and Tidy Pet Services', contactNo: '09111234579', email: 'neatandtidy1@example.com' },
+        { id: 18, estName: 'Clean Pups Grooming Services', contactNo: '09221234580', email: 'cleanpups@gmail.com' },
+        { id: 19, estName: 'Pets and Brush', contactNo: '09351234581', email: 'petsandbrush@example.com' }
+      ]
+    };
+  },
+  computed: {
+    filteredUsers() {
+      if (this.searchQuery) {
+        return this.users.filter(user =>
+          user.estName.toLowerCase().includes(this.searchQuery.toLowerCase())
+        );
+      } else {
+        return this.users;
       }
     },
-    computed: {
-      filteredUsers() {
-        if (this.searchQuery) {
-          return this.users.filter(user =>
-            user.fullName.toLowerCase().includes(this.searchQuery.toLowerCase())
-          )
-        } else {
-          return this.users
-        }
-      },
-      totalEntries() {
-        return this.filteredUsers.length
-      },
-      totalPages() {
-        return Math.ceil(this.totalEntries / this.pageSize)
-      },
-      currentStart() {
-        return (this.currentPage - 1) * this.pageSize + 1
-      },
-      currentEnd() {
-        return Math.min(this.currentPage * this.pageSize, this.totalEntries)
-      },
-      paginatedUsers() {
-        const start = (this.currentPage - 1) * this.pageSize
-        const end = start + this.pageSize
-        return this.filteredUsers.slice(start, end)
+    totalEntries() {
+      return this.filteredUsers.length;
+    },
+    totalPages() {
+      return Math.ceil(this.totalEntries / this.pageSize);
+    },
+    currentStart() {
+      return (this.currentPage - 1) * this.pageSize + 1;
+    },
+    currentEnd() {
+      return Math.min(this.currentPage * this.pageSize, this.totalEntries);
+    },
+    paginatedUsers() {
+      const start = (this.currentPage - 1) * this.pageSize;
+      const end = start + this.pageSize;
+      return this.filteredUsers.slice(start, end);
+    }
+  },
+  methods: {
+    search() {
+      this.currentPage = 1; // Reset to the first page on search
+    },
+    nextPage() {
+      if (this.currentPage < this.totalPages) {
+        this.currentPage++;
       }
     },
-    methods: {
-      search() {
-        this.currentPage = 1 // Reset to the first page on search
-      },
-      nextPage() {
-        if (this.currentPage < this.totalPages) {
-          this.currentPage++
-        }
-      },
-      prevPage() {
-        if (this.currentPage > 1) {
-          this.currentPage--
-        }
-      },
-      addNewServiceprovider() {
-        // Implement the logic to add a new user here
-        alert('Add new user functionality goes here!')
+    prevPage() {
+      if (this.currentPage > 1) {
+        this.currentPage--;
       }
+    },
+    addNewUser() {
+      // Implement the logic to add a new user here
+      alert('Add new user functionality goes here!');
     }
   }
-  </script>
-  
+};
+</script>
+
   <style scoped>
   </style>
   

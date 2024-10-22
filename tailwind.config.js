@@ -10,7 +10,9 @@ module.exports = {
         'custom-orange': '#D14C01 !important',
         'custom-logout': '#8E0000',
         'custom-yellow': '#BD7E1B',
-        'custom-red': '#A03E06'
+        'custom-red': '#A03E06',
+        'custom-pencil': '#FFDD2B',
+        'custom-delete': '#B30000'
       },
       boxShadow: {
         'bottom': "1px 2px 2px 0 rgba(0.1, 0.1, 0.1, 0.1)"

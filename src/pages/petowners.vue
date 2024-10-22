@@ -17,7 +17,7 @@
     import Petownerslist from '@/components/petownerslist.vue';
     
         export default{
-            name: 'ServiceProviderPage',
+            name: 'PetownerPage',
             components: {
                 Sidebar,
                 HeadeR,

@@ -27,11 +27,11 @@
           <table class="min-w-full table-fixed">
             <thead class="bg-gray-100">
               <tr>
-                <th class="w-1/12 px-4 py-2 text-left">User ID</th>
-                <th class="w-3/12 px-4 py-2 text-left">Full name</th>
-                <th class="w-2/12 px-4 py-2 text-left">Door No.</th>
-                <th class="w-4/12 px-4 py-2 text-left">Email address</th>
-                <th class="w-2/12 px-4 py-2 text-left">Action</th>
+                <th class="w-2/12 p-2 text-center">User ID</th>
+                <th class="w-3/12 p-2 text-center">Full name</th>
+                <th class="w-2/12 p-2 text-center">Door No.</th>
+                <th class="w-4/12 p-2 text-center">Email address</th>
+                <th class="w-2/12 p-2 text-center">Action</th>
               </tr>
             </thead>
             <tbody>
@@ -40,16 +40,16 @@
                 :key="user.id"
                 :class="{ 'bg-gray-50': user.id % 2 === 0 }"
               >
-                <td class="w-1/12 px-4 py-2">{{ user.id }}</td>
-                <td class="w-3/12 px-4 py-2">{{ user.fullName }}</td>
-                <td class="w-2/12 px-4 py-2">{{ user.doorNo }}</td>
-                <td class="w-4/12 px-4 py-2">{{ user.email }}</td>
-                <td class="w-2/12 px-4 py-2 flex space-x-2">
-                  <button class="text-yellow-500">
-                    <font-awesome-icon icon="pencil-alt" />
+                <td class="w-2/12 p-2">{{ user.id }}</td>
+                <td class="w-3/12 p-2">{{ user.fullName }}</td>
+                <td class="w-2/12 p-2">{{ user.doorNo }}</td>
+                <td class="w-4/12 p-2">{{ user.email }}</td>
+                <td class="w-1/12 p-4 flex space-x-4">
+                  <button class="text-custom-pencil">
+                    <font-awesome-icon icon="pencil" />
                   </button>
-                  <button class="text-red-500">
-                    <font-awesome-icon icon="trash-alt" />
+                  <button class="text-custom-delete">
+                    <font-awesome-icon icon="trash" />
                   </button>
                 </td>
               </tr>
@@ -83,13 +83,8 @@
   </template>
   
   <script>
-  import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-  
   export default {
     name: 'PetownersList',
-    components: {
-      'font-awesome-icon': FontAwesomeIcon
-    },
     data() {
       return {
         searchQuery: '',
