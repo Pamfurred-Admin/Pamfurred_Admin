@@ -16,11 +16,11 @@
     @click="search">Search
   </button>
 </div>
-        <!-- Add New User Button -->
+        <!-- Add New Service Provider Button -->
         <div class="flex justify-end mb-4">
           <button
             class="bg-custom-red hover:bg-[#872F05] text-white px-6 py-2 rounded-md focus:outline-none"
-            @click="addNewUser">Add New User</button>
+            @click="addNewServiceprovider">Add Service Provider</button>
         </div>
         <!-- Table -->
         <div class="overflow-x-auto">
@@ -86,7 +86,7 @@
   import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
   
   export default {
-    name: 'PetownersList',
+    name: 'ServiceproviderList',
     components: {
       'font-awesome-icon': FontAwesomeIcon
     },
@@ -147,7 +147,7 @@
           this.currentPage--
         }
       },
-      addNewUser() {
+      addNewServiceprovider() {
         // Implement the logic to add a new user here
         alert('Add new user functionality goes here!')
       }
@@ -156,6 +156,5 @@
   </script>
   
   <style scoped>
-  /* Optional custom styling if needed */
   </style>
   
