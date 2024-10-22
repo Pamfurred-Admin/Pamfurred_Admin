@@ -89,14 +89,28 @@
       return {
         searchQuery: '',
         currentPage: 1,
-        pageSize: 5,
+        pageSize: 10,
         users: [
+          { id: 1, fullName: 'Bob Niño Golosinda', doorNo: '01-0204', email: 'bobskie123@gmail.com' },
+          { id: 2, fullName: 'Aillen Gonzaga', doorNo: '03-0206', email: 'gonzagamae@gmail.com' },
+          { id: 3, fullName: 'Lynie Rose Gaa', doorNo: '05-0276', email: 'gaa_april@gmail.com' },
+          { id: 4, fullName: 'Arny Ucab', doorNo: '01-0654', email: 'ucabjohn@gmail.com' },
+          { id: 5, fullName: 'Angelito Guibone III', doorNo: '09-1004', email: 'guibone_mark@gmail.com' },
+          { id: 6, fullName: 'Juan Dela Cruz', doorNo: '01-0705', email: 'juan.delacruz@example.com' },
+          { id: 7, fullName: 'Ana Reyes', doorNo: '08-0345', email: 'ana.reyes@example.com' },
+          { id: 8, fullName: 'Jose Garcia', doorNo: '02-0456', email: 'jose.garcia@example.com' },
+          { id: 9, fullName: 'Teresa Mendoza', doorNo: '02-0090', email: 'teresa.mendoza@example.com' },
+          { id: 10, fullName: 'Maria Santos', doorNo: '07-0456', email: 'maria.santos@example.com' },
+          { id: 11, fullName: 'Carlos Ramirez', doorNo: '09-0346', email: 'carlos.ramirez@example.com' },
+          { id: 12, fullName: 'Luz Gonzales', doorNo: '02-0456', email: 'luz.gonzales@example.com' },
+          { id: 13, fullName: 'Andres Aquino', doorNo: '05-0326', email: 'andres.aquino@example.com' },
+          { id: 14, fullName: 'Clara Rivera', doorNo: '06-0426', email: 'clara.rivera@example.com' },
+          { id: 15, fullName: 'Rafael Torres', doorNo: '06-0359', email: 'rafael.torres@example.com' },
           { id: 16, fullName: 'Elisa Cruz', doorNo: '06-0123', email: 'elisa.cruz@example.com' },
           { id: 17, fullName: 'Miguel Lopez', doorNo: '06-0426', email: 'miguel.lopez@example.com' },
           { id: 18, fullName: 'Sofia Vargas', doorNo: '03-0457', email: 'sofia.vargas@example.com' },
           { id: 19, fullName: 'Roberto Hernandez', doorNo: '01-0906', email: 'roberto.hernandez@gmail.com' },
-          { id: 20, fullName: 'Korakong', doorNo: '02-0430', email: 'patricia.flores@example.com' },
-          // more user entries...
+          { id: 20, fullName: 'Patricia Flores', doorNo: '02-0430', email: 'patricia.flores@example.com' },
         ]
       }
     },
@@ -130,7 +144,7 @@
     },
     methods: {
       search() {
-        this.currentPage = 1 // Reset to the first page on search
+        this.currentPage = 1 
       },
       nextPage() {
         if (this.currentPage < this.totalPages) {
@@ -143,7 +157,6 @@
         }
       },
       addNewUser() {
-        // Implement the logic to add a new user here
         alert('Add new user functionality goes here!')
       }
     }
@@ -151,6 +164,5 @@
   </script>
   
   <style scoped>
-  /* Optional custom styling if needed */
   </style>
   

@@ -144,7 +144,7 @@
   },
   methods: {
     search() {
-      this.currentPage = 1; // Reset to the first page on search
+      this.currentPage = 1;
     },
     nextPage() {
       if (this.currentPage < this.totalPages) {
@@ -157,7 +157,6 @@
       }
     },
     addNewUser() {
-      // Implement the logic to add a new user here
       alert('Add new user functionality goes here!');
     }
   }
