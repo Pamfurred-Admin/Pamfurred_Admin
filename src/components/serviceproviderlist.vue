@@ -156,7 +156,7 @@
         this.currentPage--;
       }
     },
-    addNewUser() {
+    addNewServiceprovider() {
       alert('Add new user functionality goes here!');
     }
   }

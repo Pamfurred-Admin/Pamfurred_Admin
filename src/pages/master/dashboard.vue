@@ -16,7 +16,7 @@
           <totalAppointments :totalAppointments="8291" />
         </div>
       </div>
-        <div class="p-4">
+        <div class="p-4 pt-1">
           <Pendingregistration />
         </div>
     </div>
