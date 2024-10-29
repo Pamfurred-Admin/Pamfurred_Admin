@@ -16,6 +16,9 @@
           <totalAppointments :totalAppointments="8291" />
         </div>
       </div>
+        <div class="p-4">
+          <Pendingregistration />
+        </div>
     </div>
   </div>
 </template>
@@ -26,6 +29,7 @@ import HeadeR from '@/components/header.vue';
 import totalPetowners from '@/components/totalPetowners.vue';
 import totalAppointments from '@/components/totalAppointments.vue';
 import totalServiceprovider from '@/components/totalServiceprovider.vue';
+import Pendingregistration from '@/components/pendingregistration.vue';
 
 export default {
   name: 'DashboardPage',
@@ -34,7 +38,8 @@ export default {
     HeadeR,
     totalPetowners,
     totalAppointments,
-    totalServiceprovider
+    totalServiceprovider,
+    Pendingregistration
   }
 };
 </script>
