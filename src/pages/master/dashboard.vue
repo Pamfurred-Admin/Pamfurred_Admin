@@ -39,7 +39,7 @@ export default {
     totalPetowners,
     totalAppointments,
     totalServiceprovider,
-    Pendingregistration
+    Pendingregistration,
   }
 };
 </script>

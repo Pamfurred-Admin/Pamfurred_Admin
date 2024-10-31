@@ -3,7 +3,7 @@
       <div>
         <Sidebar />
       </div>
-      <div class="w-full h-full bg-gray-100">
+      <div class="w-full h-full bg-gray-100 overflow-y-auto">
         <HeadeR />
         <div>
         <Petownerslist />

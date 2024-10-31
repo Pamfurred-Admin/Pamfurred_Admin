@@ -57,7 +57,7 @@
           </table>
         </div>
         <!-- Pagination -->
-        <div class="flex justify-between items-center mt-4">
+        <div class="flex justify-between items-center mt-4  pt-5 pb-20">
           <p>
             Showing {{ currentStart }} to {{ currentEnd }} out of {{ totalEntries }} entries
           </p>
