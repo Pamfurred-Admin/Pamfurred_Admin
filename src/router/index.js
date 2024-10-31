@@ -6,52 +6,59 @@ import petowners from "@/pages/petowners.vue";
 import settings from "@/pages/settings.vue";
 import addpetowners from "@/pages/addpetowners.vue";
 import addserviceprovider from "@/pages/addserviceprovider.vue";
+import updatepetowners from "@/pages/updatepetowners.vue";
 
 const routes = [
     {
-        name:'Dashboard',
+        name: 'Dashboard',
         path: '/dashboard',
         component: dashboard 
     },
     {
-        name:'LogIn',
+        name: 'LogIn',
         path: '/',
         component: login
     },
     {
-        name:'Service-Provider',
+        name: 'Service-Provider',
         path: '/serviceprovider',
         component: serviceprovider 
     },
     {
-        name:'Pet-Owners',
+        name: 'Pet-Owners',
         path: '/petowners',
         component: petowners 
     },
     {
-        name:'Settings',
+        name: 'Settings',
         path: '/settings',
         component: settings 
     },
     {
-        name:'AddPetOwners',
+        name: 'AddPetOwners',
         path: '/addpetowners',
         component: addpetowners 
     },
     {
-        name:'AddServiceProvider',
+        name: 'AddServiceProvider',
         path: '/addserviceprovider',
         component: addserviceprovider 
     },
-    
+    {
+        name: 'UpdatePetOwners',
+        path: '/updatepetowners',
+        component: updatepetowners 
+    },
+    // {
+    //     name: 'UpdateServiceProvider',
+    //     path: '/updateserviceprovider',
+    //     component: updateserviceprovider 
+    // },
 ];
 
-const router = Router();
+const router = createRouter({
+    history: createWebHistory(),
+    routes,
+});
+
 export default router;
-function Router() {
-    const router = new createRouter({
-        history: createWebHistory(),
-        routes,
-    });
-    return router;
-}

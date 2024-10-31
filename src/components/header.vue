@@ -28,7 +28,8 @@
         '/petowners': 'Pet Owners',
         '/settings': 'Settings',
         '/addpetowners': 'Add Pet Owners',
-        '/addserviceprovider': 'Add Service Provider'
+        '/addserviceprovider': 'Add Service Provider',
+        '/updatepetowners': 'Update Pet Owners'
       };
   
       const pageTitle = computed(() => pageNames[route.path] || '');

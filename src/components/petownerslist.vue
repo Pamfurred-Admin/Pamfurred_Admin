@@ -1,6 +1,5 @@
 <template>
     <div class="ps-20 pt-8 pe-20">
-    <!--Search Bar and Search Button-->
     <div class="flex items-center mb-4">
     <div class="relative w-full md:w-full">
     <font-awesome-icon icon="magnifying-glass" class="absolute left-5 top-1/2 transform -translate-y-1/2 text-gray-500"/>
@@ -16,13 +15,11 @@
     @click="search">Search
   </button>
 </div>
-        <!-- Add New User Button -->
         <div class="flex justify-end mb-4">
           <button
             class="bg-custom-red hover:bg-[#872F05] text-white px-6 py-2 rounded-md focus:outline-none"
             @click="addNewUser">Add New User</button>
         </div>
-        <!-- Table -->
         <div class="overflow-x-auto">
           <table class="min-w-full table-fixed">
             <thead class="bg-gray-100">
@@ -45,7 +42,7 @@
                 <td class="w-2/12 p-2">{{ user.doorNo }}</td>
                 <td class="w-4/12 p-2">{{ user.email }}</td>
                 <td class="w-1/12 p-4 flex space-x-4">
-                  <button class="text-custom-pencil">
+                  <button class="text-custom-pencil" @click="goToUpdatePage(user.id)">
                     <font-awesome-icon icon="pencil" />
                   </button>
                   <button class="text-custom-delete">
@@ -158,7 +155,18 @@
       },
       addNewUser() {
         this.$router.push({ name: 'AddPetOwners' });
+      },
+      goToUpdatePage(user) {
+    this.$router.push({
+      name: 'UpdatePetOwners',
+      query: {
+        id: user.id,
+        fullName: user.fullName,
+        doorNo: user.doorNo,
+        email: user.email
       }
+    });
+  }
     }
   }
   </script>
