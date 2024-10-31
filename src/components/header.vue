@@ -26,7 +26,8 @@
         '/dashboard': 'Dashboard',
         '/serviceprovider': 'Service Providers',
         '/petowners': 'Pet Owners',
-        '/settings': 'Settings'
+        '/settings': 'Settings',
+        '/addpetowners': 'Add Pet Owners'
       };
   
       const pageTitle = computed(() => pageNames[route.path] || '');

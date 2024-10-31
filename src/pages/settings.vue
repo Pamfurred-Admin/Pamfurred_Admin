@@ -3,9 +3,8 @@
       <div>
         <Sidebar />
       </div>
-      <div class="w-full h-full bg-gray-100">
+      <div class="w-full h-full bg-gray-100 overflow-y-auto">
         <HeadeR />
-        <Addsp/>
       </div>
     </div>
     </template>
@@ -13,14 +12,12 @@
     <script>
 import Sidebar from '@/components/sidebar.vue';
 import HeadeR from '@/components/header.vue';
-import Addsp from '@/components/addsp.vue';
 
     export default{
         name: 'SettingsPage',
         components: {
             Sidebar,
             HeadeR,
-            Addsp
     }
     };
     </script>

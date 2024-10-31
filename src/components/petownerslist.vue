@@ -157,7 +157,7 @@
         }
       },
       addNewUser() {
-        alert('Add new user functionality goes here!')
+        this.$router.push({ name: 'Add-Pet-Owners' });
       }
     }
   }

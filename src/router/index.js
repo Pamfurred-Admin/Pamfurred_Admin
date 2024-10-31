@@ -4,6 +4,7 @@ import login from "@/pages/login.vue";
 import serviceprovider from "@/pages/serviceprovider.vue";
 import petowners from "@/pages/petowners.vue";
 import settings from "@/pages/settings.vue";
+import addpetowners from "@/pages/addpetowners.vue";
 
 const routes = [
     {
@@ -30,6 +31,11 @@ const routes = [
         name:'Settings',
         path: '/settings',
         component: settings 
+    },
+    {
+        name:'Add-Pet-Owners',
+        path: '/addpetowners',
+        component: addpetowners 
     },
 ];
 

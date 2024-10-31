@@ -2,16 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
-*{
-  overflow: hidden;
-}
-
 #app {
     font-family: Avenir, Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
     color: #343C6A;
+    overflow: hidden;
   }
 
   .login-container {
