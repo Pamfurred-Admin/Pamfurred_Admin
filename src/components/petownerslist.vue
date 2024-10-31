@@ -157,7 +157,7 @@
         }
       },
       addNewUser() {
-        this.$router.push({ name: 'Add-Pet-Owners' });
+        this.$router.push({ name: 'AddPetOwners' });
       }
     }
   }

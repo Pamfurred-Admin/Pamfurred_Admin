@@ -160,7 +160,7 @@
 
 <script>
 export default {
-  name: 'AddSP',
+  name: 'AddPO',
   data() {
     return {
       form: {
@@ -186,5 +186,5 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 </style>

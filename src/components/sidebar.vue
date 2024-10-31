@@ -30,16 +30,24 @@
 
 <script>
 import { useRoute, useRouter } from 'vue-router';
+
 export default {
   name: 'SideBar',
   setup() {
     const route = useRoute();
     const router = useRouter();
-    const isActiveRoute = (path) => route.path === path;
+
+    const isActiveRoute = (path) => {
+      return route.path === path ||
+        (path === '/petowners' && route.path.includes('addpetowners')) ||
+        (path === '/serviceprovider' && route.path.includes('addserviceprovider'));
+    };
+
     const handleLogout = () => {
       localStorage.removeItem('token');
       router.push('/');
     };
+
     return {
       isActiveRoute,
       handleLogout,
@@ -47,10 +55,10 @@ export default {
         { name: 'Dashboard', path: '/dashboard', icon: 'house' },
         { name: 'Service Providers', path: '/serviceprovider', icon: 'hand-holding-heart' },
         { name: 'Pet Owners', path: '/petowners', icon: 'user' },
-        { name: 'Settings', path: '/settings', icon: 'cog' }
-      ]
+        { name: 'Settings', path: '/settings', icon: 'cog' },
+      ],
     };
-  }
+  },
 };
 </script>
 
