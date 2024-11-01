@@ -1,9 +1,9 @@
 <template>
-  <div class="flex items-center min-h-screen bg-gray-100">
-    <div class="w-full max-w-3xl p-6 bg-transparent overflow-auto h-full pl-20">
-      <form @submit.prevent="handleSubmit">
-        <div class="mb-4">
-          <label class="block text-gray-700 text-sm font-bold mb-2 text-left" for="establishmentName">
+    <div class="flex items-center min-h-screen bg-gray-100">
+      <div class="w-full max-w-3xl p-6 bg-transparent overflow-auto h-full pl-20">
+        <form @submit.prevent="handleUpdate">
+          <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2 text-left" for="establishmentName">
             Establishment Name
           </label>
           <input
@@ -194,37 +194,26 @@
     </div>
   </div>
 </template>
-
 <script>
 export default {
-  name: 'AddSP',
+  name: 'EditPS',
+  props: {
+    existingUser: {
+      type: Object,
+      required: true
+    }
+  },
   data() {
     return {
-      form: {
-        establishmentName: "",
-        phoneNo: "",
-        doorNo: "",
-        street: "",
-        barangay: "",
-        city: "",
-        email: "",
-        username: "",
-        password: "",
-        openingTime: "",
-        closingTime: "",
-        latitude: "",
-        longitude: "",
-        dailyPetLimit: "",
-      },
+      form: Object.assign({}, this.existingUser)
     };
   },
   methods: {
-    handleSubmit() {
-      console.log("Service Provider Added", this.form);
-    },
-  },
+    handleUpdate() {
+      console.log("Service Provider Updated:", this.form);
+    }
+  }
 };
 </script>
 
-<style>
-</style>
+<style scoped></style>

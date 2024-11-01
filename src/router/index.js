@@ -7,6 +7,7 @@ import settings from "@/pages/settings.vue";
 import addpetowners from "@/pages/addpetowners.vue";
 import addserviceprovider from "@/pages/addserviceprovider.vue";
 import updatepetowners from "@/pages/updatepetowners.vue";
+import updateserviceprovider from "@/pages/updateserviceprovider.vue";
 
 const routes = [
     {
@@ -49,11 +50,11 @@ const routes = [
         path: '/updatepetowners',
         component: updatepetowners 
     },
-    // {
-    //     name: 'UpdateServiceProvider',
-    //     path: '/updateserviceprovider',
-    //     component: updateserviceprovider 
-    // },
+    {
+        name: 'UpdateServiceProvider',
+        path: '/updateserviceprovider',
+        component: updateserviceprovider 
+     },
 ];
 
 const router = createRouter({

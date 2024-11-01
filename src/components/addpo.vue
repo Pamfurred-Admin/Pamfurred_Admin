@@ -180,7 +180,7 @@ export default {
   },
   methods: {
     handleSubmit() {
-      console.log("Form Submitted", this.form);
+      console.log("Pet Owner Added", this.form);
     },
   },
 };

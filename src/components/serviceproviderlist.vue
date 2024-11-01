@@ -1,6 +1,5 @@
 <template>
     <div class="ps-20 pt-8 pe-20">
-    <!--Search Bar and Search Button-->
     <div class="flex items-center mb-4">
     <div class="relative w-full md:w-full">
     <font-awesome-icon icon="magnifying-glass" class="absolute left-5 top-1/2 transform -translate-y-1/2 text-gray-500"/>
@@ -46,7 +45,7 @@
                 <td class="w-4/12 p-2">{{ user.email }}</td>
                 <td class="w-1/12 p-4 flex space-x-4">
                   <button class="text-custom-pencil">
-                    <font-awesome-icon icon="pencil" />
+                    <font-awesome-icon icon="pencil" @click="goToUpdatePage(user.id)"/>
                   </button>
                   <button class="text-custom-delete">
                     <font-awesome-icon icon="trash" />
@@ -158,7 +157,15 @@
     },
     addNewServiceprovider() {
       this.$router.push({ name: 'AddServiceProvider' });
-    }
+    },
+    goToUpdatePage(user) {
+    this.$router.push({
+      name: 'UpdateServiceProvider',
+      params: { id: user.id }
+    }).catch(err => {
+      console.error('Navigation Error:', err);
+    });
+  }
   }
 };
 </script>
