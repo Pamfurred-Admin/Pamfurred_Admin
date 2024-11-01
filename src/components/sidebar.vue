@@ -38,9 +38,11 @@ export default {
     const router = useRouter();
 
     const isActiveRoute = (path) => {
-      return route.path === path ||
-        (path === '/petowners' && route.path.includes('addpetowners')) ||
-        (path === '/serviceprovider' && route.path.includes('addserviceprovider'));
+      return (
+        route.path === path ||
+        (path === '/petowners' && (route.path.includes('addpetowners') || route.path.includes('updatepetowners'))) ||
+        (path === '/serviceprovider' && (route.path.includes('addserviceprovider') || route.path.includes('updateserviceprovider')))
+      );
     };
 
     const handleLogout = () => {
@@ -62,5 +64,4 @@ export default {
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

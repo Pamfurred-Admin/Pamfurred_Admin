@@ -187,7 +187,7 @@
             type="submit"
             class="bg-custom-red hover:bg-[#872F05] text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
           >
-            Add Service Provider
+            Update Service Provider
           </button>
         </div>
       </form>
