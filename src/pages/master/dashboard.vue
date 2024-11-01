@@ -19,6 +19,9 @@
         <div class="p-4 pt-1">
           <Pendingregistration />
           <revenueoverview/>
+        <div class="pt-5">
+          <linecurvewithsp/>
+        </div>
         </div>
     </div>
   </div>
@@ -32,6 +35,7 @@ import totalAppointments from '@/components/totalAppointments.vue';
 import totalServiceprovider from '@/components/totalServiceprovider.vue';
 import Pendingregistration from '@/components/pendingregistration.vue';
 import revenueoverview from '@/components/revenueoverview.vue';
+import linecurvewithsp from '@/components/linecurvewithsp.vue';
 
 export default {
   name: 'DashboardPage',
@@ -42,7 +46,8 @@ export default {
     totalAppointments,
     totalServiceprovider,
     Pendingregistration,
-    revenueoverview
+    revenueoverview,
+    linecurvewithsp
   }
 };
 </script>
