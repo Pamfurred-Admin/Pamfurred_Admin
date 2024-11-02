@@ -46,9 +46,12 @@ export default {
     };
 
     const handleLogout = () => {
-      localStorage.removeItem('token');
-      router.push('/');
-    };
+  // Remove the admin ID from local storage
+  localStorage.removeItem('adminId'); // Change this to the key you used for session management
+  // Redirect to the login page
+  router.push('/'); // Make sure this is your actual login path
+};
+
 
     return {
       isActiveRoute,

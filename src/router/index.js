@@ -10,56 +10,56 @@ import updatepetowners from "@/pages/updatepetowners.vue";
 import updateserviceprovider from "@/pages/updateserviceprovider.vue";
 
 const routes = [
-    {
-        name: 'Dashboard',
-        path: '/dashboard',
-        component: dashboard 
-    },
-    {
-        name: 'LogIn',
-        path: '/',
-        component: login
-    },
-    {
-        name: 'Service-Provider',
-        path: '/serviceprovider',
-        component: serviceprovider 
-    },
-    {
-        name: 'Pet-Owners',
-        path: '/petowners',
-        component: petowners 
-    },
-    {
-        name: 'Settings',
-        path: '/settings',
-        component: settings 
-    },
-    {
-        name: 'AddPetOwners',
-        path: '/addpetowners',
-        component: addpetowners 
-    },
-    {
-        name: 'AddServiceProvider',
-        path: '/addserviceprovider',
-        component: addserviceprovider 
-    },
-    {
-        name: 'UpdatePetOwners',
-        path: '/updatepetowners',
-        component: updatepetowners 
-    },
-    {
-        name: 'UpdateServiceProvider',
-        path: '/updateserviceprovider',
-        component: updateserviceprovider 
-     },
+  {
+    name: "Dashboard",
+    path: "/dashboard",
+    component: dashboard,
+  },
+  {
+    name: "LogIn",
+    path: "/",
+    component: login,
+  },
+  {
+    name: "Service-Provider",
+    path: "/serviceprovider",
+    component: serviceprovider,
+  },
+  {
+    name: "Pet-Owners",
+    path: "/petowners",
+    component: petowners,
+  },
+  {
+    name: "Settings",
+    path: "/settings",
+    component: settings,
+  },
+  {
+    name: "AddPetOwners",
+    path: "/addpetowners",
+    component: addpetowners,
+  },
+  {
+    name: "AddServiceProvider",
+    path: "/addserviceprovider",
+    component: addserviceprovider,
+  },
+  {
+    name: "UpdatePetOwners",
+    path: "/updatepetowners",
+    component: updatepetowners,
+  },
+  {
+    name: "UpdateServiceProvider",
+    path: "/updateserviceprovider",
+    component: updateserviceprovider,
+  },
 ];
 
 const router = createRouter({
-    history: createWebHistory(),
-    routes,
+  history: createWebHistory(),
+  routes,
 });
 
 export default router;
