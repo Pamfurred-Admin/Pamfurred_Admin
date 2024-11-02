@@ -18,7 +18,7 @@
   
     
         export default{
-            name: 'AddPetOwners',
+            name: 'AddServiceProvider',
             components: {
                 Sidebar,
                 HeadeR,
