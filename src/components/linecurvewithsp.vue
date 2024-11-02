@@ -47,11 +47,15 @@ export default {
           console.error("Canvas context not found");
           return;
         }
-
         // Destroy previous chart instance if it exists
         if (chartInstance.value) {
           chartInstance.value.destroy();
         }
+
+        const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+        gradient.addColorStop(0, '#D14C01');
+        gradient.addColorStop(0.6, '#C1C1C1');
+        gradient.addColorStop(1, '#C1C1C1');  
 
         // Create new chart instance
         chartInstance.value = new Chart(ctx, {
@@ -64,7 +68,7 @@ export default {
                 data: [800, 100, 950, 200, 900, 1050, 200, 950, 1050, 1200, 500, 900],
                 borderColor: '#D97706',
                 borderWidth: 2,
-                backgroundColor: 'rgba(217, 119, 6, 0.3)',
+                backgroundColor: gradient,
                 fill: true,
                 pointBackgroundColor: '#D97706',
                 pointBorderColor: '#D97706',

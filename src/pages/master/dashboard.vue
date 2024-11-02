@@ -22,6 +22,9 @@
         <div class="pt-5 flex gap-4">
           <linecurvewithsp/>
         </div>
+        <div class="pt-5 flex gap-4">
+          <bargraphwithpo/>
+        </div>
         </div>
     </div>
   </div>
@@ -36,6 +39,7 @@ import totalServiceprovider from '@/components/totalServiceprovider.vue';
 import Pendingregistration from '@/components/pendingregistration.vue';
 import revenueoverview from '@/components/revenueoverview.vue';
 import linecurvewithsp from '@/components/linecurvewithsp.vue';
+import bargraphwithpo from '@/components/bargraphwithpo.vue';
 
 export default {
   name: 'DashboardPage',
@@ -47,7 +51,8 @@ export default {
     totalServiceprovider,
     Pendingregistration,
     revenueoverview,
-    linecurvewithsp
+    linecurvewithsp,
+    bargraphwithpo
   }
 };
 </script>
