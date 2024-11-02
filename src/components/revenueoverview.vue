@@ -1,30 +1,36 @@
 <template>
-    <div class="p-5 pt-2 pb-10 bg-white rounded-lg shadow-md w-full mx-auto">
-      <div class="relative h-72 bg-white p-4 w-full">
-        <div class="flex justify-between items-center mb-5">
-          <h2 class="text-2xl font-semibold">Revenue Overview</h2>
-          <select class="rounded-md p-3 outline-none">
-            <option>2021</option>
-            <option>2022</option>
-            <option>2023</option>
-          </select>
-        </div>
-        <canvas id="revenueChart1" class="w-full h-full"></canvas>
+  <div class="p-5 pt-2 pb-10 bg-white rounded-lg shadow-md w-full mx-auto">
+    <div class="relative h-72 bg-white p-4 w-full">
+      <div class="flex justify-between items-center mb-5">
+        <h2 class="text-2xl font-semibold">Revenue Overview</h2>
+        <select class="rounded-md p-3 outline-none">
+          <option>2021</option>
+          <option>2022</option>
+          <option>2023</option>
+        </select>
       </div>
+      <canvas ref="revenueChartRef" class="w-full h-full"></canvas>
     </div>
-  </template>  
+  </div>
+</template>
 
 <script>
-import { onMounted, onBeforeUnmount, ref } from 'vue';
+import { onMounted, onBeforeUnmount, ref, nextTick } from 'vue';
 import Chart from 'chart.js/auto';
 
 export default {
   name: 'RevenueOverview',
   setup() {
     const chartInstance = ref(null);
+    const revenueChartRef = ref(null);
 
     const renderChart = () => {
-      const ctx = document.getElementById('revenueChart1').getContext('2d');
+      const ctx = revenueChartRef.value?.getContext('2d');
+      if (!ctx) {
+        console.error("Canvas context not found");
+        return;
+      }
+
       if (chartInstance.value) {
         chartInstance.value.destroy();
       }
@@ -81,7 +87,8 @@ export default {
       });
     };
 
-    onMounted(() => {
+    onMounted(async () => {
+      await nextTick();
       renderChart();
     });
 
@@ -91,7 +98,9 @@ export default {
       }
     });
 
-    return {};
+    return {
+      revenueChartRef,
+    };
   },
 };
 </script>

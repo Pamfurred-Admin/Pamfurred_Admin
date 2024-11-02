@@ -8,62 +8,52 @@
   <div class="w-64 bg-gray-50 rounded-lg shadow-md p-5 h-96">
     <h3 class="text-xl font-semibold mb-6">Service Providers</h3>
     <ul class="space-y-4">
-      <li class="flex items-start">
-        <img src="https://via.placeholder.com/40" alt="Provider Logo" class="w-10 h-10 rounded-full mr-3">
+      <li class="flex items-start" v-for="provider in providers" :key="provider.name">
+        <img :src="provider.logo" alt="Provider Logo" class="w-10 h-10 rounded-full mr-3">
         <div class="text-left whitespace-nowrap">
-          <p class="text-gray-900 font-semibold truncate" style="max-width: 140px;">Paws and Claws</p>
-          <p class="text-gray-500 text-sm">2 hrs</p>
-        </div>
-      </li>
-      <li class="flex items-start">
-        <img src="https://via.placeholder.com/40" alt="Provider Logo" class="w-10 h-10 rounded-full mr-3">
-        <div class="text-left whitespace-nowrap">
-          <p class="text-gray-900 font-semibold truncate" style="max-width: 140px;">Groomers on the Go</p>
-          <p class="text-gray-500 text-sm">3 hrs</p>
-        </div>
-      </li>
-      <li class="flex items-start">
-        <img src="https://via.placeholder.com/40" alt="Provider Logo" class="w-10 h-10 rounded-full mr-3">
-        <div class="text-left whitespace-nowrap">
-          <p class="text-gray-900 font-semibold truncate" style="max-width: 140px;">Fur Care Veterinary</p>
-          <p class="text-gray-500 text-sm">3 hrs</p>
-        </div>
-      </li>
-      <li class="flex items-start">
-        <img src="https://via.placeholder.com/40" alt="Provider Logo" class="w-10 h-10 rounded-full mr-3">
-        <div class="text-left whitespace-nowrap">
-          <p class="text-gray-900 font-semibold truncate" style="max-width: 140px;">Purrfect Furs Pet Grooming</p>
-          <p class="text-gray-500 text-sm">2 hrs</p>
+          <p class="text-gray-900 font-semibold truncate" style="max-width: 140px;">{{ provider.name }}</p>
+          <p class="text-gray-500 text-sm">{{ provider.time }} hrs</p>
         </div>
       </li>
     </ul>
     <router-link to="/serviceprovider" class="inline-block mt-5 bg-custom-viewmore text-black font-medium rounded-md py-1.5 px-4 text-sm hover:bg-custom-pencil text-center">
-      View more</router-link>
+      View more
+    </router-link>
   </div>
 </template>
 
-  
-  <script>
-  import { onMounted, onBeforeUnmount, ref, nextTick } from 'vue';
-  import Chart from 'chart.js/auto';
-  
-  export default {
-    name: 'LinecurvewithSP',
-    setup() {
-      const chartInstance = ref(null);
-      const revenueChartRef = ref(null);
-  
-      const renderChart = () => {
+<script>
+import { onMounted, onBeforeUnmount, ref, nextTick } from 'vue';
+import Chart from 'chart.js/auto';
+
+export default {
+  name: 'LinecurvewithSP',
+  setup() {
+    const chartInstance = ref(null);
+    const revenueChartRef = ref(null);
+
+    // Sample data for service providers
+    const providers = ref([
+      { name: 'Paws and Claws', time: 2, logo: 'https://via.placeholder.com/40' },
+      { name: 'Groomers on the Go', time: 3, logo: 'https://via.placeholder.com/40' },
+      { name: 'Fur Care Veterinary', time: 3, logo: 'https://via.placeholder.com/40' },
+      { name: 'Purrfect Furs Pet Grooming', time: 2, logo: 'https://via.placeholder.com/40' },
+    ]);
+
+    const renderChart = () => {
+      nextTick(() => {
         const ctx = revenueChartRef.value?.getContext('2d');
-        console.log("Canvas context:", ctx); // Debugging statement
         if (!ctx) {
           console.error("Canvas context not found");
           return;
         }
-  
+
+        // Destroy previous chart instance if it exists
         if (chartInstance.value) {
           chartInstance.value.destroy();
         }
+
+        // Create new chart instance
         chartInstance.value = new Chart(ctx, {
           type: 'line',
           data: {
@@ -119,25 +109,25 @@
             },
           },
         });
-      };
-  
-      onMounted(async () => {
-        await nextTick(); // Ensures DOM is fully updated
-        renderChart();
       });
-  
-      onBeforeUnmount(() => {
-        if (chartInstance.value) {
-          chartInstance.value.destroy();
-        }
-      });
-  
-      return {
-        revenueChartRef,
-      };
-    },
-  };
-  </script>
-  
-  <style></style>
-  
+    };
+
+    onMounted(renderChart);
+
+    onBeforeUnmount(() => {
+      if (chartInstance.value) {
+        chartInstance.value.destroy();
+        chartInstance.value = null;
+      }
+    });
+
+    return {
+      revenueChartRef,
+      providers,
+    };
+  },
+};
+</script>
+
+<style scoped>
+</style>
