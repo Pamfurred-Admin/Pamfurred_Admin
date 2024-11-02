@@ -19,7 +19,7 @@
         <div class="p-4 pt-1">
           <Pendingregistration />
           <revenueoverview/>
-        <div class="pt-5">
+        <div class="pt-5 flex gap-4">
           <linecurvewithsp/>
         </div>
         </div>
