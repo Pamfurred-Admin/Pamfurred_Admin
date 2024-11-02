@@ -12,7 +12,8 @@ module.exports = {
         'custom-yellow': '#BD7E1B',
         'custom-red': '#A03E06',
         'custom-pencil': '#FFDD2B',
-        'custom-delete': '#B30000'
+        'custom-delete': '#B30000',
+        'custom-viewmore':'#F7BD62'
       },
       boxShadow: {
         'bottom': "1px 2px 2px 0 rgba(0.1, 0.1, 0.1, 0.1)"

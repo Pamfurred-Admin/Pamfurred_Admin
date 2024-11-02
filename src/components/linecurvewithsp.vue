@@ -1,45 +1,47 @@
 <template>
-    <!-- Chart Area -->
-    <div class="pt-10 flex-1 bg-white rounded-lg shadow-md p-4 h-96">
-      <!-- Chart Canvas -->
-      <canvas ref="revenueChartRef" class="w-full h-full"></canvas>
-    </div>
-    <!-- Sidebar Area for Service Providers -->
-    <div class="w-64 bg-gray-50 rounded-lg shadow-md p-4 h-96">
-      <h3 class="text-2xl font-semibold mb-4">Service Providers</h3>
-      <ul class="space-y-4">
-        <li class="flex items-start">
-          <img src="https://via.placeholder.com/40" alt="Provider Logo" class="w-10 h-10 rounded-full mr-3">
-          <div>
-            <p class="text-gray-900 font-semibold">Paws and Claws</p>
-            <p class="text-gray-500 text-sm">2 hrs</p>
-          </div>
-        </li>
-        <li class="flex items-start">
-          <img src="https://via.placeholder.com/40" alt="Provider Logo" class="w-10 h-10 rounded-full mr-3">
-          <div>
-            <p class="text-gray-900 font-semibold">Groomers on the Go</p>
-            <p class="text-gray-500 text-sm">3 hrs</p>
-          </div>
-        </li>
-        <li class="flex items-start">
-          <img src="https://via.placeholder.com/40" alt="Provider Logo" class="w-10 h-10 rounded-full mr-3">
-          <div>
-            <p class="text-gray-900 font-semibold">Fur Care Veterinary</p>
-            <p class="text-gray-500 text-sm">3 hrs</p>
-          </div>
-        </li>
-        <li class="flex items-start">
-          <img src="https://via.placeholder.com/40" alt="Provider Logo" class="w-10 h-10 rounded-full mr-3">
-          <div>
-            <p class="text-gray-900 font-semibold">Purrfect Furs Pet Grooming</p>
-            <p class="text-gray-500 text-sm">2 hrs</p>
-          </div>
-        </li>
-      </ul>
-      <button class="mt-4 w-full bg-orange-500 text-white rounded-md py-2 hover:bg-orange-600">View more</button>
-    </div>
-  </template>
+  <!-- Chart Area -->
+  <div class="pt-10 flex-1 bg-white rounded-lg shadow-md p-4 h-96">
+    <!-- Chart Canvas -->
+    <canvas ref="revenueChartRef" class="w-full h-full"></canvas>
+  </div>
+  <!-- Sidebar Area for Service Providers -->
+  <div class="w-64 bg-gray-50 rounded-lg shadow-md p-5 h-96">
+    <h3 class="text-xl font-semibold mb-6">Service Providers</h3>
+    <ul class="space-y-4">
+      <li class="flex items-start">
+        <img src="https://via.placeholder.com/40" alt="Provider Logo" class="w-10 h-10 rounded-full mr-3">
+        <div class="text-left whitespace-nowrap">
+          <p class="text-gray-900 font-semibold truncate" style="max-width: 140px;">Paws and Claws</p>
+          <p class="text-gray-500 text-sm">2 hrs</p>
+        </div>
+      </li>
+      <li class="flex items-start">
+        <img src="https://via.placeholder.com/40" alt="Provider Logo" class="w-10 h-10 rounded-full mr-3">
+        <div class="text-left whitespace-nowrap">
+          <p class="text-gray-900 font-semibold truncate" style="max-width: 140px;">Groomers on the Go</p>
+          <p class="text-gray-500 text-sm">3 hrs</p>
+        </div>
+      </li>
+      <li class="flex items-start">
+        <img src="https://via.placeholder.com/40" alt="Provider Logo" class="w-10 h-10 rounded-full mr-3">
+        <div class="text-left whitespace-nowrap">
+          <p class="text-gray-900 font-semibold truncate" style="max-width: 140px;">Fur Care Veterinary</p>
+          <p class="text-gray-500 text-sm">3 hrs</p>
+        </div>
+      </li>
+      <li class="flex items-start">
+        <img src="https://via.placeholder.com/40" alt="Provider Logo" class="w-10 h-10 rounded-full mr-3">
+        <div class="text-left whitespace-nowrap">
+          <p class="text-gray-900 font-semibold truncate" style="max-width: 140px;">Purrfect Furs Pet Grooming</p>
+          <p class="text-gray-500 text-sm">2 hrs</p>
+        </div>
+      </li>
+    </ul>
+    <router-link to="/serviceprovider" class="inline-block mt-5 bg-custom-viewmore text-black font-medium rounded-md py-1.5 px-4 text-sm hover:bg-custom-pencil text-center">
+      View more</router-link>
+  </div>
+</template>
+
   
   <script>
   import { onMounted, onBeforeUnmount, ref, nextTick } from 'vue';
