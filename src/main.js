@@ -29,7 +29,7 @@ library.add(
   faCalendarDay,
   faPencil,
   faTrash,
-  faEnvelope
+  faEnvelope,
 );
 
 const app = createApp(App).component("font-awesome-icon", FontAwesomeIcon);
