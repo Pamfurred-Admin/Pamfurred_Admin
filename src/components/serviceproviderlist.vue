@@ -1,90 +1,89 @@
 <template>
-    <div class="ps-20 pt-8 pe-20">
+  <div class="ps-20 pt-8 pe-20">
     <div class="flex items-center mb-4">
-    <div class="relative w-full md:w-full">
-    <font-awesome-icon icon="magnifying-glass" class="absolute left-5 top-1/2 transform -translate-y-1/2 text-gray-500"/>
-    <input
-      type="text"
-      placeholder="Search by name"
-      v-model="searchQuery"
-      class="border p-2 pl-12 rounded-full focus:outline-none focus:ring-1 focus:ring-custom-orange w-full"
-    />
-  </div>
-  <button
-    class="ml-4 bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-md focus:outline-none"
-    @click="search">Search
-  </button>
-</div>
-        <!-- Add New Service Provider Button -->
-        <div class="flex justify-end mb-4">
-          <button
-            class="bg-custom-red hover:bg-[#872F05] text-white px-6 py-2 rounded-md focus:outline-none"
-            @click="addNewServiceprovider">Add Service Provider</button>
-        </div>
-       <!-- Table -->
-       <div class="overflow-x-auto">
-          <table class="min-w-full table-fixed">
-            <thead class="bg-gray-100">
-              <tr>
-                <th class="w-2/12 p-2 text-center">User ID</th>
-                <th class="w-3/12 p-2 text-center">Establishment name</th>
-                <th class="w-2/12 p-2 text-center">Contact No.</th>
-                <th class="w-4/12 p-2 text-center">Email address</th>
-                <th class="w-2/12 p-2 text-center">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr
-                v-for="user in paginatedUsers"
-                :key="user.id"
-                :class="{ 'bg-gray-50': user.id % 2 === 0 }"
-              >
-                <td class="w-2/12 p-2">{{ user.id }}</td>
-                <td class="w-3/12 p-2">{{ user.estName }}</td>
-                <td class="w-2/12 p-2">{{ user.contactNo }}</td>
-                <td class="w-4/12 p-2">{{ user.email }}</td>
-                <td class="w-1/12 p-4 flex space-x-4">
-                  <button class="text-custom-pencil">
-                    <font-awesome-icon icon="pencil" @click="goToUpdatePage(user.id)"/>
-                  </button>
-                  <button class="text-custom-delete">
-                    <font-awesome-icon icon="trash" />
-                  </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <!-- Pagination -->
-        <div class="flex justify-between items-center mt-4 pt-5 pb-20">
-          <p>
-            Showing {{ currentStart }} to {{ currentEnd }} out of {{ totalEntries }} entries
-          </p>
-          <div class="flex space-x-2">
-            <button
-              :disabled="currentPage === 1"
-              class="px-3 py-1 bg-gray-200 text-gray-600 hover:bg-gray-300 rounded-md focus:outline-none"
-              @click="prevPage"
-            >
-              Previous
-            </button>
-            <span class="px-3 py-1 border bg-white">{{ currentPage }}</span>
-            <button
-              :disabled="currentPage === totalPages"
-              class="px-3 py-1 bg-gray-200 text-gray-600 hover:bg-gray-300 rounded-md focus:outline-none"
-              @click="nextPage"
-            >
-              Next
-            </button>
-          </div>
-        </div>
+      <div class="relative w-full md:w-full">
+        <font-awesome-icon icon="magnifying-glass" class="absolute left-5 top-1/2 transform -translate-y-1/2 text-gray-500"/>
+        <input
+          type="text"
+          placeholder="Search by name"
+          v-model="searchQuery"
+          class="border p-2 pl-12 rounded-full focus:outline-none focus:ring-1 focus:ring-custom-orange w-full"
+        />
       </div>
+      <button
+        class="ml-4 bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-md focus:outline-none"
+        @click="search">Search
+      </button>
+    </div>
+    <div class="flex justify-end mb-4">
+      <button
+        class="bg-custom-red hover:bg-[#872F05] text-white px-6 py-2 rounded-md focus:outline-none"
+        @click="addNewServiceprovider">Add Service Provider</button>
+    </div>
+    <div class="overflow-x-auto">
+      <table class="min-w-full table-fixed">
+        <thead class="bg-gray-100">
+          <tr>
+            <th class="w-2/12 p-2 text-center">User ID</th>
+            <th class="w-3/12 p-2 text-center">Establishment name</th>
+            <th class="w-2/12 p-2 text-center">Contact No.</th>
+            <th class="w-4/12 p-2 text-center">Email address</th>
+            <th class="w-2/12 p-2 text-center">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            v-for="user in paginatedUsers"
+            :key="user.id"
+            :class="{ 'bg-gray-50': user.id % 2 === 0 }"
+          >
+            <td class="w-2/12 p-2">{{ user.id }}</td>
+            <td class="w-3/12 p-2">{{ user.estName }}</td>
+            <td class="w-2/12 p-2">{{ user.contactNo }}</td>
+            <td class="w-4/12 p-2">{{ user.email }}</td>
+            <td class="w-1/12 p-4 flex space-x-4">
+              <button class="text-custom-pencil" @click="goToUpdatePage(user.id)">
+                <font-awesome-icon icon="pencil" />
+              </button>
+              <deletebutton :user="user" @delete="handleDelete" />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="flex justify-between items-center mt-4 pt-5 pb-20">
+      <p>
+        Showing {{ currentStart }} to {{ currentEnd }} out of {{ totalEntries }} entries
+      </p>
+      <div class="flex space-x-2">
+        <button
+          :disabled="currentPage === 1"
+          class="px-3 py-1 bg-gray-200 text-gray-600 hover:bg-gray-300 rounded-md focus:outline-none"
+          @click="prevPage"
+        >
+          Previous
+        </button>
+        <span class="px-3 py-1 border bg-white">{{ currentPage }}</span>
+        <button
+          :disabled="currentPage === totalPages"
+          class="px-3 py-1 bg-gray-200 text-gray-600 hover:bg-gray-300 rounded-md focus:outline-none"
+          @click="nextPage"
+        >
+          Next
+        </button>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
- export default {
-    name: 'ServiceproviderList',
+import deletebutton from './deletebutton.vue';
+
+export default {
+  name: 'ServiceProviderList',
+  components: {
+    deletebutton
+  },
   data() {
     return {
       searchQuery: '',
@@ -159,17 +158,19 @@
       this.$router.push({ name: 'AddServiceProvider' });
     },
     goToUpdatePage(user) {
-    this.$router.push({
-      name: 'UpdateServiceProvider',
-      params: { id: user.id }
-    }).catch(err => {
-      console.error('Navigation Error:', err);
-    });
-  }
+      this.$router.push({
+        name: 'UpdateServiceProvider',
+        params: { id: user.id }
+      }).catch(err => {
+        console.error('Navigation Error:', err);
+      });
+    },
+    handleDelete(user) {
+      this.users = this.users.filter(u => u.id !== user.id);
+    }
   }
 };
 </script>
 
-  <style scoped>
-  </style>
-  
+<style scoped>
+</style>
