@@ -5,10 +5,10 @@
     <canvas ref="revenueChartRef" class="w-full h-full"></canvas>
   </div>
   <!-- Sidebar Area for Service Providers -->
-  <div class="w-64 bg-gray-50 rounded-lg shadow-md p-5 h-96">
+  <div class="w-64 bg-white rounded-lg shadow-md p-5 h-96">
     <h3 class="text-xl font-semibold mb-4">Service Providers</h3>
     <ul class="space-y-4">
-      <li class="flex items-start hover:bg-gray-300 p-1" 
+      <li class="flex items-start hover:bg-gray-300 rounded-md p-1" 
           v-for="provider in providers" :key="provider.name">
         <img :src="provider.logo" alt="Provider Logo" class="w-10 h-10 rounded-full mr-3">
         <div class="text-left whitespace-nowrap">
