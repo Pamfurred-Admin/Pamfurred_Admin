@@ -31,7 +31,7 @@
       <table class="min-w-full table-fixed">
         <thead class="bg-gray-100">
           <tr>
-            <th class="w-2/12 p-2 text-center">User ID</th>
+            <th class="w-2/12 p-2 text-center">Username</th>
             <th class="w-3/12 p-2 text-center">Full name</th>
             <th class="w-2/12 p-2 text-center">Address</th>
             <th class="w-4/12 p-2 text-center">Email address</th>
@@ -44,7 +44,7 @@
             :key="user.user_id"
             :class="{ 'bg-gray-50': user.user_id % 2 === 0 }"
           >
-            <td class="w-2/12 p-2">{{ user.user_id }}</td>
+            <td class="w-2/12 p-2">{{ user.username }}</td> <!-- Changed user_id to username -->
             <td class="w-3/12 p-2">{{ user.first_name }} {{ user.last_name }}</td>
             <td class="w-2/12 p-2">
               {{ user.floor_unit_room }},
@@ -87,7 +87,6 @@
     </div>
   </div>
 </template>
-
 <script>
 import { supabase } from '@/supabase/supabase';
 import deletebutton from './deletebutton.vue';
@@ -103,6 +102,7 @@ export default {
       currentPage: 1,
       pageSize: 10,
       users: [],
+      errorMessage: '' // Add an error message property
     };
   },
   computed: {
@@ -132,42 +132,29 @@ export default {
     }
   },
   methods: {
-    async fetchUsersWithPetOwners() {
-      console.log("Fetching users with pet owners...");
-      const { data, error } = await supabase
-        .from('user')
-        .select(`
-          user_id, 
-          first_name, 
-          last_name, 
-          address:address_id (
-            floor_unit_room,
-            street,
-            city,
-            barangay
-          ),
-          pet_owner:pet_owner (
-            email
-          )
-        `)
-        .eq('user_type', 'pet_owner'); // Filter by user_type
-      if (error) {
-        console.error("Error fetching users with pet owners:", error);
-      } else {
-        console.log("Fetched data:", data);
-        // Flatten the data structure according to your SQL output
-        this.users = data.map(user => ({
-          user_id: user.user_id,
-          first_name: user.first_name,
-          last_name: user.last_name,
-          floor_unit_room: user.address?.floor_unit_room,
-          street: user.address?.street,
-          city: user.address?.city,
-          barangay: user.address?.barangay,
-          email: user.pet_owner?.email
-        })) || []; // Ensure users is set to an empty array if no data
-      }
-    },
+  async fetchUsersWithPetOwners() {
+    console.log("Fetching users with pet owners...");
+    const { data, error } = await supabase
+      .rpc('get_pet_owner_details'); // Call the function here
+
+    if (error) {
+      console.error("Error fetching users with pet owners:", error);
+      this.errorMessage = "Failed to fetch users. Please try again later.";
+    } else {
+      console.log("Fetched data:", data); // Debugging line
+      this.users = data.map(user => ({
+        user_id: user.user_id,
+        username: user.username, // Assuming the function returns username
+        first_name: user.first_name,
+        last_name: user.last_name,
+        floor_unit_room: user.floor_unit_room,
+        street: user.street,
+        city: user.city,
+        barangay: user.barangay,
+        email: user.email
+      })) || [];
+    }
+  },
     search() {
       this.currentPage = 1; // Reset to first page when searching
     },
@@ -197,8 +184,6 @@ export default {
   mounted() {
     this.fetchUsersWithPetOwners();
   }
-}
+};
 </script>
-
-<style scoped>
-</style>
+<style></style>
