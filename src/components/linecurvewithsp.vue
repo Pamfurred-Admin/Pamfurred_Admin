@@ -6,9 +6,10 @@
   </div>
   <!-- Sidebar Area for Service Providers -->
   <div class="w-64 bg-gray-50 rounded-lg shadow-md p-5 h-96">
-    <h3 class="text-xl font-semibold mb-6">Service Providers</h3>
+    <h3 class="text-xl font-semibold mb-4">Service Providers</h3>
     <ul class="space-y-4">
-      <li class="flex items-start" v-for="provider in providers" :key="provider.name">
+      <li class="flex items-start hover:bg-gray-300 p-1" 
+          v-for="provider in providers" :key="provider.name">
         <img :src="provider.logo" alt="Provider Logo" class="w-10 h-10 rounded-full mr-3">
         <div class="text-left whitespace-nowrap">
           <p class="text-gray-900 font-semibold truncate" style="max-width: 140px;">{{ provider.name }}</p>
@@ -16,10 +17,11 @@
         </div>
       </li>
     </ul>
-    <router-link to="/serviceprovider" class="inline-block mt-5 bg-custom-viewmore text-black font-medium rounded-md py-1.5 px-4 text-sm hover:bg-custom-pencil text-center">
+    <router-link to="/serviceprovider" 
+    class="inline-block mt-4 bg-custom-viewmore text-black font-medium rounded-md py-1.5 px-4 text-sm hover:bg-custom-pencil text-center">
       View more
     </router-link>
-  </div>
+</div>
 </template>
 <script>
 import { onMounted, onBeforeUnmount, ref, nextTick } from 'vue';

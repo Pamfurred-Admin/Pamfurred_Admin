@@ -2,14 +2,16 @@
     <div class="w-64 bg-gray-50 rounded-lg shadow-md p-5 h-96">
       <h3 class="text-xl font-semibold mb-3">Pet Owners</h3>
       <ul class="space-y-3">
-        <li class="flex items-start" v-for="(owner, index) in petOwners" :key="index">
+        <li class="flex items-start hover:bg-gray-300 px-2" 
+        v-for="(owner, index) in petOwners" :key="index">
         <div class="text-left whitespace-nowrap">
           <p class="text-gray-900 font-semibold truncate">{{ owner.name }}</p>
           <p class="text-gray-500 text-sm">{{ owner.time }} hrs</p>
         </div>
         </li>
       </ul>
-      <router-link to="/petowners" class="inline-block mt-2 bg-custom-viewmore text-black font-medium rounded-md py-1.5 px-4 text-sm hover:bg-custom-pencil text-center">
+      <router-link to="/petowners" 
+      class="inline-block mt-2 bg-custom-viewmore text-black font-medium rounded-md py-1.5 px-4 text-sm hover:bg-custom-pencil text-center">
         View more
       </router-link>
     </div>
