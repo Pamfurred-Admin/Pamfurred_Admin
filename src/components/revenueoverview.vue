@@ -24,16 +24,16 @@ export default {
     const chartInstance = ref(null);
     const revenueChartRef = ref(null);
 
-    const renderChart = () => {
+    const renderChart = async () => {
+      await nextTick();
       const ctx = revenueChartRef.value?.getContext('2d');
       if (!ctx) {
         console.error("Canvas context not found");
         return;
       }
 
-      if (chartInstance.value) {
-        chartInstance.value.destroy();
-      }
+      chartInstance.value?.destroy();
+
       chartInstance.value = new Chart(ctx, {
         type: 'line',
         data: {
@@ -51,20 +51,13 @@ export default {
         options: {
           responsive: true,
           maintainAspectRatio: false,
-          plugins: {
-            legend: {
-              display: false,
-            },
-          },
+          plugins: { legend: { display: false } },
           scales: {
             x: {
               title: {
                 display: true,
                 text: 'Month',
-                font: {
-                  size: 16,
-                  weight: 'bold',
-                },
+                font: { size: 16, weight: 'bold' },
                 color: 'black',
                 padding: { top: 20, bottom: 20 },
               },
@@ -73,10 +66,7 @@ export default {
               title: {
                 display: true,
                 text: 'Revenue',
-                font: {
-                  size: 16,
-                  weight: 'bold',
-                },
+                font: { size: 16, weight: 'bold' },
                 color: 'black',
                 padding: { top: 10, bottom: 20 },
               },
@@ -87,22 +77,13 @@ export default {
       });
     };
 
-    onMounted(async () => {
-      await nextTick();
-      renderChart();
-    });
+    onMounted(renderChart);
 
     onBeforeUnmount(() => {
-      if (chartInstance.value) {
-        chartInstance.value.destroy();
-      }
+      chartInstance.value?.destroy();
     });
-
-    return {
-      revenueChartRef,
-    };
+    return { revenueChartRef };
   },
 };
 </script>
-
 <style></style>

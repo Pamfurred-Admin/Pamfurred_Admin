@@ -43,13 +43,10 @@
                 <td class="w-4/12 p-2">{{ user.email }}</td>
                 <td class="w-1/12 p-4 flex space-x-4">
                   <button class="text-custom-pencil" @click="goToUpdatePage(user.id)">
-                    <font-awesome-icon icon="pencil" />
-                  </button>
-                  <button class="text-custom-delete">
-                    <font-awesome-icon icon="trash" />
-                  </button>
-                </td>
-              </tr>
+                    <font-awesome-icon icon="pencil" /></button>
+                    <deletebutton :user="user" @delete="handleDelete" />
+                  </td>
+                </tr>
             </tbody>
           </table>
         </div>
@@ -80,8 +77,11 @@
   </template>
   
   <script>
+  import deletebutton from './deletebutton.vue';
   export default {
     name: 'PetownersList',
+    components: {
+      deletebutton},
     data() {
       return {
         searchQuery: '',
@@ -140,23 +140,23 @@
       }
     },
     methods: {
-      search() {
-        this.currentPage = 1 
-      },
-      nextPage() {
-        if (this.currentPage < this.totalPages) {
-          this.currentPage++
-        }
-      },
-      prevPage() {
-        if (this.currentPage > 1) {
-          this.currentPage--
-        }
-      },
-      addNewUser() {
-        this.$router.push({ name: 'AddPetOwners' });
-      },
-      goToUpdatePage(user) {
+  search() {
+    this.currentPage = 1;
+  },
+  nextPage() {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+    }
+  },
+  prevPage() {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+    }
+  },
+  addNewUser() {
+    this.$router.push({ name: 'AddPetOwners' });
+  },
+  goToUpdatePage(user) {
     this.$router.push({
       name: 'UpdatePetOwners',
       query: {
@@ -166,8 +166,11 @@
         email: user.email
       }
     });
+  },
+  handleDelete(user) {
+    this.users = this.users.filter(u => u.id !== user.id);
   }
-    }
+}
   }
   </script>
   

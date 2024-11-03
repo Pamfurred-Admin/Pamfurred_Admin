@@ -21,18 +21,15 @@
     </router-link>
   </div>
 </template>
-
 <script>
 import { onMounted, onBeforeUnmount, ref, nextTick } from 'vue';
 import Chart from 'chart.js/auto';
-
 export default {
   name: 'LinecurvewithSP',
   setup() {
     const chartInstance = ref(null);
     const revenueChartRef = ref(null);
 
-    // Sample data for service providers
     const providers = ref([
       { name: 'Paws and Claws', time: 2, logo: 'https://via.placeholder.com/40' },
       { name: 'Groomers on the Go', time: 3, logo: 'https://via.placeholder.com/40' },
@@ -40,98 +37,77 @@ export default {
       { name: 'Purrfect Furs Pet Grooming', time: 2, logo: 'https://via.placeholder.com/40' },
     ]);
 
-    const renderChart = () => {
-      nextTick(() => {
-        const ctx = revenueChartRef.value?.getContext('2d');
-        if (!ctx) {
-          console.error("Canvas context not found");
-          return;
-        }
-        // Destroy previous chart instance if it exists
-        if (chartInstance.value) {
-          chartInstance.value.destroy();
-        }
+    const renderChart = async () => {
+      await nextTick();
+      const ctx = revenueChartRef.value?.getContext('2d');
+      if (!ctx) {
+        console.error("Canvas context not found");
+        return;
+      }
 
-        const gradient = ctx.createLinearGradient(0, 0, 0, 400);
-        gradient.addColorStop(0, '#D14C01');
-        gradient.addColorStop(0.6, '#C1C1C1');
-        gradient.addColorStop(1, '#C1C1C1');  
+      chartInstance.value?.destroy();
 
-        // Create new chart instance
-        chartInstance.value = new Chart(ctx, {
-          type: 'line',
-          data: {
-            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-            datasets: [
-              {
-                label: 'Count',
-                data: [800, 100, 950, 200, 900, 1050, 200, 950, 1050, 1200, 500, 900],
-                borderColor: '#D97706',
-                borderWidth: 2,
-                backgroundColor: gradient,
-                fill: true,
-                pointBackgroundColor: '#D97706',
-                pointBorderColor: '#D97706',
-                tension: 0.4,
-              },
-            ],
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-              legend: {
-                display: false,
+      const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+      gradient.addColorStop(0, '#D14C01');
+      gradient.addColorStop(0.6, '#C1C1C1');
+      gradient.addColorStop(1, '#C1C1C1');
+
+      chartInstance.value = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+          datasets: [
+            {
+              label: 'Count',
+              data: [800, 100, 950, 200, 900, 1050, 200, 950, 1050, 1200, 500, 900],
+              borderColor: '#D97706',
+              borderWidth: 2,
+              backgroundColor: gradient,
+              fill: true,
+              pointBackgroundColor: '#D97706',
+              pointBorderColor: '#D97706',
+              tension: 0.4,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            x: {
+              title: {
+                display: true,
+                text: 'Month',
+                font: { size: 16, weight: 'bold' },
+                color: 'black',
+                padding: { top: 20, bottom: 20 },
               },
             },
-            scales: {
-              x: {
-                title: {
-                  display: true,
-                  text: 'Month',
-                  font: {
-                    size: 16,
-                    weight: 'bold',
-                  },
-                  color: 'black',
-                  padding: { top: 20, bottom: 20 },
-                },
+            y: {
+              title: {
+                display: true,
+                text: 'Count',
+                font: { size: 16, weight: 'bold' },
+                color: 'black',
+                padding: { top: 10, bottom: 15 },
               },
-              y: {
-                title: {
-                  display: true,
-                  text: 'Count',
-                  font: {
-                    size: 16,
-                    weight: 'bold',
-                  },
-                  color: 'black',
-                  padding: { top: 10, bottom: 15 },
-                },
-                beginAtZero: true,
-              },
+              beginAtZero: true,
             },
           },
-        });
+        },
       });
     };
 
     onMounted(renderChart);
 
     onBeforeUnmount(() => {
-      if (chartInstance.value) {
-        chartInstance.value.destroy();
-        chartInstance.value = null;
-      }
+      chartInstance.value?.destroy();
     });
 
-    return {
-      revenueChartRef,
-      providers,
-    };
+    return { revenueChartRef, providers };
   },
 };
 </script>
-
 <style scoped>
 </style>

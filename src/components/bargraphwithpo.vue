@@ -18,100 +18,101 @@
       <canvas ref="barChartRef" class="w-full h-full"></canvas>
     </div>
   </template>
- <script>
- import { onMounted, onBeforeUnmount, ref, nextTick } from 'vue';
- import Chart from 'chart.js/auto';
- 
- export default {
-   name: 'BargraphwithPO',
-   setup() {
-     const chartInstance = ref(null);
-     const barChartRef = ref(null);
- 
-     // Sample data for pet owners
-     const petOwners = ref([
-       { name: 'Bob Niño Golosinda', time: 4 },
-       { name: 'Aillen Gonzaga', time: 2 },
-       { name: 'Lynie Rose Gaa', time: 2 },
-       { name: 'Arny Ucab', time: 3 },
-       { name: 'Angelito Guibone', time: 5 },
-     ]);
- 
-     const renderChart = async () => {
-  await nextTick(); // Wait for DOM update
-  const ctx = barChartRef.value?.getContext('2d');
-  
-  if (!ctx) {
-    console.error("Canvas context not found");
-    return;
-  }
+<script>
+import { onMounted, onBeforeUnmount, ref, nextTick } from 'vue';
+import Chart from 'chart.js/auto';
 
-  // Destroy previous chart instance if it exists
-  if (chartInstance.value) {
-    chartInstance.value.destroy();
-  }
+export default {
+  name: 'BargraphwithPO',
+  setup() {
+    const chartInstance = ref(null);
+    const barChartRef = ref(null);
 
-  const gradient = ctx.createLinearGradient(0, 0, 0, 400);
-  gradient.addColorStop(0, '#D14C01');
-  gradient.addColorStop(1, '#6B2701');
+    // Sample data for pet owners
+    const petOwners = ref([
+      { name: 'Bob Niño Golosinda', time: 4 },
+      { name: 'Aillen Gonzaga', time: 2 },
+      { name: 'Lynie Rose Gaa', time: 2 },
+      { name: 'Arny Ucab', time: 3 },
+      { name: 'Angelito Guibone', time: 5 },
+    ]);
 
-  // Create new chart instance
-  chartInstance.value = new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-      datasets: [{
-        label: 'Count',
-        data: [800, 400, 600, 1500, 300, 1000, 800, 500, 1000, 700, 800, 900],
-        backgroundColor: gradient,
-        hoverBackgroundColor: '#A03E06',
-      }],
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: { display: false },
-      },
-      scales: {
-        x: {
-          title: {
-            display: true,
-            text: 'Month',
-            font: {
-              size: 16,
-              weight: 'bold',
+    const renderChart = async () => {
+      await nextTick(); // Wait for DOM update
+      const ctx = barChartRef.value?.getContext('2d');
+      
+      if (!ctx) {
+        console.error("Canvas context not found");
+        return;
+      }
+
+      if (chartInstance.value) {
+        chartInstance.value.destroy();
+      }
+
+      const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+      gradient.addColorStop(0, '#D14C01');
+      gradient.addColorStop(1, '#6B2701');
+
+      chartInstance.value = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+          datasets: [{
+            label: 'Count',
+            data: [800, 400, 600, 1500, 300, 1000, 800, 500, 1000, 700, 800, 900],
+            backgroundColor: gradient,
+            hoverBackgroundColor: '#A03E06',
+          }],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+          },
+          scales: {
+            x: {
+              title: {
+                display: true,
+                text: 'Month',
+                font: {
+                  size: 16,
+                  weight: 'bold',
+                },
+                color: 'black',
+                padding: { top: 20, bottom: 10 },
+              },
             },
-            color: 'black',
-            padding: { top: 20, bottom: 10 },
+            y: {
+              title: {
+                display: true,
+                text: 'Count',
+                font: {
+                  size: 16,
+                  weight: 'bold',
+                },
+                color: 'black',
+                padding: { top: 10, bottom: 20 },
+              },
+              beginAtZero: true,
+            },
           },
         },
-        y: {
-          title: {
-            display: true,
-            text: 'Count',
-            font: {
-              size: 16,
-              weight: 'bold',
-            },
-            color: 'black',
-            padding: { top: 10, bottom: 20 },
-          },
-          beginAtZero: true,
-        },
-      },
-    },
-  });
-}; 
-     onMounted(renderChart);
-     onBeforeUnmount(() => {
-       if (chartInstance.value) {
-         chartInstance.value.destroy();
-         chartInstance.value = null;
-       }
-     });  
-      return { barChartRef, petOwners };
-    },
-  };
-  </script>
+      });
+    }; 
+
+    onMounted(renderChart);
+    onBeforeUnmount(() => {
+      if (chartInstance.value) {
+        chartInstance.value.destroy();
+        chartInstance.value = null;
+      }
+    });
+
+    return { barChartRef, petOwners };
+  },
+};
+</script>
+<style></style>
   
