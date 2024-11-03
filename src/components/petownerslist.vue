@@ -149,7 +149,8 @@ export default {
           pet_owner:pet_owner (
             email
           )
-        `);
+        `)
+        .eq('user_type', 'pet_owner'); // Filter by user_type
       if (error) {
         console.error("Error fetching users with pet owners:", error);
       } else {
