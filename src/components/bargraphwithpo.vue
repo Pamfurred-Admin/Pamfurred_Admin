@@ -37,75 +37,73 @@
        { name: 'Angelito Guibone', time: 5 },
      ]);
  
-     const renderChart = () => {
-       nextTick(() => {
-         const ctx = barChartRef.value?.getContext('2d');
-         if (!ctx) {
-           console.error("Canvas context not found");
-           return;
-         }
- 
-         // Destroy previous chart instance if it exists
-         if (chartInstance.value) {
-           chartInstance.value.destroy();
-         }
+     const renderChart = async () => {
+  await nextTick(); // Wait for DOM update
+  const ctx = barChartRef.value?.getContext('2d');
+  
+  if (!ctx) {
+    console.error("Canvas context not found");
+    return;
+  }
 
-         const gradient = ctx.createLinearGradient(0, 0, 0, 400); // Modify the height as needed
-          gradient.addColorStop(0, '#D14C01'); // Start color
-          gradient.addColorStop(1, '#6B2701'); // End color
- 
-         // Create new chart instance
-         chartInstance.value = new Chart(ctx, {
-           type: 'bar',
-           data: {
-             labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-             datasets: [{
-               label: 'Count',
-               data: [800, 400, 600, 1500, 300, 1000, 800, 500, 1000, 700, 800, 900],
-               backgroundColor: gradient,
-               hoverBackgroundColor: '#A03E06',
-             }],
-           },
-           options: {
-             responsive: true,
-             maintainAspectRatio: false,
-             plugins: {
-               legend: { display: false },
-             },
-             scales: {
-               x: {
-                 title: {
-                   display: true,
-                   text: 'Month',
-                   font: {
-                     size: 16,
-                     weight: 'bold',
-                   },
-                   color: 'black',
-                   padding: { top: 20, bottom: 10 },
-                 },
-               },
-               y: {
-                 title: {
-                   display: true,
-                   text: 'Count',
-                   font: {
-                     size: 16,
-                     weight: 'bold',
-                   },
-                   color: 'black',
-                   padding: { top: 10, bottom: 20 },
-                 },
-                 beginAtZero: true,
-               },
-             },
-           },
-         });
-       });
-     };
- 
+  // Destroy previous chart instance if it exists
+  if (chartInstance.value) {
+    chartInstance.value.destroy();
+  }
+
+  const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+  gradient.addColorStop(0, '#D14C01');
+  gradient.addColorStop(1, '#6B2701');
+
+  // Create new chart instance
+  chartInstance.value = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+      datasets: [{
+        label: 'Count',
+        data: [800, 400, 600, 1500, 300, 1000, 800, 500, 1000, 700, 800, 900],
+        backgroundColor: gradient,
+        hoverBackgroundColor: '#A03E06',
+      }],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+      },
+      scales: {
+        x: {
+          title: {
+            display: true,
+            text: 'Month',
+            font: {
+              size: 16,
+              weight: 'bold',
+            },
+            color: 'black',
+            padding: { top: 20, bottom: 10 },
+          },
+        },
+        y: {
+          title: {
+            display: true,
+            text: 'Count',
+            font: {
+              size: 16,
+              weight: 'bold',
+            },
+            color: 'black',
+            padding: { top: 10, bottom: 20 },
+          },
+          beginAtZero: true,
+        },
+      },
+    },
+  });
+}; 
      onMounted(renderChart);
- 
      onBeforeUnmount(() => {
        if (chartInstance.value) {
          chartInstance.value.destroy();
