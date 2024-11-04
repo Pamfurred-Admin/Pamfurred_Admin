@@ -21,41 +21,44 @@
     </div>
   </template>
 <script>
-import { onMounted, onBeforeUnmount, ref, nextTick } from 'vue';
+import { supabase } from '@/supabase/supabase';
+import { ref, onMounted, onBeforeUnmount, nextTick } from 'vue';
 import Chart from 'chart.js/auto';
 
 export default {
   name: 'BargraphwithPO',
   setup() {
     const chartInstance = ref(null);
-    const barChartRef = ref(null);
+    const barChartRef = ref([]);
+    const petOwners = ref([]);
 
-    // Sample data for pet owners
-    const petOwners = ref([
-      { name: 'Bob Niño Golosinda', time: 4 },
-      { name: 'Aillen Gonzaga', time: 2 },
-      { name: 'Lynie Rose Gaa', time: 2 },
-      { name: 'Arny Ucab', time: 3 },
-      { name: 'Angelito Guibone', time: 5 },
-    ]);
+    const fetchPetOwners = async () => {
+      const { data, error } = await supabase.rpc('get_pet_owners'); // Call the correct function
 
-    const renderChart = async () => {
-      await nextTick(); // Wait for DOM update
+      if (error) {
+        console.error("Error fetching pet owners:", error);
+      } else {
+        petOwners.value = data.map(owner => ({
+          name: owner.first_name + ' ' + owner.last_name, // Combine first and last name
+          time: Math.floor(Math.random() * 10) // Replace with actual time data if available
+        })) || [];
+      }
+    };
+
+    const renderChart = () => {
       const ctx = barChartRef.value?.getContext('2d');
-      
+
       if (!ctx) {
         console.error("Canvas context not found");
         return;
       }
-
-      if (chartInstance.value) {
-        chartInstance.value.destroy();
-      }
-
+      chartInstance.value?.destroy();
+      // Create a gradient for the bars
       const gradient = ctx.createLinearGradient(0, 0, 0, 400);
       gradient.addColorStop(0, '#D14C01');
       gradient.addColorStop(1, '#6B2701');
 
+      // Instantiate the chart
       chartInstance.value = new Chart(ctx, {
         type: 'bar',
         data: {
@@ -78,10 +81,7 @@ export default {
               title: {
                 display: true,
                 text: 'Month',
-                font: {
-                  size: 16,
-                  weight: 'bold',
-                },
+                font: { size: 16, weight: 'bold' },
                 color: 'black',
                 padding: { top: 20, bottom: 10 },
               },
@@ -90,10 +90,7 @@ export default {
               title: {
                 display: true,
                 text: 'Count',
-                font: {
-                  size: 16,
-                  weight: 'bold',
-                },
+                font: { size: 16, weight: 'bold' },
                 color: 'black',
                 padding: { top: 10, bottom: 20 },
               },
@@ -104,7 +101,12 @@ export default {
       });
     }; 
 
-    onMounted(renderChart);
+    onMounted(async () => {
+      await fetchPetOwners();
+      await nextTick();
+      renderChart();
+    });
+
     onBeforeUnmount(() => {
       if (chartInstance.value) {
         chartInstance.value.destroy();
@@ -116,5 +118,8 @@ export default {
   },
 };
 </script>
+
+
+<style scoped>
+</style>
 <style></style>
-  

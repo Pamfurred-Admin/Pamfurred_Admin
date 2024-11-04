@@ -44,7 +44,7 @@
             :key="user.user_id"
             :class="{ 'bg-gray-50': user.user_id % 2 === 0 }"
           >
-            <td class="w-2/12 p-2">{{ user.username }}</td> <!-- Changed user_id to username -->
+            <td class="w-2/12 p-2">{{ user.username }}</td>
             <td class="w-3/12 p-2">{{ user.first_name }} {{ user.last_name }}</td>
             <td class="w-2/12 p-2">
               {{ user.floor_unit_room }},
@@ -62,7 +62,6 @@
       </table>
     </div>
 
-    <!-- Pagination -->
     <div class="flex justify-between items-center mt-4 pt-5 pb-20">
       <p>
         Showing {{ currentStart }} to {{ currentEnd }} out of {{ totalEntries }} entries
@@ -102,7 +101,7 @@ export default {
       currentPage: 1,
       pageSize: 10,
       users: [],
-      errorMessage: '' // Add an error message property
+      errorMessage: ''
     };
   },
   computed: {
@@ -135,16 +134,16 @@ export default {
   async fetchUsersWithPetOwners() {
     console.log("Fetching users with pet owners...");
     const { data, error } = await supabase
-      .rpc('get_pet_owner_details'); // Call the function here
+      .rpc('get_pet_owner_details'); 
 
     if (error) {
       console.error("Error fetching users with pet owners:", error);
       this.errorMessage = "Failed to fetch users. Please try again later.";
     } else {
-      console.log("Fetched data:", data); // Debugging line
+      console.log("Fetched data:", data); 
       this.users = data.map(user => ({
         user_id: user.user_id,
-        username: user.username, // Assuming the function returns username
+        username: user.username,
         first_name: user.first_name,
         last_name: user.last_name,
         floor_unit_room: user.floor_unit_room,
@@ -156,7 +155,7 @@ export default {
     }
   },
     search() {
-      this.currentPage = 1; // Reset to first page when searching
+      this.currentPage = 1;
     },
     nextPage() {
       if (this.currentPage < this.totalPages) {

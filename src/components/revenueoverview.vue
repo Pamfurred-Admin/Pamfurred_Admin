@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import { onMounted, onBeforeUnmount, ref, nextTick } from 'vue';
+import { ref, onMounted, onBeforeUnmount, nextTick } from 'vue';
 import Chart from 'chart.js/auto';
 
 export default {
@@ -24,16 +24,18 @@ export default {
     const chartInstance = ref(null);
     const revenueChartRef = ref(null);
 
-    const renderChart = async () => {
-      await nextTick();
+    const renderChart = () => {
       const ctx = revenueChartRef.value?.getContext('2d');
+
       if (!ctx) {
         console.error("Canvas context not found");
         return;
       }
 
+      // Destroy the previous chart instance if it exists
       chartInstance.value?.destroy();
 
+      // Instantiate the chart
       chartInstance.value = new Chart(ctx, {
         type: 'line',
         data: {
@@ -44,7 +46,11 @@ export default {
               data: [0, 250, 500, 750, 1000, 750, 750, 750, 750, 1000, 1250, 1300],
               borderColor: '#D14C01',
               borderWidth: 2,
-              fill: false,
+              backgroundColor: 'rgba(209, 76, 1, 0.2)', // Optional: Fill under the line
+              fill: true,
+              pointBackgroundColor: '#D14C01',
+              pointBorderColor: '#D14C01',
+              tension: 0.4,
             },
           ],
         },
@@ -77,13 +83,23 @@ export default {
       });
     };
 
-    onMounted(renderChart);
+    onMounted(async () => {
+      await nextTick();
+      renderChart();
+    });
 
     onBeforeUnmount(() => {
-      chartInstance.value?.destroy();
+      // Destroy the chart instance on component unmount
+      if (chartInstance.value) {
+        chartInstance.value.destroy();
+        chartInstance.value = null;
+      }
     });
+
     return { revenueChartRef };
   },
 };
 </script>
-<style></style>
+
+<style scoped>
+</style>
