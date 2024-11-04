@@ -51,7 +51,7 @@ const routes = [
     component: updatepetowners,
   },
   {
-    name: "UpdateServiceProvider",
+    name: "UpdateServiceProvider/:userId",
     path: "/updateserviceprovider",
     component: updateserviceprovider,
   },
