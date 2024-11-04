@@ -48,7 +48,7 @@
             <td class="w-3/12 p-2">{{ user.first_name }} {{ user.last_name }}</td>
             <td class="w-2/12 p-2">
               {{ user.floor_unit_room }},
-              {{ user.street }}, {{ user.city }}, {{ user.barangay }}
+              {{ user.street }}, {{ user.barangay }}, {{ user.city }}
             </td>
             <td class="w-4/12 p-2">{{ user.email }}</td>
             <td class="w-1/12 p-4 flex space-x-4">
@@ -148,8 +148,8 @@ export default {
         last_name: user.last_name,
         floor_unit_room: user.floor_unit_room,
         street: user.street,
-        city: user.city,
         barangay: user.barangay,
+        city: user.city,
         email: user.email
       })) || [];
     }
