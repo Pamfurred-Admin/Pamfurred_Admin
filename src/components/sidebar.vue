@@ -38,12 +38,17 @@ export default {
     const router = useRouter();
 
     const isActiveRoute = (path) => {
-      return (
-        route.path === path ||
-        (path === '/petowners' && (route.path.includes('addpetowners') || route.path.includes('updatepetowners'))) ||
-        (path === '/serviceprovider' && (route.path.includes('addserviceprovider') || route.path.includes('updateserviceprovider')))
-      );
-    };
+  return (
+    route.path === path ||
+    (path === '/petowners' && (route.path.includes('addpetowners') || route.path.includes('updatepetowners'))) ||
+    (path === '/serviceprovider' && (
+      route.path.includes('addserviceprovider') || 
+      route.path.includes('updateserviceprovider') || 
+      route.path.includes('serviceproviderregistrations')
+    ))
+  );
+};
+
 
     const handleLogout = () => {
   // Remove the admin ID from local storage

@@ -16,16 +16,18 @@
           <totalAppointments :totalAppointments="8291" />
         </div>
       </div>
-        <div class="p-4 pt-1">
+      <div class="p-4 pt-1">
+        <router-link to="/serviceproviderregistrations" class="block border-gray-200 rounded-lg shadow hover:shadow-lg transition-transform transform hover:scale-104">
           <Pendingregistration />
-          <revenueoverview/>
+        </router-link>
+        <revenueoverview/>
         <div class="pt-5 flex gap-4">
           <linecurvewithsp/>
         </div>
         <div class="pt-5 flex gap-4">
           <bargraphwithpo/>
         </div>
-        </div>
+      </div>
     </div>
   </div>
 </template>

@@ -30,7 +30,8 @@
         '/addpetowners': 'Add Pet Owners',
         '/addserviceprovider': 'Add Service Provider',
         '/updatepetowners': 'Update Pet Owners',
-        '/updateserviceprovider': 'Update Service Provider'
+        '/updateserviceprovider': 'Update Service Provider',
+        '/serviceproviderregistrations': 'Pending Registrations',
       };
   
       const pageTitle = computed(() => pageNames[route.path] || '');

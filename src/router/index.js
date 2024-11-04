@@ -8,6 +8,7 @@ import addpetowners from "@/pages/addpetowners.vue";
 import addserviceprovider from "@/pages/addserviceprovider.vue";
 import updatepetowners from "@/pages/updatepetowners.vue";
 import updateserviceprovider from "@/pages/updateserviceprovider.vue";
+import serviceproviderregistrations from "@/pages/serviceproviderregistrations.vue";
 
 const routes = [
   {
@@ -54,6 +55,11 @@ const routes = [
     name: "UpdateServiceProvider/:userId",
     path: "/updateserviceprovider",
     component: updateserviceprovider,
+  },
+  {
+    name: "ServiceProviderRegistrations",
+    path: "/serviceproviderregistrations",
+    component: serviceproviderregistrations,
   },
 ];
 
