@@ -15,8 +15,6 @@ import {
   faCalendarDay,
   faPencil,
   faTrash,
-  faEnvelope,
-  faCheck
 } from "@fortawesome/free-solid-svg-icons";
 
 library.add(
@@ -30,8 +28,6 @@ library.add(
   faCalendarDay,
   faPencil,
   faTrash,
-  faEnvelope,
-  faCheck
 );
 
 const app = createApp(App).component("font-awesome-icon", FontAwesomeIcon);
