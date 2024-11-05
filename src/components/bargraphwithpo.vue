@@ -1,25 +1,26 @@
 <template>
-    <div class="w-64 bg-white rounded-lg shadow-md p-5 h-96">
-      <h3 class="text-xl font-semibold mb-3">Pet Owners</h3>
-      <ul class="space-y-3">
-        <li class="flex items-start hover:bg-gray-300 rounded-md px-2" 
-        v-for="(owner, index) in petOwners" :key="index">
+  <div class="w-64 bg-white rounded-lg shadow-md p-5 h-96">
+    <h3 class="text-xl font-semibold mb-3">Pet Owners</h3>
+    <ul class="space-y-3">
+      <li class="flex items-start hover:bg-gray-300 rounded-md px-2" 
+          v-for="(owner, index) in petOwners" :key="index">
         <div class="text-left whitespace-nowrap">
-          <p class="text-gray-900 font-semibold truncate">{{ owner.name }}</p>
-          <p class="text-gray-500 text-sm">{{ owner.time }} hrs</p>
+          <p class="text-gray-900 font-semibold truncate">{{ owner.full_name }}</p>
+          <p class="text-gray-500 text-sm">{{ owner.username }}</p> <!-- Display username instead of time -->
         </div>
-        </li>
-      </ul>
-      <router-link to="/petowners" 
-      class="inline-block mt-2 bg-custom-viewmore text-black font-medium rounded-md py-1.5 px-4 text-sm hover:bg-custom-pencil text-center">
-        View more
-      </router-link>
-    </div>
-    <!-- Chart Area -->
-    <div class="pt-10 flex-1 bg-white rounded-lg shadow-md p-4 h-96">
-      <canvas ref="barChartRef" class="w-full h-full"></canvas>
-    </div>
-  </template>
+      </li>
+    </ul>
+    <router-link to="/petowners" 
+        class="inline-block mt-2 bg-custom-viewmore text-black font-medium rounded-md py-1.5 px-4 text-sm hover:bg-custom-pencil text-center">
+      View more
+    </router-link>
+  </div>
+  <!-- Chart Area -->
+  <div class="pt-10 flex-1 bg-white rounded-lg shadow-md p-4 h-96">
+    <canvas ref="barChartRef" class="w-full h-full"></canvas>
+  </div>
+</template>
+
 <script>
 import { supabase } from '@/supabase/supabase';
 import { ref, onMounted, onBeforeUnmount, nextTick } from 'vue';
@@ -33,17 +34,19 @@ export default {
     const petOwners = ref([]);
 
     const fetchPetOwners = async () => {
-      const { data, error } = await supabase.rpc('get_pet_owners'); // Call the correct function
+  const { data, error } = await supabase.rpc('get_pet_owners'); // Call the Supabase function
 
-      if (error) {
-        console.error("Error fetching pet owners:", error);
-      } else {
-        petOwners.value = data.map(owner => ({
-          name: owner.first_name + ' ' + owner.last_name, // Combine first and last name
-          time: Math.floor(Math.random() * 10) // Replace with actual time data if available
-        })) || [];
-      }
-    };
+  if (error) {
+    console.error("Error fetching pet owners:", error);
+  } else {
+    // Map the data to the required structure and limit to 5
+    petOwners.value = data.map(owner => ({
+      full_name: owner.full_name, // Ensure this matches what the function returns
+      username: owner.username // Add username
+    })).slice(0, 5) || []; // Limit the results to the first 5 owners
+  }
+};
+
 
     const renderChart = () => {
       const ctx = barChartRef.value?.getContext('2d');
@@ -119,7 +122,5 @@ export default {
 };
 </script>
 
-
 <style scoped>
 </style>
-<style></style>
