@@ -7,12 +7,14 @@
   <div class="w-64 bg-white rounded-lg shadow-md p-5 h-96">
     <h3 class="text-xl font-semibold mb-4">Service Providers</h3>
     <ul class="space-y-4">
-      <li class="flex items-start hover:bg-gray-300 rounded-md p-1" 
-          v-for="provider in providers" :key="provider.name">
-        <img :src="provider.logo" alt="Provider Logo" class="w-10 h-10 rounded-full mr-3">
+      <li 
+        class="flex items-start hover:bg-gray-300 rounded-md p-1" 
+        v-for="provider in providers.slice(0, 4)" :key="provider.sp_id"
+      >
+        <img :src="provider.image" alt="Provider Logo" class="w-10 h-10 rounded-full mr-3">
         <div class="text-left whitespace-nowrap">
           <p class="text-gray-900 font-semibold truncate" style="max-width: 140px;">{{ provider.name }}</p>
-          <p class="text-gray-500 text-sm">{{ provider.time }} hrs</p>
+          <!-- Removed the time display -->
         </div>
       </li>
     </ul>
@@ -25,6 +27,7 @@
 
 <script>
 import { ref, onMounted, onBeforeUnmount, nextTick } from 'vue';
+import { supabase } from '@/supabase/supabase'; // Ensure you've imported your Supabase client
 import Chart from 'chart.js/auto';
 
 export default {
@@ -32,13 +35,21 @@ export default {
   setup() {
     const chartInstance = ref(null);
     const lineChartRef = ref(null);
+    
+    // Update the ref to hold service providers
+    const providers = ref([]);
 
-    const providers = ref([
-      { name: 'Paws and Claws', time: 2, logo: 'https://via.placeholder.com/40' },
-      { name: 'Groomers on the Go', time: 3, logo: 'https://via.placeholder.com/40' },
-      { name: 'Fur Care Veterinary', time: 3, logo: 'https://via.placeholder.com/40' },
-      { name: 'Purrfect Furs Pet Grooming', time: 2, logo: 'https://via.placeholder.com/40' },
-    ]);
+    // Fetch service providers from the database
+    const fetchServiceProviders = async () => {
+      const { data, error } = await supabase
+        .rpc('get_service_providers'); // Call the stored function
+      if (error) {
+        console.error('Error fetching service providers:', error);
+        return;
+      }
+      // Populate the providers array with fetched data
+      providers.value = data;
+    };
 
     const renderChart = () => {
       const ctx = lineChartRef.value?.getContext('2d');
@@ -105,6 +116,7 @@ export default {
     };
 
     onMounted(async () => {
+      await fetchServiceProviders(); // Fetch providers when the component mounts
       await nextTick();
       renderChart();
     });

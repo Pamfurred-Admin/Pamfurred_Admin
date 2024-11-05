@@ -24,10 +24,10 @@
       <table class="min-w-full table-fixed">
         <thead class="bg-gray-100">
           <tr>
-            <th class="w-2/12 p-2 text-center">User ID</th>
-            <th class="w-3/12 p-2 text-center">Establishment name</th>
+            <th class="w-2/12 p-2 text-center">No. of Pets Catered</th>
+            <th class="w-3/12 p-2 text-center">Establishment Name</th>
             <th class="w-2/12 p-2 text-center">Contact No.</th>
-            <th class="w-4/12 p-2 text-center">Email address</th>
+            <th class="w-4/12 p-2 text-center">Email Address</th>
             <th class="w-2/12 p-2 text-center">Action</th>
           </tr>
         </thead>
@@ -37,11 +37,11 @@
             :key="user.id"
             :class="{ 'bg-gray-50': user.id % 2 === 0 }"
           >
-            <td class="w-2/12 p-2">{{ user.id }}</td>
+            <td class="w-2/12 p-2">{{ user.numberOfPets }}</td> <!-- Display number_of_pets -->
             <td class="w-3/12 p-2">{{ user.estName }}</td>
             <td class="w-2/12 p-2">{{ user.contactNo }}</td>
             <td class="w-4/12 p-2">{{ user.email }}</td>
-            <td class="w-1/12 p-4 flex space-x-4">
+            <td class="w-1/12 p-4 flex justify-center space-x-4">
               <button class="text-custom-pencil" @click="goToUpdatePage(user.id)">
                 <font-awesome-icon icon="pencil" />
               </button>
@@ -78,6 +78,7 @@
 
 <script>
 import deletebutton from './deletebutton.vue';
+import { supabase } from '@/supabase/supabase'; // already imported
 
 export default {
   name: 'ServiceProviderList',
@@ -89,27 +90,7 @@ export default {
       searchQuery: '',
       currentPage: 1,
       pageSize: 10,
-      users: [
-        { id: 1, estName: 'PetVet Central', contactNo: '09561431724', email: 'petvetcentral@gmail.com' },
-        { id: 2, estName: 'Groomers on the Go', contactNo: '09772910283', email: 'groomersonthego@gmail.com' },
-        { id: 3, estName: 'Fur Care Veterinary', contactNo: '09128541729', email: 'furcare1@gmail.com' },
-        { id: 4, estName: 'Purrfect Furs Pet Grooming', contactNo: '09171234567', email: 'purrfectfur1@gmail.com' },
-        { id: 5, estName: 'Causin Veterinary Clinic', contactNo: '09281234568', email: 'causinvet1@example.com' },
-        { id: 6, estName: 'Care A Pet', contactNo: '09391234569', email: 'careapet1@example.com' },
-        { id: 7, estName: 'Agripet Shop', contactNo: '09181234570', email: 'agripetshop@example.com' },
-        { id: 8, estName: 'Petz Planet Pet Station', contactNo: '09291234571', email: 'petzplanet@example.com' },
-        { id: 9, estName: 'Golden Pet', contactNo: '09171234567', email: 'goldenpet1@example.com' },
-        { id: 10, estName: 'Pet Parent Grooming Services', contactNo: '09381234572', email: 'petparent1@example.com' },
-        { id: 11, estName: 'Family Pets', contactNo: '09191234573', email: 'familypets@example.com' },
-        { id: 12, estName: 'Pet Express', contactNo: '09201234574', email: 'petexpress@example.com' },
-        { id: 13, estName: 'Grooming on Wheels', contactNo: '09371234575', email: 'groomingonwheels@example.com' },
-        { id: 14, estName: 'Sassy Pets', contactNo: '09101234576', email: 'sassypets@example.com' },
-        { id: 15, estName: 'Barks and Bubbles', contactNo: '09211234577', email: 'barksandbubbles@example.com' },
-        { id: 16, estName: 'Furry Friends Salon', contactNo: '09361234578', email: 'furryfriendssalon@example.com' },
-        { id: 17, estName: 'Neat and Tidy Pet Services', contactNo: '09111234579', email: 'neatandtidy1@example.com' },
-        { id: 18, estName: 'Clean Pups Grooming Services', contactNo: '09221234580', email: 'cleanpups@gmail.com' },
-        { id: 19, estName: 'Pets and Brush', contactNo: '09351234581', email: 'petsandbrush@example.com' }
-      ]
+      users: [] // Start with an empty array
     };
   },
   computed: {
@@ -141,6 +122,20 @@ export default {
     }
   },
   methods: {
+    async fetchServiceProviders() {
+      const { data, error } = await supabase.rpc('get_service_provider_details');
+      if (error) {
+        console.error('Error fetching service provider details:', error);
+      } else {
+        this.users = data.map(user => ({
+          id: user.user_id,
+          numberOfPets: user.number_of_pets, // Add number_of_pets here
+          estName: user.name,
+          contactNo: user.phone_number,
+          email: user.email
+        }));
+      }
+    },
     search() {
       this.currentPage = 1;
     },
@@ -168,6 +163,9 @@ export default {
     handleDelete(user) {
       this.users = this.users.filter(u => u.id !== user.id);
     }
+  },
+  mounted() {
+    this.fetchServiceProviders(); // Fetch service providers when the component mounts
   }
 };
 </script>
