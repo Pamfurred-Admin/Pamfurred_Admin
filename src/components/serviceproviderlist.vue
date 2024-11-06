@@ -24,7 +24,7 @@
       <table class="min-w-full table-fixed">
         <thead class="bg-gray-100">
           <tr>
-            <th class="w-2/12 p-2 text-center">No. of Pets Catered</th>
+            <th class="w-2/12 p-2 text-center">Daily Pet Limit</th>
             <th class="w-3/12 p-2 text-center">Establishment Name</th>
             <th class="w-2/12 p-2 text-center">Contact No.</th>
             <th class="w-4/12 p-2 text-center">Email Address</th>
@@ -37,11 +37,11 @@
             :key="user.id"
             :class="{ 'bg-gray-50': user.id % 2 === 0 }"
           >
-            <td class="w-2/12 p-2">{{ user.numberOfPets }}</td> <!-- Display number_of_pets -->
+            <td class="w-2/12 p-2">{{ user.numberOfPets }}</td> 
             <td class="w-3/12 p-2">{{ user.estName }}</td>
             <td class="w-2/12 p-2">{{ user.contactNo }}</td>
             <td class="w-4/12 p-2">{{ user.email }}</td>
-            <td class="w-1/12 p-4 flex justify-center space-x-4">
+            <td class="w-1/12 p-4 flex space-x-4">
               <button class="text-custom-pencil" @click="goToUpdatePage(user.id)">
                 <font-awesome-icon icon="pencil" />
               </button>
@@ -78,7 +78,7 @@
 
 <script>
 import deletebutton from './deletebutton.vue';
-import { supabase } from '@/supabase/supabase'; // already imported
+import { supabase } from '@/supabase/supabase'; 
 
 export default {
   name: 'ServiceProviderList',
@@ -90,7 +90,7 @@ export default {
       searchQuery: '',
       currentPage: 1,
       pageSize: 10,
-      users: [] // Start with an empty array
+      users: [] 
     };
   },
   computed: {
@@ -129,7 +129,7 @@ export default {
       } else {
         this.users = data.map(user => ({
           id: user.user_id,
-          numberOfPets: user.number_of_pets, // Add number_of_pets here
+          numberOfPets: user.number_of_pets,
           estName: user.name,
           contactNo: user.phone_number,
           email: user.email
@@ -165,7 +165,7 @@ export default {
     }
   },
   mounted() {
-    this.fetchServiceProviders(); // Fetch service providers when the component mounts
+    this.fetchServiceProviders();
   }
 };
 </script>
