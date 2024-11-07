@@ -6,7 +6,7 @@
           v-for="(owner, index) in petOwners" :key="index">
         <div class="text-left whitespace-nowrap">
           <p class="text-gray-900 font-semibold truncate">{{ owner.full_name }}</p>
-          <p class="text-gray-500 text-sm">{{ owner.username }}</p> <!-- Display username instead of time -->
+          <p class="text-gray-500 text-sm">{{ owner.username }}</p> 
         </div>
       </li>
     </ul>
@@ -15,7 +15,6 @@
       View more
     </router-link>
   </div>
-  <!-- Chart Area -->
   <div class="pt-10 flex-1 bg-white rounded-lg shadow-md p-4 h-96">
     <canvas ref="barChartRef" class="w-full h-full"></canvas>
   </div>
@@ -32,21 +31,19 @@ export default {
     const chartInstance = ref(null);
     const barChartRef = ref([]);
     const petOwners = ref([]);
-
     const fetchPetOwners = async () => {
-  const { data, error } = await supabase.rpc('get_pet_owners'); // Call the Supabase function
+      const { data, error } = await supabase.rpc('get_pet_owners'); 
 
-  if (error) {
-    console.error("Error fetching pet owners:", error);
-  } else {
-    // Map the data to the required structure and limit to 5
-    petOwners.value = data.map(owner => ({
-      full_name: owner.full_name, // Ensure this matches what the function returns
-      username: owner.username // Add username
-    })).slice(0, 5) || []; // Limit the results to the first 5 owners
-  }
-};
+      if (error) {
+        console.error("Error fetching pet owners:", error);
+      } else {
 
+        petOwners.value = data.map(owner => ({
+          full_name: owner.full_name, 
+          username: owner.username, 
+        })).slice(0, 5);
+      }
+    };
 
     const renderChart = () => {
       const ctx = barChartRef.value?.getContext('2d');
@@ -55,13 +52,13 @@ export default {
         console.error("Canvas context not found");
         return;
       }
+
       chartInstance.value?.destroy();
-      // Create a gradient for the bars
+
       const gradient = ctx.createLinearGradient(0, 0, 0, 400);
       gradient.addColorStop(0, '#D14C01');
       gradient.addColorStop(1, '#6B2701');
 
-      // Instantiate the chart
       chartInstance.value = new Chart(ctx, {
         type: 'bar',
         data: {
@@ -102,7 +99,7 @@ export default {
           },
         },
       });
-    }; 
+    };
 
     onMounted(async () => {
       await fetchPetOwners();
