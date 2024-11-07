@@ -1,9 +1,7 @@
 <template>
-  <!-- Chart Area -->
   <div class="pt-10 flex-1 bg-white rounded-lg shadow-md p-4 h-96">
     <canvas ref="lineChartRef" class="w-full h-full"></canvas>
   </div>
-  <!-- Sidebar Area for Service Providers -->
   <div class="w-64 bg-white rounded-lg shadow-md p-5 h-96">
     <h3 class="text-xl font-semibold mb-4">Service Providers</h3>
     <ul class="space-y-4">
@@ -14,7 +12,7 @@
         <img :src="provider.image" alt="Provider Logo" class="w-10 h-10 rounded-full mr-3">
         <div class="text-left whitespace-nowrap">
           <p class="text-gray-900 font-semibold truncate" style="max-width: 140px;">{{ provider.name }}</p>
-          <!-- Removed the time display -->
+          <p class="text-gray-500 text-sm">{{ provider.number_of_pets }} pets to cater daily</p>
         </div>
       </li>
     </ul>
@@ -27,7 +25,7 @@
 
 <script>
 import { ref, onMounted, onBeforeUnmount, nextTick } from 'vue';
-import { supabase } from '@/supabase/supabase'; // Ensure you've imported your Supabase client
+import { supabase } from '@/supabase/supabase';
 import Chart from 'chart.js/auto';
 
 export default {
@@ -36,18 +34,15 @@ export default {
     const chartInstance = ref(null);
     const lineChartRef = ref(null);
     
-    // Update the ref to hold service providers
     const providers = ref([]);
 
-    // Fetch service providers from the database
     const fetchServiceProviders = async () => {
       const { data, error } = await supabase
-        .rpc('get_service_providers'); // Call the stored function
+        .rpc('get_service_providers'); 
       if (error) {
         console.error('Error fetching service providers:', error);
         return;
       }
-      // Populate the providers array with fetched data
       providers.value = data;
     };
 
@@ -57,17 +52,14 @@ export default {
         console.error("Canvas context not found");
         return;
       }
-
-      // Destroy the previous chart instance if it exists
+  
       chartInstance.value?.destroy();
 
-      // Create gradient for the line fill
       const gradient = ctx.createLinearGradient(0, 0, 0, 400);
       gradient.addColorStop(0, '#D14C01');
       gradient.addColorStop(0.6, '#C1C1C1');
       gradient.addColorStop(1, '#C1C1C1');
 
-      // Instantiate the chart
       chartInstance.value = new Chart(ctx, {
         type: 'line',
         data: {
@@ -116,13 +108,12 @@ export default {
     };
 
     onMounted(async () => {
-      await fetchServiceProviders(); // Fetch providers when the component mounts
+      await fetchServiceProviders();
       await nextTick();
       renderChart();
     });
 
     onBeforeUnmount(() => {
-      // Destroy the chart instance on component unmount
       if (chartInstance.value) {
         chartInstance.value.destroy();
         chartInstance.value = null;
