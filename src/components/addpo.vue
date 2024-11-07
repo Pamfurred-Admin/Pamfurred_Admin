@@ -150,18 +150,17 @@
           />
         </div>
 
-        <!-- Leaflet Map Container -->
         <div class="mb-4">
           <label class="block text-gray-700 text-sm font-bold mb-2 text-left">
             Select Location on Map
           </label>
-          <div id="map" style="height: 300px;"></div> <!-- Map container -->
+          <div id="map" style="height: 300px;"></div>
         </div>
 
         <div class="flex justify-end mt-6">
           <button
             type="submit"
-            class="bg-custom-red hover:bg-[#872F05] text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            class="bg-custom-red hover:bg-[#872F05] text-white font-bold py-2 px-4 rounded focus:shadow-outline"
           >
             Add New User
           </button>
@@ -197,8 +196,17 @@ export default {
     };
   },
   mounted() {
-    this.initializeMap();
-  },
+  delete L.Icon.Default.prototype._getIconUrl;
+
+  L.Icon.Default.mergeOptions({
+    iconRetinaUrl: ' ',
+    iconUrl: ' ',
+    shadowUrl: ' '
+  });
+
+  this.initializeMap();
+}
+,
   methods: {
       initializeMap() {
     const defaultLat = 8.4321;
@@ -222,43 +230,33 @@ export default {
     });
   },
 
-    // Set custom Font Awesome icon for the marker
 setCustomMarkerIcon() {
   const icon = L.divIcon({
-    className: 'leaflet-div-icon',
-    html: `<i class="fa fa-location-dot" style="font-size: 30px; color: #A03E06; margin: 0; padding: 0; display: block; outline: none; box-shadow: none;"></i>`, // Using Font Awesome icon directly in HTML
-    iconSize: [30, 30],
-    iconAnchor: [15, 30], // Center the icon at the bottom of the marker
-  });
+  className: 'leaflet-div-icon',
+  html: `<i class="fa fa-location-dot"></i>`,
+  iconSize: [30, 30], 
+  iconAnchor: [15, 30],
+});
 
-  // Set the marker's icon to the custom Font Awesome icon
   if (this.marker) {
     this.marker.setIcon(icon);
   }
 },
 
-
-    // Handle map click and place marker
     onMapClick(event) {
       const { lat, lng } = event.latlng;
-
-      // Update form fields with new latitude and longitude
       this.form.latitude = lat.toFixed(6);
       this.form.longitude = lng.toFixed(6);
 
-      // Place or update the marker on the map
       if (this.marker) {
         this.marker.setLatLng([lat, lng]);
       } else {
         this.marker = L.marker([lat, lng], { draggable: true }).addTo(this.map);
-        this.setCustomMarkerIcon(); // Apply Font Awesome icon to new marker
+        this.setCustomMarkerIcon();
       }
-
-      // Reverse geocode to get Barangay, City, and Street
       this.reverseGeocode(lat, lng);
     },
 
-    // Reverse geocoding using OpenStreetMap Nominatim API to get location details
     reverseGeocode(lat, lng) {
       const url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json&addressdetails=1`;
 
@@ -267,8 +265,6 @@ setCustomMarkerIcon() {
         .then(data => {
           if (data && data.address) {
             const address = data.address;
-
-            // Update barangay, city, and street in form based on the geocoded data
             this.form.barangay = address.neighbourhood || address.suburb || 'Not available';
             this.form.city = address.city || address.town || address.village || 'Not available';
             this.form.street = address.road || address.suburb || 'Not available';
@@ -277,18 +273,11 @@ setCustomMarkerIcon() {
         .catch(error => console.error('Error fetching geolocation data:', error));
     },
 
-    // Handle form submission
     handleSubmit() {
       console.log("Pet Owner Added", this.form);
-      // You can submit the form data to your backend here
     },
   },
 };
 </script>
 
-<style scoped>
-#map {
-  width: 100%;
-  height: 300px;
-}
-</style>
+<style></style>

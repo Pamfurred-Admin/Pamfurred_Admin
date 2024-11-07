@@ -17,70 +17,18 @@
 
         <div class="mb-4">
           <label class="block text-gray-700 text-sm font-bold mb-2 text-left" for="phoneNo">
-            Phone No.
+            Phone Number
           </label>
           <input
             v-model="form.phoneNo"
             type="text"
             id="phoneNo"
-            placeholder="Enter Phone No."
+            placeholder="Enter Phone Number"
             class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-0 focus:border-blue-500"
           />
         </div>
 
-        <div class="mb-4">
-          <label class="block text-gray-700 text-sm font-bold mb-2 text-left" for="doorNo">
-            Door No.
-          </label>
-          <input
-            v-model="form.doorNo"
-            type="text"
-            id="doorNo"
-            placeholder="Enter Door No."
-            class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-0 focus:border-blue-500"
-          />
-        </div>
-
-        <div class="mb-4">
-          <label class="block text-gray-700 text-sm font-bold mb-2 text-left" for="street">
-            Street
-          </label>
-          <input
-            v-model="form.street"
-            type="text"
-            id="street"
-            placeholder="Enter Street"
-            class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-0 focus:border-blue-500"
-          />
-        </div>
-
-        <div class="mb-4">
-          <label class="block text-gray-700 text-sm font-bold mb-2 text-left" for="barangay">
-            Barangay
-          </label>
-          <input
-            v-model="form.barangay"
-            type="text"
-            id="barangay"
-            placeholder="Enter Barangay"
-            class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-0 focus:border-blue-500"
-          />
-        </div>
-
-        <div class="mb-4">
-          <label class="block text-gray-700 text-sm font-bold mb-2 text-left" for="city">
-            City
-          </label>
-          <input
-            v-model="form.city"
-            type="text"
-            id="city"
-            placeholder="Enter City"
-            class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-0 focus:border-blue-500"
-          />
-        </div>
-
-        <div class="mb-4">
+         <div class="mb-4">
           <label class="block text-gray-700 text-sm font-bold mb-2 text-left" for="email">
             Email Address
           </label>
@@ -120,6 +68,24 @@
         </div>
 
         <div class="mb-4">
+          <label class="block text-gray-700 text-sm font-bold mb-2 text-left" for="dailyPetLimit">
+            Daily Pet Limit
+          </label>
+          <input
+            v-model="form.dailyPetLimit"
+            type="number"
+            id="dailyPetLimit"
+            placeholder="Enter Daily Pet Limit"
+            min="0"         
+            max="50"         
+            step="1"       
+            required
+            class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-0 focus:border-blue-500"
+            @input="validateDailyPetLimit"
+          />
+        </div>
+
+        <div class="mb-4">
           <label class="block text-gray-700 text-sm font-bold mb-2 text-left" for="openingTime">
             Opening Time
           </label>
@@ -144,6 +110,61 @@
         </div>
 
         <div class="mb-4">
+          <label class="block text-gray-700 text-sm font-bold mb-2 text-left" for="doorNo">
+            Door No.
+          </label>
+          <input
+            v-model="form.doorNo"
+            type="text"
+            id="doorNo"
+            placeholder="Enter Door No."
+            class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-0 focus:border-blue-500"
+          />
+        </div>
+
+        <div class="mb-4">
+          <label class="block text-gray-700 text-sm font-bold mb-2 text-left" for="street">
+            Street
+          </label>
+          <input
+            v-model="form.street"
+            type="text"
+            id="street"
+            placeholder="Street will be set by map"
+            class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-0 focus:border-blue-500"
+            readonly
+          />
+        </div>
+
+        <div class="mb-4">
+          <label class="block text-gray-700 text-sm font-bold mb-2 text-left" for="barangay">
+            Barangay
+          </label>
+          <input
+            v-model="form.barangay"
+            type="text"
+            id="barangay"
+            placeholder="Barangay will be set by map"
+            class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-0 focus:border-blue-500"
+            readonly
+          />
+        </div>
+
+        <div class="mb-4">
+          <label class="block text-gray-700 text-sm font-bold mb-2 text-left" for="city">
+            City
+          </label>
+          <input
+            v-model="form.city"
+            type="text"
+            id="city"
+            placeholder="City will be set by map"
+            class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-0 focus:border-blue-500"
+            readonly
+          />
+        </div>
+
+        <div class="mb-4">
           <label class="block text-gray-700 text-sm font-bold mb-2 text-left" for="latitude">
             Latitude
           </label>
@@ -151,8 +172,9 @@
             v-model="form.latitude"
             type="text"
             id="latitude"
-            placeholder="Enter Latitude"
+            placeholder="Latitude will be set by map"
             class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-0 focus:border-blue-500"
+            readonly
           />
         </div>
 
@@ -164,35 +186,25 @@
             v-model="form.longitude"
             type="text"
             id="longitude"
-            placeholder="Enter Longitude"
+            placeholder="Longitude will be set by map"
             class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-0 focus:border-blue-500"
+            readonly
           />
         </div>
 
         <div class="mb-4">
-          <label class="block text-gray-700 text-sm font-bold mb-2 text-left" for="dailyPetLimit">
-            Daily Pet Limit
+          <label class="block text-gray-700 text-sm font-bold mb-2 text-left">
+            Select Location on Map
           </label>
-          <input
-            v-model="form.dailyPetLimit"
-            type="number"
-            id="dailyPetLimit"
-            placeholder="Enter Daily Pet Limit"
-            min="0"         
-            max="50"         
-            step="1"       
-            required
-            class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-0 focus:border-blue-500"
-            @input="validateDailyPetLimit"
-          />
+          <div id="map" style="height: 300px;"></div>
         </div>
 
         <div class="flex justify-end mt-6">
           <button
             type="submit"
-            class="bg-custom-red hover:bg-[#872F05] text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            class="bg-custom-red hover:bg-[#872F05] text-white font-bold py-2 px-4 rounded focus:outline-none"
           >
-            Add Service Provider
+            Add New Establishment
           </button>
         </div>
       </form>
@@ -201,6 +213,9 @@
 </template>
 
 <script>
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
+
 export default {
   name: 'AddSP',
   data() {
@@ -208,34 +223,101 @@ export default {
       form: {
         establishmentName: "",
         phoneNo: "",
+        email: "",
+        username: "",
+        password: "",
+        dailyPetLimit: 1,
+        openingTime: "",
+        closingTime: "",
         doorNo: "",
         street: "",
         barangay: "",
         city: "",
-        email: "",
-        username: "",
-        password: "",
-        openingTime: "",
-        closingTime: "",
         latitude: "",
         longitude: "",
-        dailyPetLimit: "",
       },
+      map: null,
+      marker: null,
     };
   },
-  methods: {
-    handleSubmit() {
-    console.log("Service Provider Added", this.form);
+  mounted() {
+    this.initializeMap();
   },
-  validateDailyPetLimit() {
-    let value = parseInt(this.form.dailyPetLimit, 50);
-    if (value < 1) {
-      this.form.dailyPetLimit = 50;
-    }
+  methods: {
+    initializeMap() {
+  const defaultLat = 8.4321;
+  const defaultLng = 124.6476;
+
+  this.map = L.map('map').setView([defaultLat, defaultLng], 13);
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap contributors',
+  }).addTo(this.map);
+
+  this.marker = L.marker([defaultLat, defaultLng], { icon: this.setCustomMarkerIcon(), draggable: true }).addTo(this.map);
+
+  this.map.on('click', this.onMapClick);
+
+  this.marker.on('dragend', (event) => {
+    const latLng = event.target.getLatLng();
+    this.form.latitude = latLng.lat.toFixed(6);
+    this.form.longitude = latLng.lng.toFixed(6);
+  });
+},
+setCustomMarkerIcon() {
+  return L.divIcon({
+    className: 'leaflet-div-icon',
+    html: `<i class="fa fa-location-dot"></i>`,
+    iconSize: [30, 30],  
+    iconAnchor: [15, 30], 
+  });
+},
+onMapClick(event) {
+  const { lat, lng } = event.latlng;
+
+  this.form.latitude = lat.toFixed(6);
+  this.form.longitude = lng.toFixed(6);
+
+  if (this.marker) {
+    this.marker.setLatLng([lat, lng]);
+  } else {
+    this.marker = L.marker([lat, lng], { icon: this.setCustomMarkerIcon(), draggable: true }).addTo(this.map);
   }
-}
+
+  this.reverseGeocode(lat, lng);
+},
+
+    reverseGeocode(lat, lng) {
+      const url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json&addressdetails=1`;
+
+      fetch(url)
+        .then(response => response.json())
+        .then(data => {
+          if (data && data.address) {
+            const address = data.address;
+            this.form.street = address.road || 'Not available';
+            this.form.barangay = address.neighbourhood || address.suburb || 'Not available';
+            this.form.city = address.city || address.town || address.village || 'Not available';
+          }
+        })
+        .catch(error => console.error('Error fetching geolocation data:', error));
+    },
+
+    handleSubmit() {
+      console.log("Service Provider Added", this.form);
+    },
+
+    validateDailyPetLimit() {
+      let value = parseInt(this.form.dailyPetLimit, 10);
+      if (isNaN(value) || value < 1) {
+        this.form.dailyPetLimit = 1;
+      } else if (value > 50) {
+        this.form.dailyPetLimit = 50;
+      }
+    }
+  },
 };
+
 </script>
 
-<style>
-</style>
+<style></style>
