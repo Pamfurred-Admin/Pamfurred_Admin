@@ -173,6 +173,7 @@
 <script>
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+import { supabase } from '@/supabase/supabase';
 
 export default {
   name: 'AddPO',
@@ -196,52 +197,51 @@ export default {
     };
   },
   mounted() {
-  delete L.Icon.Default.prototype._getIconUrl;
+    delete L.Icon.Default.prototype._getIconUrl;
 
-  L.Icon.Default.mergeOptions({
-    iconRetinaUrl: ' ',
-    iconUrl: ' ',
-    shadowUrl: ' '
-  });
-
-  this.initializeMap();
-}
-,
-  methods: {
-      initializeMap() {
-    const defaultLat = 8.4321;
-    const defaultLng = 124.6476;
-
-    this.map = L.map('map').setView([defaultLat, defaultLng], 13);
-
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; OpenStreetMap contributors',
-    }).addTo(this.map);
-
-    this.map.on('click', this.onMapClick);
-
-    this.marker = L.marker([defaultLat, defaultLng], { draggable: true }).addTo(this.map);
-    this.setCustomMarkerIcon();
-
-    this.marker.on('dragend', (event) => {
-      const latLng = event.target.getLatLng();
-      this.form.latitude = latLng.lat.toFixed(6);
-      this.form.longitude = latLng.lng.toFixed(6);
+    L.Icon.Default.mergeOptions({
+      iconRetinaUrl: ' ',
+      iconUrl: ' ',
+      shadowUrl: ' '
     });
+
+    this.initializeMap();
   },
+  methods: {
+    initializeMap() {
+      const defaultLat = 8.4321;
+      const defaultLng = 124.6476;
 
-setCustomMarkerIcon() {
-  const icon = L.divIcon({
-  className: 'leaflet-div-icon',
-  html: `<i class="fa fa-location-dot"></i>`,
-  iconSize: [30, 30], 
-  iconAnchor: [15, 30],
-});
+      this.map = L.map('map').setView([defaultLat, defaultLng], 13);
 
-  if (this.marker) {
-    this.marker.setIcon(icon);
-  }
-},
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors',
+      }).addTo(this.map);
+
+      this.map.on('click', this.onMapClick);
+
+      this.marker = L.marker([defaultLat, defaultLng], { draggable: true }).addTo(this.map);
+      this.setCustomMarkerIcon();
+
+      this.marker.on('dragend', (event) => {
+        const latLng = event.target.getLatLng();
+        this.form.latitude = latLng.lat.toFixed(6);
+        this.form.longitude = latLng.lng.toFixed(6);
+      });
+    },
+
+    setCustomMarkerIcon() {
+      const icon = L.divIcon({
+        className: 'leaflet-div-icon',
+        html: `<i class="fa fa-location-dot"></i>`,
+        iconSize: [30, 30], 
+        iconAnchor: [15, 30],
+      });
+
+      if (this.marker) {
+        this.marker.setIcon(icon);
+      }
+    },
 
     onMapClick(event) {
       const { lat, lng } = event.latlng;
@@ -273,8 +273,52 @@ setCustomMarkerIcon() {
         .catch(error => console.error('Error fetching geolocation data:', error));
     },
 
-    handleSubmit() {
-      console.log("Pet Owner Added", this.form);
+    async handleSubmit() {
+  console.log("Pet Owner Added", this.form);
+  try {
+  const { error } = await supabase.rpc('add_petowner_details', {
+    p_first_name: this.form.firstName,
+    p_last_name: this.form.lastName,
+    p_password: this.form.password,
+    p_username: this.form.username,
+    p_email: this.form.email,
+    p_user_type: 'pet_owner',
+    p_floor_unit_room: this.form.doorNo,
+    p_street: this.form.street,
+    p_barangay: this.form.barangay,
+    p_city: this.form.city,
+    p_latitude: parseFloat(this.form.latitude),
+    p_longitude: parseFloat(this.form.longitude),
+  });
+
+  if (error) {
+    console.error('Error adding user:', error);
+    alert(`Error adding user: ${error.message}`);
+  } else {
+    alert('User added successfully!');
+    this.resetForm();
+  }
+} catch (err) {
+  console.error('Unexpected error:', err);
+  alert('An unexpected error occurred. Please try again later.');
+}
+    },
+
+    resetForm() {
+      this.form = {
+        firstName: "",
+        lastName: "",
+        email: "",
+        username: "",
+        password: "",
+        doorNo: "",
+        street: "",
+        barangay: "",
+        city: "",
+        latitude: "",
+        longitude: "",
+      };
+      this.marker.setLatLng([8.4321, 124.6476]); 
     },
   },
 };

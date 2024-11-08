@@ -12,7 +12,7 @@
         <img :src="provider.image" alt="Provider Logo" class="w-10 h-10 rounded-full mr-3">
         <div class="text-left whitespace-nowrap">
           <p class="text-gray-900 font-semibold truncate" style="max-width: 140px;">{{ provider.name }}</p>
-          <p class="text-gray-500 text-sm">{{ provider.number_of_pets }} pets to cater daily</p>
+          <p class="text-gray-500 text-sm">Daily Pet Limit: {{ provider.number_of_pets }}</p>
         </div>
       </li>
     </ul>

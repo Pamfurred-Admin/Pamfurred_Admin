@@ -9,14 +9,29 @@
   </template>
   
   <script>
+  import { ref, onMounted } from 'vue';
+  import { supabase } from '@/supabase/supabase';
+
   export default {
     name: 'totalAppointments',
-    props: {
-      totalAppointments: {
-        type: Number,
-        required: true
+    setup() {
+    const totalAppointments = ref(0); 
+    const fetchTotalAppointments = async () => {
+      const { data, error } = await supabase.rpc('get_total_appointments'); 
+
+      if (error) {
+        console.error('Error fetching total pet owners:', error);
+      } else {
+        totalAppointments.value = data; 
       }
-    }
+    };
+
+    onMounted(() => {
+      fetchTotalAppointments();
+    });
+
+    return { totalAppointments };  
   }
+}
   </script>
   
