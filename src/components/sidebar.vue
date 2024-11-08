@@ -30,6 +30,7 @@
 
 <script>
 import { useRoute, useRouter } from 'vue-router';
+import { supabase } from '@/supabase/supabase';
 
 export default {
   name: 'SideBar',
@@ -50,12 +51,18 @@ export default {
 };
 
 
-    const handleLogout = () => {
-  // Remove the admin ID from local storage
-  localStorage.removeItem('adminId'); // Change this to the key you used for session management
-  // Redirect to the login page
-  router.push('/'); // Make sure this is your actual login path
+const handleLogout = async () => {
+  // Log out the user using Supabase's signOut method
+  const { error } = await supabase.auth.signOut();
+
+  if (error) {
+    console.error('Error logging out:', error.message); // Log error if any
+  } else {
+    // Redirect to the login page after successful logout
+    router.push('/'); // Make sure this is your actual login path
+  }
 };
+
 
 
     return {
