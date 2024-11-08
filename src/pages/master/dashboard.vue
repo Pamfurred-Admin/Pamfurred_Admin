@@ -13,7 +13,7 @@
           <totalPetowners/>
         </router-link>
         <div class="bg-white border border-gray-200 rounded-lg p-4 shadow hover:shadow-lg transition-transform transform hover:scale-105">
-          <totalAppointments :totalAppointments="8291" />
+          <totalAppointments/>
         </div>
       </div>
       <div class="p-4 pt-1">
