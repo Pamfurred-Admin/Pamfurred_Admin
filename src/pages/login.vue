@@ -5,11 +5,11 @@
       <div class="input-group">
         <font-awesome-icon icon="user" class="icon" />
         <input 
-          type="text" 
-          placeholder="Username" 
-          v-model="username" 
+          type="email" 
+          placeholder="Email" 
+          v-model="email" 
           required 
-          aria-label="Username" 
+          aria-label="Email" 
         />
       </div>
       <div class="input-group">
@@ -21,16 +21,13 @@
           required 
           aria-label="Password" 
         />
-        <button type="button" @click="togglePasswordVisibility">
-    
-  </button>
       </div>
       <a href="#" class="forgot-password">Forgot password?</a>
       <button type="submit" class="login-button" :disabled="loading">
         <span v-if="loading">Logging in...</span>
         <span v-else>Login</span>
       </button>
-      <div v-if="errorMessage" class="error-message">{{ errorMessage }}</div> <!-- Error message -->
+      <div v-if="errorMessage" class="error-message">{{ errorMessage }}</div>
     </form>
   </div>
 </template>
@@ -40,52 +37,54 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { supabase } from '@/supabase/supabase';
 
-
 export default {
   name: 'LogIn',
   setup() {
-    const username = ref(''); // Username field
-    const password = ref(''); // Password field
-    const loading = ref(false); // Loading state
-    const errorMessage = ref(''); // Error message state
-    const passwordVisible = ref(false); // Password visibility toggle
+    const email = ref('');
+    const password = ref('');
+    const loading = ref(false);
+    const errorMessage = ref('');
+    const passwordVisible = ref(false);
     const router = useRouter();
 
     const handleLogin = async () => {
-  errorMessage.value = ''; // Reset error message
-  loading.value = true; // Start loading
+      errorMessage.value = '';
+      loading.value = true;
 
-  // Validate input
-  if (!username.value || !password.value) {
-    errorMessage.value = 'Please enter username and password.'; // Validation message
-    loading.value = false; // Stop loading
-    return;
-  }
+      // Validate input
+      if (!email.value || !password.value) {
+        errorMessage.value = 'Please enter email and password.';
+        loading.value = false;
+        return;
+      }
 
-  // Call the check_admin_password function
-  const { data: admin, error } = await supabase
-    .rpc('check_admin_password', { p_username: username.value, p_password: password.value });
+      // Supabase auth login
+      const { data: { user }, error } = await supabase.auth.signInWithPassword({
+        email: email.value,
+        password: password.value,
+      });
 
-  if (error || !admin || admin.length === 0) {
-    errorMessage.value = 'Invalid username or password.'; // Error handling
-    loading.value = false; // Stop loading
-    return;
-  }
-
-  // Login successful
-  localStorage.setItem('adminId', admin[0].admin_id); // Store admin ID
-  router.push('/dashboard'); // Redirect to the dashboard
-  loading.value = false; // Stop loading
-};
+      if (error) {
+  console.error('Login Error:', error.message);  // Log the actual error message
+  errorMessage.value = 'Invalid email or password.';
+  loading.value = false;
+  return;
+}
 
 
+      if (user) {
+        // Login successful, redirect without setting local session
+        router.push('/dashboard');
+      }
+      loading.value = false;
+    };
 
     const togglePasswordVisibility = () => {
-      passwordVisible.value = !passwordVisible.value; // Toggle visibility
+      passwordVisible.value = !passwordVisible.value;
     };
 
     return {
-      username,
+      email,
       password,
       handleLogin,
       loading,
@@ -99,6 +98,6 @@ export default {
 
 <style>
 .error-message {
-  color: red; /* Style for error messages */
+  color: red;
 }
 </style>

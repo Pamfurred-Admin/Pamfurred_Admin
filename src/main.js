@@ -4,7 +4,7 @@ import "./assets/css/app.css";
 import router from "./router";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import '@fortawesome/fontawesome-free/css/all.css';
+import "@fortawesome/fontawesome-free/css/all.css";
 import {
   faHouse,
   faHandHoldingHeart,
@@ -16,7 +16,7 @@ import {
   faCalendarDay,
   faPencil,
   faTrash,
-  faLocationDot
+  faLocationDot,
 } from "@fortawesome/free-solid-svg-icons";
 
 library.add(

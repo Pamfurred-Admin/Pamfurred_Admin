@@ -9,6 +9,7 @@ import addserviceprovider from "@/pages/addserviceprovider.vue";
 import updatepetowners from "@/pages/updatepetowners.vue";
 import updateserviceprovider from "@/pages/updateserviceprovider.vue";
 import serviceproviderregistrations from "@/pages/serviceproviderregistrations.vue";
+import { supabase } from "@/supabase/supabase";
 
 const routes = [
   {
@@ -66,6 +67,21 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(),
   routes,
+});
+
+// Global route guard
+router.beforeEach((to, from, next) => {
+  if (to.name !== "LogIn") {
+    // Skip check for login route
+    const user = supabase.auth.getUser();
+    if (user) {
+      next(); // Allow access if logged in
+    } else {
+      next({ name: "LogIn" }); // Redirect to login if not logged in
+    }
+  } else {
+    next(); // Allow access to login page
+  }
 });
 
 export default router;
