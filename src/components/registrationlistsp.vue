@@ -19,7 +19,7 @@
       <table class="min-w-full table-fixed">
         <thead class="bg-gray-100">
           <tr>
-            <th class="w-2/12 p-2 text-center">User ID</th>
+            <th class="w-2/12 p-2 text-center">Service Provider ID</th>
             <th class="w-3/12 p-2 text-center">Establishment name</th>
             <th class="w-2/12 p-2 text-center">Approval Status</th>
             <th class="w-4/12 p-2 text-center">Email address</th>
@@ -70,8 +70,8 @@
 </template>
 
 <script>
-
 import { supabase } from '@/supabase/supabase';
+import emailjs from '@emailjs/browser';
 
 export default {
   name: 'RegistrationList',
@@ -112,6 +112,28 @@ export default {
     },
   },
   methods: {
+    async sendNotification(email, status, name) {
+      const templateParams = {
+        to_email: email,
+        name: name,
+        status_message: status === "approved" ? "approved" : "declined",
+      };
+
+      try {
+        const templateId =
+          status === "approved" ? "template_1pfvhdj" : "template_2997wcq";
+        const response = await emailjs.send(
+          "service_8kzyvmh", // Your EmailJS service ID
+          templateId, // The chosen template ID based on status
+          templateParams,
+          "eHHF7ZkW5XNnGTlM0" // Your EmailJS user ID
+        );
+
+        console.log("Email sent successfully", response);
+      } catch (error) {
+        console.error("Error sending email", error);
+      }
+    },
     async fetchProviders() {
       const { data, error } = await supabase
         .from('service_provider')
@@ -137,30 +159,52 @@ export default {
         this.currentPage--;
       }
     },
-    async approveProvider(sp_id) {
-      const { error } = await supabase
+    async approveProvider(sp_id) { 
+      console.log("Attempting to approve provider with sp_id:", sp_id);
+      
+      const { data, error } = await supabase
         .from('service_provider')
         .update({ approval_status: 'approved' })
-        .eq('sp_id', sp_id);
+        .eq('sp_id', sp_id)
+        .select('*') // This ensures all columns are selected
+        .single();
 
       if (error) {
         console.error('Error approving provider:', error);
+      } else if (!data) {
+        console.error('No data returned for the provider');
       } else {
+        const approvedUser = data;
+        console.log("Approved provider data:", approvedUser);
+        
+        // Use the `email` and `name` fields from the retrieved data
+        await this.sendNotification(approvedUser.email, 'approved', approvedUser.name);
+
+        // Remove the approved user from the list
         this.users = this.users.filter(user => user.sp_id !== sp_id);
       }
     },
     async declineProvider(sp_id) {
-      const { error } = await supabase
+      const { data, error } = await supabase
         .from('service_provider')
         .update({ approval_status: 'declined' })
-        .eq('sp_id', sp_id);
+        .eq('sp_id', sp_id)
+        .single();
 
       if (error) {
         console.error('Error declining provider:', error);
+      } else if (!data) {
+        console.error('No data returned for the provider');
       } else {
+        const declinedUser = data; // The updated user data
+
+        // Send the decline email notification
+        await this.sendNotification(declinedUser.email, 'declined', declinedUser.name);
+
+        // Remove the declined user from the list
         this.users = this.users.filter(user => user.sp_id !== sp_id);
       }
-    },
+    }
   },
   mounted() {
     this.fetchProviders();
