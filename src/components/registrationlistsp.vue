@@ -37,6 +37,7 @@
             <td class="w-2/12 p-2">{{ user.approval_status }}</td>
             <td class="w-4/12 p-2">{{ user.email }}</td>
             <td class="w-2/12 p-4 flex space-x-4">
+              <button class="bg-blue-700 text-white font-medium py-2 px-2 rounded-md hover:bg-blue-900 focus:outline-none"> View </button>
               <button @click="approveProvider(user.sp_id)" class="bg-green-700 text-white font-medium py-2 px-2 rounded-md hover:bg-green-900 focus:outline-none"> Accept </button>
               <button @click="declineProvider(user.sp_id)" class="bg-red-700 text-white font-medium py-2 px-2 rounded-md hover:bg-red-900 focus:outline-none"> Deny </button>
             </td>

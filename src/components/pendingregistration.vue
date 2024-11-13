@@ -13,7 +13,6 @@
       <p>No pending registrations.</p>
     </div>
     
-    <!-- View More Button -->
 <div v-if="hasMore" class="text-center mt-4">
   <button @click="loadMore" class="inline-block mt-4 bg-custom-viewmore text-black font-medium rounded-md py-1.5 px-4 text-sm hover:bg-custom-pencil text-center">
     View More
@@ -61,7 +60,7 @@ export default {
       this.displayedRegistrations = this.pendingRegistrations.slice(0, this.displayedCount);
     },
     loadMore() {
-      this.displayedCount += 1; // Show 1 more item each time
+      this.displayedCount += 1;
       this.updateDisplayedRegistrations();
     },
   },
