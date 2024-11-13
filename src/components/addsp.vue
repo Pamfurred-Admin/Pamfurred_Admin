@@ -244,78 +244,80 @@ export default {
     this.initializeMap();
   },
   methods: {
-    initializeMap() {
-  const defaultLat = 8.4321;
-  const defaultLng = 124.6476;
-
-  this.map = L.map('map').setView([defaultLat, defaultLng], 13);
-
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; OpenStreetMap contributors',
-  }).addTo(this.map);
-
-  this.marker = L.marker([defaultLat, defaultLng], { icon: this.setCustomMarkerIcon(), draggable: true }).addTo(this.map);
-
-  this.map.on('click', this.onMapClick);
-
-  this.marker.on('dragend', (event) => {
-    const latLng = event.target.getLatLng();
-    this.form.latitude = latLng.lat.toFixed(6);
-    this.form.longitude = latLng.lng.toFixed(6);
-  });
-},
-setCustomMarkerIcon() {
-  return L.divIcon({
-    className: 'leaflet-div-icon',
-    html: `<i class="fa fa-location-dot"></i>`,
-    iconSize: [30, 30],  
-    iconAnchor: [15, 30], 
-  });
-},
-onMapClick(event) {
-  const { lat, lng } = event.latlng;
-
-  this.form.latitude = lat.toFixed(6);
-  this.form.longitude = lng.toFixed(6);
-
-  if (this.marker) {
-    this.marker.setLatLng([lat, lng]);
-  } else {
-    this.marker = L.marker([lat, lng], { icon: this.setCustomMarkerIcon(), draggable: true }).addTo(this.map);
-  }
-
-  this.reverseGeocode(lat, lng);
-},
-
-    reverseGeocode(lat, lng) {
-      const url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json&addressdetails=1`;
-
-      fetch(url)
-        .then(response => response.json())
-        .then(data => {
-          if (data && data.address) {
-            const address = data.address;
-            this.form.street = address.road || 'Not available';
-            this.form.barangay = address.neighbourhood || address.suburb || 'Not available';
-            this.form.city = address.city || address.town || address.village || 'Not available';
-          }
-        })
-        .catch(error => console.error('Error fetching geolocation data:', error));
-    },
-
-    handleSubmit() {
-      console.log("Service Provider Added", this.form);
-    },
-
-    validateDailyPetLimit() {
-      let value = parseInt(this.form.dailyPetLimit, 10);
-      if (isNaN(value) || value < 1) {
-        this.form.dailyPetLimit = 1;
-      } else if (value > 50) {
-        this.form.dailyPetLimit = 50;
-      }
-    }
+  setCustomMarkerIcon() {
+    return L.icon({
+      iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
+      shadowUrl: null,
+      iconSize: [30, 40],
+      iconAnchor: [20, 60],
+    });
   },
+
+  initializeMap() {
+    const defaultLat = this.form.latitude || 8.4321;
+    const defaultLng = this.form.longitude || 124.6476;
+
+    this.map = L.map('map').setView([defaultLat, defaultLng], 13);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors',
+    }).addTo(this.map);
+
+    this.map.on('click', this.onMapClick);
+    this.marker = L.marker([defaultLat, defaultLng], {
+      draggable: true,
+      icon: this.setCustomMarkerIcon(),
+    }).addTo(this.map);
+
+    this.marker.on('dragend', (event) => {
+      const latLng = event.target.getLatLng();
+      this.form.latitude = latLng.lat.toFixed(6);
+      this.form.longitude = latLng.lng.toFixed(6);
+      this.reverseGeocode(latLng.lat, latLng.lng);
+    });
+
+    this.reverseGeocode(defaultLat, defaultLng);
+  },
+
+  onMapClick(event) {
+    const { lat, lng } = event.latlng;
+    this.form.latitude = lat.toFixed(6);
+    this.form.longitude = lng.toFixed(6);
+    this.marker.setLatLng([lat, lng]);
+    this.reverseGeocode(lat, lng); 
+  },
+
+  reverseGeocode(lat, lng) {
+    const url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json&addressdetails=1&accept-language=en`;
+
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        if (data && data.address) {
+          const address = data.address;
+          this.form.street = address.road || 'Street not found';
+          this.form.barangay = address.suburb || 'Barangay not found';
+          this.form.city = address.city || address.town || address.village || 'City not found';
+        }
+      })
+      .catch(error => {
+        console.error("Error fetching geocode data:", error);
+      });
+  },
+
+  handleSubmit() {
+    console.log("Service Provider Added", this.form);
+  },
+
+  validateDailyPetLimit() {
+    let value = parseInt(this.form.dailyPetLimit, 10);
+    if (isNaN(value) || value < 1) {
+      this.form.dailyPetLimit = 1;
+    } else if (value > 50) {
+      this.form.dailyPetLimit = 50;
+    }
+  }
+}
 };
 
 </script>

@@ -37,12 +37,12 @@
             :key="user.id"
             :class="{ 'bg-gray-50': user.id % 2 === 0 }"
           >
-            <td class="w-2/12 p-2">{{ user.numberOfPets }}</td> 
+            <td class="w-2/12 p-2">{{ user.numberOfPets }}</td>
             <td class="w-3/12 p-2">{{ user.estName }}</td>
             <td class="w-2/12 p-2">{{ user.contactNo }}</td>
             <td class="w-4/12 p-2">{{ user.email }}</td>
             <td class="w-1/12 p-4 flex space-x-4">
-              <button class="text-custom-pencil" @click="goToUpdatePage(user.id)">
+              <button class="text-custom-pencil" @click="goToUpdatePage(user)">
                 <font-awesome-icon icon="pencil" />
               </button>
               <deletebutton :user="user" @delete="handleDelete" />
@@ -78,7 +78,7 @@
 
 <script>
 import deletebutton from './deletebutton.vue';
-import { supabase } from '@/supabase/supabase'; 
+import { supabase } from '@/supabase/supabase';
 
 export default {
   name: 'ServiceProviderList',
@@ -87,6 +87,7 @@ export default {
   },
   data() {
     return {
+      serviceProviderId: this.$route.params.id,
       searchQuery: '',
       currentPage: 1,
       pageSize: 10,
@@ -154,7 +155,7 @@ export default {
     },
     goToUpdatePage(user) {
       this.$router.push({
-        name: 'UpdateServiceProvider',
+        name: 'UpdateServiceProvider/:userId',
         params: { id: user.id }
       }).catch(err => {
         console.error('Navigation Error:', err);
@@ -169,6 +170,4 @@ export default {
   }
 };
 </script>
-
-<style scoped>
-</style>
+<style></style>

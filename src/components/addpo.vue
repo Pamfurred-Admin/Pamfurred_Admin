@@ -124,7 +124,7 @@
 
         <div class="mb-4">
           <label class="block text-gray-700 text-sm font-bold mb-2 text-left" for="latitude">
-            Latitude
+            User Latitude
           </label>
           <input
             v-model="form.latitude"
@@ -138,7 +138,7 @@
 
         <div class="mb-4">
           <label class="block text-gray-700 text-sm font-bold mb-2 text-left" for="longitude">
-            Longitude
+            User Longitude
           </label>
           <input
             v-model="form.longitude"
@@ -197,81 +197,69 @@ export default {
     };
   },
   mounted() {
-    delete L.Icon.Default.prototype._getIconUrl;
-
-    L.Icon.Default.mergeOptions({
-      iconRetinaUrl: ' ',
-      iconUrl: ' ',
-      shadowUrl: ' '
-    });
-
     this.initializeMap();
   },
   methods: {
-    initializeMap() {
-      const defaultLat = 8.4321;
-      const defaultLng = 124.6476;
+  setCustomMarkerIcon() {
+    return L.icon({
+      iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
+      shadowUrl: null,
+      iconSize: [30, 40],
+      iconAnchor: [20, 60],
+    });
+  },
 
-      this.map = L.map('map').setView([defaultLat, defaultLng], 13);
+  initializeMap() {
+    const defaultLat = this.form.latitude || 8.4321;
+    const defaultLng = this.form.longitude || 124.6476;
 
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; OpenStreetMap contributors',
-      }).addTo(this.map);
+    this.map = L.map('map').setView([defaultLat, defaultLng], 13);
 
-      this.map.on('click', this.onMapClick);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors',
+    }).addTo(this.map);
 
-      this.marker = L.marker([defaultLat, defaultLng], { draggable: true }).addTo(this.map);
-      this.setCustomMarkerIcon();
+    this.map.on('click', this.onMapClick);
+    this.marker = L.marker([defaultLat, defaultLng], {
+      draggable: true,
+      icon: this.setCustomMarkerIcon(),
+    }).addTo(this.map);
 
-      this.marker.on('dragend', (event) => {
-        const latLng = event.target.getLatLng();
-        this.form.latitude = latLng.lat.toFixed(6);
-        this.form.longitude = latLng.lng.toFixed(6);
+    this.marker.on('dragend', (event) => {
+      const latLng = event.target.getLatLng();
+      this.form.latitude = latLng.lat.toFixed(6);
+      this.form.longitude = latLng.lng.toFixed(6);
+      this.reverseGeocode(latLng.lat, latLng.lng);
+    });
+
+    this.reverseGeocode(defaultLat, defaultLng);
+  },
+
+  onMapClick(event) {
+    const { lat, lng } = event.latlng;
+    this.form.latitude = lat.toFixed(6);
+    this.form.longitude = lng.toFixed(6);
+    this.marker.setLatLng([lat, lng]);
+    this.reverseGeocode(lat, lng); 
+  },
+
+  reverseGeocode(lat, lng) {
+    const url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json&addressdetails=1&accept-language=en`;
+
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        if (data && data.address) {
+          const address = data.address;
+          this.form.street = address.road || 'Street not found';
+          this.form.barangay = address.suburb || 'Barangay not found';
+          this.form.city = address.city || address.town || address.village || 'City not found';
+        }
+      })
+      .catch(error => {
+        console.error("Error fetching geocode data:", error);
       });
-    },
-
-    setCustomMarkerIcon() {
-      const icon = L.divIcon({
-        className: 'leaflet-div-icon',
-        html: `<i class="fa fa-location-dot"></i>`,
-        iconSize: [30, 30], 
-        iconAnchor: [15, 30],
-      });
-
-      if (this.marker) {
-        this.marker.setIcon(icon);
-      }
-    },
-
-    onMapClick(event) {
-      const { lat, lng } = event.latlng;
-      this.form.latitude = lat.toFixed(6);
-      this.form.longitude = lng.toFixed(6);
-
-      if (this.marker) {
-        this.marker.setLatLng([lat, lng]);
-      } else {
-        this.marker = L.marker([lat, lng], { draggable: true }).addTo(this.map);
-        this.setCustomMarkerIcon();
-      }
-      this.reverseGeocode(lat, lng);
-    },
-
-    reverseGeocode(lat, lng) {
-      const url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json&addressdetails=1`;
-
-      fetch(url)
-        .then(response => response.json())
-        .then(data => {
-          if (data && data.address) {
-            const address = data.address;
-            this.form.barangay = address.neighbourhood || address.suburb || 'Not available';
-            this.form.city = address.city || address.town || address.village || 'Not available';
-            this.form.street = address.road || address.suburb || 'Not available';
-          }
-        })
-        .catch(error => console.error('Error fetching geolocation data:', error));
-    },
+  },
 
     async handleSubmit() {
   console.log("Pet Owner Added", this.form);

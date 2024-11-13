@@ -12,19 +12,14 @@
       </div>
       <button
         class="ml-4 bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-md focus:outline-none"
-        @click="search"
-      >
-        Search
+        @click="search">Search
       </button>
     </div>
 
     <div class="flex justify-end mb-4">
       <button
         class="bg-custom-red hover:bg-[#872F05] text-white px-6 py-2 rounded-md focus:outline-none"
-        @click="addNewUser"
-      >
-        Add New User
-      </button>
+        @click="addNewUser">Add New User</button>
     </div>
 
     <div class="overflow-x-auto">
