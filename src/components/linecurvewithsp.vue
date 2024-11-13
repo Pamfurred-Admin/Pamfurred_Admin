@@ -35,17 +35,31 @@ export default {
     const lineChartRef = ref(null);
     
     const providers = ref([]);
+    const monthlyCounts = ref([]);
 
+    // Fetch service provider data and service provider counts
     const fetchServiceProviders = async () => {
-      const { data, error } = await supabase
-        .rpc('get_service_providers'); 
-      if (error) {
-        console.error('Error fetching service providers:', error);
+      const { data: providersData, error: providersError } = await supabase
+        .rpc('get_service_providers');
+      if (providersError) {
+        console.error('Error fetching service providers:', providersError);
         return;
       }
-      providers.value = data;
+      providers.value = providersData;
     };
 
+    // Fetch counts of service providers for each month
+    const fetchProviderCounts = async () => {
+      const { data: countsData, error: countsError } = await supabase
+        .rpc('get_service_provider_counts'); // Update with your actual function name if different
+      if (countsError) {
+        console.error('Error fetching provider counts:', countsError);
+        return;
+      }
+      monthlyCounts.value = countsData; // Assuming countsData is an array of counts
+    };
+
+    // Render the chart
     const renderChart = () => {
       const ctx = lineChartRef.value?.getContext('2d');
       if (!ctx) {
@@ -60,14 +74,15 @@ export default {
       gradient.addColorStop(0.6, '#C1C1C1');
       gradient.addColorStop(1, '#C1C1C1');
 
+      // Make sure monthlyCounts has the data before rendering the chart
       chartInstance.value = new Chart(ctx, {
         type: 'line',
         data: {
           labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
           datasets: [
             {
-              label: 'Count',
-              data: [800, 100, 950, 200, 900, 1050, 200, 950, 1050, 1200, 500, 900],
+              label: 'Service Provider Counts',
+              data: monthlyCounts.value.length > 0 ? monthlyCounts.value : [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], // fallback if no data
               borderColor: '#D97706',
               borderWidth: 2,
               backgroundColor: gradient,
@@ -109,8 +124,9 @@ export default {
 
     onMounted(async () => {
       await fetchServiceProviders();
+      await fetchProviderCounts(); // Fetch the provider counts
       await nextTick();
-      renderChart();
+      renderChart(); // Render chart after data is fetched
     });
 
     onBeforeUnmount(() => {
