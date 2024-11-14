@@ -33,11 +33,8 @@ export default {
   setup() {
     const chartInstance = ref(null);
     const lineChartRef = ref(null);
-    
     const providers = ref([]);
     const monthlyCounts = ref([]);
-
-    // Fetch service provider data and service provider counts
     const fetchServiceProviders = async () => {
       const { data: providersData, error: providersError } = await supabase
         .rpc('get_service_providers');
@@ -48,16 +45,40 @@ export default {
       providers.value = providersData;
     };
 
-    // Fetch counts of service providers for each month
     const fetchProviderCounts = async () => {
-      const { data: countsData, error: countsError } = await supabase
-        .rpc('get_service_provider_counts'); // Update with your actual function name if different
-      if (countsError) {
-        console.error('Error fetching provider counts:', countsError);
-        return;
-      }
-      monthlyCounts.value = countsData; // Assuming countsData is an array of counts
-    };
+  // Fetch service provider data
+  const { data: serviceProviders, error: spError } = await supabase
+    .from('service_provider')
+    .select('sp_id'); // Get service provider IDs (you can add more fields if needed)
+
+  if (spError) {
+    console.error('Error fetching service provider data:', spError);
+    return;
+  }
+
+  // Fetch user data
+  const { data: users, error: userError } = await supabase
+    .from('user')
+    .select('user_id, created_at') // Get user creation date and user_id
+    .in('user_id', serviceProviders.map(sp => sp.sp_id));  // Filter users that match service provider sp_ids
+
+  if (userError) {
+    console.error('Error fetching user data:', userError);
+    return;
+  }
+
+  // Initialize an array to hold counts for each month (12 months)
+  const monthCounts = new Array(12).fill(0);
+
+  // Iterate over each user and count service providers by month
+  users.forEach(user => {
+    const month = new Date(user.created_at).getMonth();  // Get the month (0-11)
+    monthCounts[month]++;  // Increment the count for that month
+  });
+
+  // Set the monthlyCounts to the reactive variable for your chart
+  monthlyCounts.value = monthCounts;
+};
 
     // Render the chart
     const renderChart = () => {
