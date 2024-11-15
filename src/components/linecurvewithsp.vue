@@ -46,41 +46,34 @@ export default {
     };
 
     const fetchProviderCounts = async () => {
-  // Fetch service provider data
-  const { data: serviceProviders, error: spError } = await supabase
-    .from('service_provider')
-    .select('sp_id'); // Get service provider IDs (you can add more fields if needed)
+      const { data: serviceProviders, error: spError } = await supabase
+        .from('service_provider')
+        .select('sp_id');
 
-  if (spError) {
-    console.error('Error fetching service provider data:', spError);
-    return;
-  }
+      if (spError) {
+        console.error('Error fetching service provider data:', spError);
+        return;
+      }
 
-  // Fetch user data
-  const { data: users, error: userError } = await supabase
-    .from('user')
-    .select('user_id, created_at') // Get user creation date and user_id
-    .in('user_id', serviceProviders.map(sp => sp.sp_id));  // Filter users that match service provider sp_ids
+      const { data: users, error: userError } = await supabase
+        .from('user')
+        .select('user_id, created_at')
+        .in('user_id', serviceProviders.map(sp => sp.sp_id));
 
-  if (userError) {
-    console.error('Error fetching user data:', userError);
-    return;
-  }
+      if (userError) {
+        console.error('Error fetching user data:', userError);
+        return;
+      }
 
-  // Initialize an array to hold counts for each month (12 months)
-  const monthCounts = new Array(12).fill(0);
+      const monthCounts = new Array(12).fill(0);
+      users.forEach(user => {
+        const month = new Date(user.created_at).getMonth(); 
+        monthCounts[month]++;
+      });
 
-  // Iterate over each user and count service providers by month
-  users.forEach(user => {
-    const month = new Date(user.created_at).getMonth();  // Get the month (0-11)
-    monthCounts[month]++;  // Increment the count for that month
-  });
+      monthlyCounts.value = monthCounts;
+    };
 
-  // Set the monthlyCounts to the reactive variable for your chart
-  monthlyCounts.value = monthCounts;
-};
-
-    // Render the chart
     const renderChart = () => {
       const ctx = lineChartRef.value?.getContext('2d');
       if (!ctx) {
@@ -94,8 +87,6 @@ export default {
       gradient.addColorStop(0, '#D14C01');
       gradient.addColorStop(0.6, '#C1C1C1');
       gradient.addColorStop(1, '#C1C1C1');
-
-      // Make sure monthlyCounts has the data before rendering the chart
       chartInstance.value = new Chart(ctx, {
         type: 'line',
         data: {
@@ -103,7 +94,7 @@ export default {
           datasets: [
             {
               label: 'Service Provider Counts',
-              data: monthlyCounts.value.length > 0 ? monthlyCounts.value : [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], // fallback if no data
+              data: monthlyCounts.value.length > 0 ? monthlyCounts.value : [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
               borderColor: '#D97706',
               borderWidth: 2,
               backgroundColor: gradient,
@@ -145,9 +136,9 @@ export default {
 
     onMounted(async () => {
       await fetchServiceProviders();
-      await fetchProviderCounts(); // Fetch the provider counts
+      await fetchProviderCounts();
       await nextTick();
-      renderChart(); // Render chart after data is fetched
+      renderChart();
     });
 
     onBeforeUnmount(() => {

@@ -31,6 +31,7 @@ export default {
     const chartInstance = ref(null);
     const barChartRef = ref([]);
     const petOwners = ref([]);
+    const monthlyCounts = ref([]);
     const fetchPetOwners = async () => {
       const { data, error } = await supabase.rpc('get_pet_owners'); 
 
@@ -43,6 +44,35 @@ export default {
           username: owner.username, 
         })).slice(0, 5);
       }
+    };
+
+    const fetchOwnerCounts = async () => {
+      const { data: petOwners, error: poError } = await supabase
+        .from('pet_owner')
+        .select('pet_owner_id');
+
+      if (poError) {
+        console.error('Error fetching Pet Owner data:', poError);
+        return;
+      }
+
+      const { data: users, error: userError } = await supabase
+        .from('user')
+        .select('user_id, created_at')
+        .in('user_id', petOwners.map(po => po.pet_owner_id));
+
+      if (userError) {
+        console.error('Error fetching user data:', userError);
+        return;
+      }
+
+      const monthCounts = new Array(12).fill(0);
+      users.forEach(user => {
+        const month = new Date(user.created_at).getMonth(); 
+        monthCounts[month]++;
+      });
+
+      monthlyCounts.value = monthCounts;
     };
 
     const renderChart = () => {
@@ -64,8 +94,8 @@ export default {
         data: {
           labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
           datasets: [{
-            label: 'Count',
-            data: [800, 400, 600, 1500, 300, 1000, 800, 500, 1000, 700, 800, 900],
+            label: 'Pet Owner Count',
+            data: monthlyCounts.value.length > 0 ? monthlyCounts.value : [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             backgroundColor: gradient,
             hoverBackgroundColor: '#A03E06',
           }],
@@ -104,6 +134,7 @@ export default {
     onMounted(async () => {
       await fetchPetOwners();
       await nextTick();
+      await fetchOwnerCounts();
       renderChart();
     });
 
