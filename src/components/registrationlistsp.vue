@@ -45,7 +45,10 @@
                 :user="user" 
                 @accept="approveProvider" 
               />
-              <denybutton :user="user" @deny="declineProvider" />
+              <denybutton 
+                :user="user" 
+                @deny="denyProvider" 
+              />
             </td>
           </tr>
         </tbody>
@@ -194,22 +197,28 @@ export default {
       console.error('Error approving provider:', err);
     }
   },
-    async declineProvider(sp_id) {
+    async declineProvider(user) {
       try {
         const { data, error } = await supabase
           .from('service_provider')
           .update({ approval_status: 'declined' })
-          .eq('sp_id', sp_id)
+          .eq('sp_id', user.sp_id)
           .single();
-        if (error) throw error;
 
-        console.log('Provider declined successfully:', data);
-        this.users = this.users.filter(user => user.sp_id !== sp_id);
-      } catch (error) {
-        console.error('Error declining provider:', error);
+        if (error) {
+        console.error('Error approving provider:', error);
+        return;
       }
-    },
+
+        console.log('Declined provider data:', data);
+        await this.sendNotification(user.email, 'declined', user.name);
+
+      this.users = this.users.filter(u => u.sp_id !== user.sp_id);
+    } catch (err) {
+      console.error('Error approving provider:', err);
+    }
   },
+},
   mounted() {
     this.fetchProviders();
   },
