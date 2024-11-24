@@ -37,10 +37,7 @@
             <td class="w-2/12 p-2">{{ user.approval_status }}</td>
             <td class="w-4/12 p-2">{{ user.email }}</td>
             <td class="w-2/12 p-4 flex space-x-4">
-              <button
-                class="bg-blue-700 text-white font-medium py-2 px-2 rounded-md hover:bg-blue-900 focus:outline-none">
-                View
-              </button>
+              <viewbutton :provider="user" />
               <acceptbutton 
                 :user="user" 
                 @accept="approveProvider" 
@@ -84,12 +81,14 @@ import { supabase } from '@/supabase/supabase';
 import emailjs from '@emailjs/browser';
 import acceptbutton from './acceptbutton.vue';
 import denybutton from './denybutton.vue';
+import viewbutton from './viewbutton.vue';
 
 export default {
   name: 'RegistrationList',
   components:{
     acceptbutton,
-    denybutton
+    denybutton,
+    viewbutton
   },
   data() {
     return {
@@ -191,34 +190,35 @@ export default {
       console.log("Approved provider data:", data);
       await this.sendNotification(user.email, 'approved', user.name);
 
-      // Remove the user from the list after approval
-      this.users = this.users.filter(u => u.sp_id !== user.sp_id);
+      this.fetchProviders();
+
     } catch (err) {
       console.error('Error approving provider:', err);
     }
   },
-    async declineProvider(user) {
-      try {
-        const { data, error } = await supabase
-          .from('service_provider')
-          .update({ approval_status: 'declined' })
-          .eq('sp_id', user.sp_id)
-          .single();
+  async declineProvider(user) {
+    try {
+      const { data, error } = await supabase
+        .from('service_provider')
+        .update({ approval_status: 'declined' })
+        .eq('sp_id', user.sp_id)
+        .single();
 
-        if (error) {
-        console.error('Error approving provider:', error);
+      if (error) {
+        console.error('Error declining provider:', error);
         return;
       }
 
-        console.log('Declined provider data:', data);
-        await this.sendNotification(user.email, 'declined', user.name);
+      console.log('Declined provider data:', data);
+      await this.sendNotification(user.email, 'declined', user.name);
 
-      this.users = this.users.filter(u => u.sp_id !== user.sp_id);
+      this.fetchProviders(); 
+
     } catch (err) {
-      console.error('Error approving provider:', err);
+      console.error('Error declining provider:', err);
     }
   },
-},
+  },
   mounted() {
     this.fetchProviders();
   },
