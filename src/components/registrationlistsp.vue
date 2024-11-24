@@ -47,7 +47,7 @@
               />
               <denybutton 
                 :user="user" 
-                @deny="denyProvider" 
+                @deny="declineProvider" 
               />
             </td>
           </tr>
