@@ -37,9 +37,15 @@
             <td class="w-2/12 p-2">{{ user.approval_status }}</td>
             <td class="w-4/12 p-2">{{ user.email }}</td>
             <td class="w-2/12 p-4 flex space-x-4">
-              <button class="bg-blue-700 text-white font-medium py-2 px-2 rounded-md hover:bg-blue-900 focus:outline-none"> View </button>
-              <button @click="approveProvider(user.sp_id)" class="bg-green-700 text-white font-medium py-2 px-2 rounded-md hover:bg-green-900 focus:outline-none"> Accept </button>
-              <button @click="declineProvider(user.sp_id)" class="bg-red-700 text-white font-medium py-2 px-2 rounded-md hover:bg-red-900 focus:outline-none"> Deny </button>
+              <button
+                class="bg-blue-700 text-white font-medium py-2 px-2 rounded-md hover:bg-blue-900 focus:outline-none">
+                View
+              </button>
+              <acceptbutton 
+                :user="user" 
+                @accept="approveProvider" 
+              />
+              <denybutton :user="user" @deny="declineProvider" />
             </td>
           </tr>
         </tbody>
@@ -73,9 +79,15 @@
 <script>
 import { supabase } from '@/supabase/supabase';
 import emailjs from '@emailjs/browser';
+import acceptbutton from './acceptbutton.vue';
+import denybutton from './denybutton.vue';
 
 export default {
   name: 'RegistrationList',
+  components:{
+    acceptbutton,
+    denybutton
+  },
   data() {
     return {
       searchQuery: '',
@@ -160,52 +172,43 @@ export default {
         this.currentPage--;
       }
     },
-    async approveProvider(sp_id) { 
-      console.log("Attempting to approve provider with sp_id:", sp_id);
-      
+    async approveProvider(user) {
+    try {
       const { data, error } = await supabase
         .from('service_provider')
         .update({ approval_status: 'approved' })
-        .eq('sp_id', sp_id)
-        .select('*') // This ensures all columns are selected
+        .eq('sp_id', user.sp_id)
         .single();
 
       if (error) {
         console.error('Error approving provider:', error);
-      } else if (!data) {
-        console.error('No data returned for the provider');
-      } else {
-        const approvedUser = data;
-        console.log("Approved provider data:", approvedUser);
-        
-        // Use the `email` and `name` fields from the retrieved data
-        await this.sendNotification(approvedUser.email, 'approved', approvedUser.name);
+        return;
+      }
 
-        // Remove the approved user from the list
+      console.log("Approved provider data:", data);
+      await this.sendNotification(user.email, 'approved', user.name);
+
+      // Remove the user from the list after approval
+      this.users = this.users.filter(u => u.sp_id !== user.sp_id);
+    } catch (err) {
+      console.error('Error approving provider:', err);
+    }
+  },
+    async declineProvider(sp_id) {
+      try {
+        const { data, error } = await supabase
+          .from('service_provider')
+          .update({ approval_status: 'declined' })
+          .eq('sp_id', sp_id)
+          .single();
+        if (error) throw error;
+
+        console.log('Provider declined successfully:', data);
         this.users = this.users.filter(user => user.sp_id !== sp_id);
+      } catch (error) {
+        console.error('Error declining provider:', error);
       }
     },
-    async declineProvider(sp_id) {
-      const { data, error } = await supabase
-        .from('service_provider')
-        .update({ approval_status: 'declined' })
-        .eq('sp_id', sp_id)
-        .single();
-
-      if (error) {
-        console.error('Error declining provider:', error);
-      } else if (!data) {
-        console.error('No data returned for the provider');
-      } else {
-        const declinedUser = data; // The updated user data
-
-        // Send the decline email notification
-        await this.sendNotification(declinedUser.email, 'declined', declinedUser.name);
-
-        // Remove the declined user from the list
-        this.users = this.users.filter(user => user.sp_id !== sp_id);
-      }
-    }
   },
   mounted() {
     this.fetchProviders();
@@ -213,6 +216,4 @@ export default {
 };
 </script>
 
-<style scoped>
-/* Add any custom styles if needed */
-</style>
+<style></style>
