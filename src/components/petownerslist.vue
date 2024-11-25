@@ -185,18 +185,6 @@ export default {
   }
 
   try {
-    // Step 1: Delete feedback records
-    const { error: feedbackError } = await supabase
-      .from('feedback')
-      .delete()
-      .eq('pet_owner_id', user.pet_owner_id);
-
-    if (feedbackError) {
-      console.error("Error deleting feedback records:", feedbackError);
-      this.errorMessage = "Failed to delete feedback records.";
-      return;
-    }
-
     // Step 2: Delete from pet_owner table
     const { error: petOwnerError } = await supabase
       .from('pet_owner')
@@ -204,8 +192,15 @@ export default {
       .eq('pet_owner_id', user.pet_owner_id);
 
     if (petOwnerError) {
-      console.error("Error deleting from pet_owner table:", petOwnerError);
-      this.errorMessage = "Failed to delete user from pet_owner table.";
+      if (petOwnerError.code === '23503' && petOwnerError.message.includes("appointment")) {
+        this.errorMessage = "Cannot delete user because they are linked to an appointment.";
+        alert(this.errorMessage); // Show alert for foreign key constraint violation
+      } else if (petOwnerError.message.includes("foreign key constraint")) {
+        this.errorMessage = "Cannot delete user because they are linked to feedback records.";
+      } else {
+        console.error("Error deleting from pet_owner table:", petOwnerError);
+        this.errorMessage = "Failed to delete user from pet_owner table.";
+      }
       return;
     }
 
@@ -221,20 +216,15 @@ export default {
       return;
     }
 
-    // Step 4: Delete user from Supabase Auth (use admin.deleteUser)
-    const { error: authError } = await supabase.auth.admin.deleteUser(user.user_id);
-
-    if (authError) {
-      console.error("Error deleting from auth.users:", authError);
-      this.errorMessage = "Failed to delete user from auth.users.";
-      return;
-    }
-
     // Step 5: Remove the user from the local list
     this.users = this.users.filter(u => u.user_id !== user.user_id);
 
-    // Step 6: Success message after successful deletion
-    this.$toast.success("User deleted successfully.");
+    // Step 6: Clear error message and show success, then refresh the page
+    this.errorMessage = '';  // Clear any previous error messages
+    alert("User deleted successfully.");
+    
+    // Refresh the page after successful deletion
+    window.location.reload();  // This will reload the page, making a fresh API call to fetch updated data
   } catch (err) {
     console.error("Unexpected error during deletion:", err);
     this.errorMessage = "An unexpected error occurred during deletion.";
