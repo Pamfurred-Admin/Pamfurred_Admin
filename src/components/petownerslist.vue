@@ -136,8 +136,14 @@ export default {
       this.errorMessage = "Failed to fetch users. Please try again later.";
     } else {
       console.log("Fetched data:", data); 
+
+      data.forEach(user => {
+      console.log("User:", user);  // Check if pet_owner_id and user_id are defined
+    });
+
       this.users = data.map(user => ({
         user_id: user.user_id,
+        pet_owner_id: user.pet_owner_id,
         username: user.username,
         first_name: user.first_name,
         last_name: user.last_name,
@@ -171,13 +177,73 @@ export default {
         query: { id: user_id }
       });
     },
-    handleDelete(user) {
-      this.users = this.users.filter(u => u.user_id !== user.user_id);
+    async handleDelete(user) {
+  if (!user.pet_owner_id || !user.user_id) {
+    console.error("Missing pet_owner_id or user_id");
+    this.errorMessage = "Missing required user data.";
+    return;
+  }
+
+  try {
+    // Step 1: Delete feedback records
+    const { error: feedbackError } = await supabase
+      .from('feedback')
+      .delete()
+      .eq('pet_owner_id', user.pet_owner_id);
+
+    if (feedbackError) {
+      console.error("Error deleting feedback records:", feedbackError);
+      this.errorMessage = "Failed to delete feedback records.";
+      return;
     }
+
+    // Step 2: Delete from pet_owner table
+    const { error: petOwnerError } = await supabase
+      .from('pet_owner')
+      .delete()
+      .eq('pet_owner_id', user.pet_owner_id);
+
+    if (petOwnerError) {
+      console.error("Error deleting from pet_owner table:", petOwnerError);
+      this.errorMessage = "Failed to delete user from pet_owner table.";
+      return;
+    }
+
+    // Step 3: Delete from user table
+    const { error: userError } = await supabase
+      .from('user')
+      .delete()
+      .eq('user_id', user.user_id);
+
+    if (userError) {
+      console.error("Error deleting from user table:", userError);
+      this.errorMessage = "Failed to delete user from user table.";
+      return;
+    }
+
+    // Step 4: Delete user from Supabase Auth (use admin.deleteUser)
+    const { error: authError } = await supabase.auth.admin.deleteUser(user.user_id);
+
+    if (authError) {
+      console.error("Error deleting from auth.users:", authError);
+      this.errorMessage = "Failed to delete user from auth.users.";
+      return;
+    }
+
+    // Step 5: Remove the user from the local list
+    this.users = this.users.filter(u => u.user_id !== user.user_id);
+
+    // Step 6: Success message after successful deletion
+    this.$toast.success("User deleted successfully.");
+  } catch (err) {
+    console.error("Unexpected error during deletion:", err);
+    this.errorMessage = "An unexpected error occurred during deletion.";
+  }
+}
   },
   mounted() {
-    this.fetchUsersWithPetOwners();
-  }
+  this.fetchUsersWithPetOwners();
+}
 };
 </script>
 <style></style>
