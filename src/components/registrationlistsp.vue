@@ -150,17 +150,40 @@ export default {
       }
     },
     async fetchProviders() {
-      const { data, error } = await supabase
-        .from('service_provider')
-        .select('*')
-        .eq('approval_status', 'pending');
+  try {
+    // Fetch the service providers with approval_status 'pending'
+    const { data: providers, error: providerError } = await supabase
+      .from('service_provider')
+      .select('*')
+      .eq('approval_status', 'pending');
 
-      if (error) {
-        console.error('Error fetching providers:', error);
-      } else {
-        this.users = data;
-      }
-    },
+    if (providerError) {
+      console.error('Error fetching providers:', providerError);
+      return;
+    }
+
+    // Fetch the user details from the users table where user_id matches sp_id
+    const userIds = providers.map(provider => provider.sp_id); // Collect all sp_ids
+    const { data: users, error: userError } = await supabase
+      .from('user')
+      .select('user_id, first_name, last_name, phone_number')
+      .in('user_id', userIds); // Filter users by sp_ids (user_id)
+
+    if (userError) {
+      console.error('Error fetching users:', userError);
+      return;
+    }
+
+    // Merge the user details into the service provider data
+    this.users = providers.map(provider => {
+      const user = users.find(u => u.user_id === provider.sp_id); // Find the matching user for each provider
+      return { ...provider, ...user }; // Combine the provider and user data
+    });
+  } catch (err) {
+    console.error('Error fetching data:', err);
+  }
+}
+,
     search() {
       this.currentPage = 1;
     },
