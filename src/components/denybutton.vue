@@ -8,7 +8,7 @@
           <p class="text-lg font-semibold">Are you sure you want to deny this provider?</p>
           <div class="flex justify-center mt-6">
             <button @click="closeDenyModal" class="px-4 py-2 bg-gray-300 rounded-md mr-4">Cancel</button>
-            <button @click="confirmAccept" class="px-4 py-2 bg-red-700 text-white rounded-md hover:bg-red-900">Confirm</button>
+            <button @click="confirmDeny" class="px-4 py-2 bg-red-700 text-white rounded-md hover:bg-red-900">Confirm</button>
           </div>
         </div>
       </div>
@@ -36,9 +36,9 @@
       closeDenyModal() {
         this.showDenyModal = false;
       },
-      confirmAccept() {
-        // Emit the accept event with user data
-        this.$emit('accept', this.user);
+      confirmDeny() {
+        // Emit the deny event with user data
+        this.$emit('deny', this.user);
         this.closeDenyModal();
       }
     }
