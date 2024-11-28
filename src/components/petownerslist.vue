@@ -191,13 +191,11 @@ export default {
 
     if (petOwnerError) {
       if (petOwnerError.code === '23503' && petOwnerError.message.includes("appointment")) {
-        this.errorMessage = "Cannot delete user because they are linked to an appointment.";
+        this.errorMessage = "Cannot delete user because they have active appointments.";
         alert(this.errorMessage);
-      } else if (petOwnerError.message.includes("foreign key constraint")) {
-        this.errorMessage = "Cannot delete user because they are linked to feedback records.";
       } else {
         console.error("Error deleting from pet_owner table:", petOwnerError);
-        this.errorMessage = "Failed to delete user from pet_owner table.";
+        this.errorMessage = "Failed to delete user.";
       }
       return;
     }
@@ -209,7 +207,7 @@ export default {
 
     if (userError) {
       console.error("Error deleting from user table:", userError);
-      this.errorMessage = "Failed to delete user from user table.";
+      this.errorMessage = "Failed to delete user.";
       return;
     }
 

@@ -129,7 +129,8 @@ export default {
         console.error('Error fetching service provider details:', error);
       } else {
         this.users = data.map(user => ({
-          id: user.user_id,
+          sp_id: user.sp_id,
+          user_id: user.user_id,
           numberOfPets: user.number_of_pets,
           estName: user.name,
           contactNo: user.phone_number,
@@ -161,9 +162,74 @@ export default {
         console.error('Navigation Error:', err);
       });
     },
-    handleDelete(user) {
-      this.users = this.users.filter(u => u.id !== user.id);
+    async handleDelete(user) {
+  if (!user.sp_id || !user.user_id) {
+    console.error("Missing sp_id or user_id");
+    this.errorMessage = "Missing required user data.";
+    return;
+  }
+
+  try {
+    const { error: feedbackError } = await supabase
+      .from('feedback') // Assuming the table storing feedback records is 'feedback'
+      .delete()
+      .eq('sp_id', user.sp_id); // Assuming feedback records are linked to the service provider via sp_id
+
+    if (feedbackError) {
+      console.error("Error deleting feedback records:", feedbackError);
+      if (feedbackError.code === '23503' && feedbackError.message.includes("foreign key constraint")) {
+        this.errorMessage = "Cannot delete user because they have linked feedback records.";
+        alert(this.errorMessage);
+      } else {
+        this.errorMessage = "Failed to delete feedback records.";
+        alert(this.errorMessage);
+      }
+      return;
     }
+    const { error: serviceProvierError } = await supabase
+      .from('service_provider')
+      .delete()
+      .eq('sp_id', user.sp_id);
+
+      if (serviceProvierError) {
+      if (serviceProvierError.code === '23503' && serviceProvierError.message.includes("serviceprovider_service_sp_id_fkey")) {
+        this.errorMessage = "Cannot delete user because they have an active pet care services.";
+        alert(this.errorMessage);
+      } else if (serviceProvierError.code === '23503' && serviceProvierError.message.includes("appointment")) {
+        this.errorMessage = "Cannot delete user because they have active appointments.";
+        alert(this.errorMessage);
+      } else if (serviceProvierError.message.includes("foreign key constraint")) {
+        this.errorMessage = "Cannot delete user because they have active feedback records.";
+        alert(this.errorMessage);
+      } else {
+        console.error("Error deleting from service_provider table:", serviceProvierError);
+        this.errorMessage = "Failed to delete user.";
+      }
+      return;
+    }
+
+    const { error: userError } = await supabase
+      .from('user')
+      .delete()
+      .eq('user_id', user.user_id);
+
+    if (userError) {
+      console.error("Error deleting from user table:", userError);
+      this.errorMessage = "Failed to delete user.";
+      return;
+    }
+
+    this.users = this.users.filter(u => u.user_id !== user.user_id);
+
+    this.errorMessage = ''; 
+    alert("User deleted successfully.");
+    
+    window.location.reload();  
+  } catch (err) {
+    console.error("Unexpected error during deletion:", err);
+    this.errorMessage = "An unexpected error occurred during deletion.";
+  }
+}
   },
   mounted() {
     this.fetchServiceProviders();
