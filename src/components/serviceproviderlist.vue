@@ -124,7 +124,7 @@ export default {
   },
   methods: {
     async fetchServiceProviders() {
-      const { data, error } = await supabase.rpc('get_approved_service_providers');
+      const { data, error } = await supabase.rpc('get_approved_serviceproviders');
       if (error) {
         console.error('Error fetching service provider details:', error);
       } else {

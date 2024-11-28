@@ -26,7 +26,7 @@
       <table class="min-w-full table-fixed">
         <thead class="bg-gray-100">
           <tr>
-            <th class="w-2/12 p-2 text-center">Username</th>
+            <th class="w-2/12 p-2 text-center">Pet Owner ID</th>
             <th class="w-3/12 p-2 text-center">Full name</th>
             <th class="w-2/12 p-2 text-center">Address</th>
             <th class="w-4/12 p-2 text-center">Email address</th>
@@ -39,7 +39,7 @@
             :key="user.user_id"
             :class="{ 'bg-gray-50': user.user_id % 2 === 0 }"
           >
-            <td class="w-2/12 p-2">{{ user.username }}</td>
+            <td class="w-2/12 p-2">{{ user.pet_owner_id }}</td>
             <td class="w-3/12 p-2">{{ user.first_name }} {{ user.last_name }}</td>
             <td class="w-2/12 p-2">
               {{ user.floor_unit_room }},
@@ -129,7 +129,7 @@ export default {
   async fetchUsersWithPetOwners() {
     console.log("Fetching users with pet owners...");
     const { data, error } = await supabase
-      .rpc('get_pet_owner_details'); 
+      .rpc('get_petowner_details'); 
 
     if (error) {
       console.error("Error fetching users with pet owners:", error);
@@ -138,13 +138,12 @@ export default {
       console.log("Fetched data:", data); 
 
       data.forEach(user => {
-      console.log("User:", user);  // Check if pet_owner_id and user_id are defined
+      console.log("User:", user);
     });
 
       this.users = data.map(user => ({
         user_id: user.user_id,
         pet_owner_id: user.pet_owner_id,
-        username: user.username,
         first_name: user.first_name,
         last_name: user.last_name,
         floor_unit_room: user.floor_unit_room,
@@ -185,7 +184,6 @@ export default {
   }
 
   try {
-    // Step 2: Delete from pet_owner table
     const { error: petOwnerError } = await supabase
       .from('pet_owner')
       .delete()
@@ -194,7 +192,7 @@ export default {
     if (petOwnerError) {
       if (petOwnerError.code === '23503' && petOwnerError.message.includes("appointment")) {
         this.errorMessage = "Cannot delete user because they are linked to an appointment.";
-        alert(this.errorMessage); // Show alert for foreign key constraint violation
+        alert(this.errorMessage);
       } else if (petOwnerError.message.includes("foreign key constraint")) {
         this.errorMessage = "Cannot delete user because they are linked to feedback records.";
       } else {
@@ -204,7 +202,6 @@ export default {
       return;
     }
 
-    // Step 3: Delete from user table
     const { error: userError } = await supabase
       .from('user')
       .delete()
@@ -216,15 +213,12 @@ export default {
       return;
     }
 
-    // Step 5: Remove the user from the local list
     this.users = this.users.filter(u => u.user_id !== user.user_id);
 
-    // Step 6: Clear error message and show success, then refresh the page
-    this.errorMessage = '';  // Clear any previous error messages
+    this.errorMessage = ''; 
     alert("User deleted successfully.");
     
-    // Refresh the page after successful deletion
-    window.location.reload();  // This will reload the page, making a fresh API call to fetch updated data
+    window.location.reload();  
   } catch (err) {
     console.error("Unexpected error during deletion:", err);
     this.errorMessage = "An unexpected error occurred during deletion.";

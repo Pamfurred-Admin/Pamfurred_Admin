@@ -6,7 +6,7 @@
           v-for="(owner, index) in petOwners" :key="index">
         <div class="text-left whitespace-nowrap">
           <p class="text-gray-900 font-semibold truncate">{{ owner.full_name }}</p>
-          <p class="text-gray-500 text-sm">{{ owner.username }}</p> 
+          <p class="text-gray-500 text-sm">{{ owner.email }}</p> 
         </div>
       </li>
     </ul>
@@ -33,7 +33,7 @@ export default {
     const petOwners = ref([]);
     const monthlyCounts = ref([]);
     const fetchPetOwners = async () => {
-      const { data, error } = await supabase.rpc('get_pet_owners'); 
+      const { data, error } = await supabase.rpc('get_petowners_sidebar'); 
 
       if (error) {
         console.error("Error fetching pet owners:", error);
@@ -41,7 +41,7 @@ export default {
 
         petOwners.value = data.map(owner => ({
           full_name: owner.full_name, 
-          username: owner.username, 
+          email: owner.email, 
         })).slice(0, 5);
       }
     };

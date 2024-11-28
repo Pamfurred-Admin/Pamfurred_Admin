@@ -19,10 +19,10 @@
       <table class="min-w-full table-fixed">
         <thead class="bg-gray-100">
           <tr>
-            <th class="w-2/12 p-2 text-center">Service Provider ID</th>
+            <th class="w-4/12 p-2 text-center">Service Provider ID</th>
             <th class="w-3/12 p-2 text-center">Establishment name</th>
-            <th class="w-2/12 p-2 text-center">Approval Status</th>
-            <th class="w-4/12 p-2 text-center">Email address</th>
+            <th class="w-3/12 p-2 text-center">Approval Status</th>
+            <th class="w-2/12 p-2 text-center">Email address</th>
             <th class="w-2/12 p-2 text-center">Action</th>
           </tr>
         </thead>
