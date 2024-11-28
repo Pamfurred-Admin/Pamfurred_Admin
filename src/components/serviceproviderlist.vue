@@ -170,22 +170,6 @@ export default {
   }
 
   try {
-    const { error: feedbackError } = await supabase
-      .from('feedback') // Assuming the table storing feedback records is 'feedback'
-      .delete()
-      .eq('sp_id', user.sp_id); // Assuming feedback records are linked to the service provider via sp_id
-
-    if (feedbackError) {
-      console.error("Error deleting feedback records:", feedbackError);
-      if (feedbackError.code === '23503' && feedbackError.message.includes("foreign key constraint")) {
-        this.errorMessage = "Cannot delete user because they have linked feedback records.";
-        alert(this.errorMessage);
-      } else {
-        this.errorMessage = "Failed to delete feedback records.";
-        alert(this.errorMessage);
-      }
-      return;
-    }
     const { error: serviceProvierError } = await supabase
       .from('service_provider')
       .delete()
@@ -193,10 +177,13 @@ export default {
 
       if (serviceProvierError) {
       if (serviceProvierError.code === '23503' && serviceProvierError.message.includes("serviceprovider_service_sp_id_fkey")) {
-        this.errorMessage = "Cannot delete user because they have an active pet care services.";
+        this.errorMessage = "Cannot delete user because they have an active pet care service records.";
+        alert(this.errorMessage);
+      } else if (serviceProvierError.code === '23503' && serviceProvierError.message.includes("serviceprovider_package_sp_id_fkey")) {
+        this.errorMessage = "Cannot delete user because they have active pet care service records.";
         alert(this.errorMessage);
       } else if (serviceProvierError.code === '23503' && serviceProvierError.message.includes("appointment")) {
-        this.errorMessage = "Cannot delete user because they have active appointments.";
+        this.errorMessage = "Cannot delete user because they have active appointment records.";
         alert(this.errorMessage);
       } else if (serviceProvierError.message.includes("foreign key constraint")) {
         this.errorMessage = "Cannot delete user because they have active feedback records.";

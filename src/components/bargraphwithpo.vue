@@ -125,6 +125,12 @@ export default {
                 padding: { top: 10, bottom: 20 },
               },
               beginAtZero: true,
+              ticks: {
+                stepSize: 1,
+                callback: function(value) {
+                  return Number.isInteger(value) ? value : '';
+                },
+              },
             },
           },
         },

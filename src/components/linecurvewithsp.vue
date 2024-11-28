@@ -48,7 +48,8 @@ export default {
     const fetchProviderCounts = async () => {
       const { data: serviceProviders, error: spError } = await supabase
         .from('service_provider')
-        .select('sp_id');
+        .select('sp_id')
+        .eq('approval_status', 'approved');
 
       if (spError) {
         console.error('Error fetching service provider data:', spError);
@@ -67,7 +68,7 @@ export default {
 
       const monthCounts = new Array(12).fill(0);
       users.forEach(user => {
-        const month = new Date(user.created_at).getMonth(); 
+        const month = new Date(user.created_at).getMonth();
         monthCounts[month]++;
       });
 
@@ -128,6 +129,12 @@ export default {
                 padding: { top: 10, bottom: 15 },
               },
               beginAtZero: true,
+              ticks: {
+                stepSize: 1,
+                callback: function(value) {
+                  return Number.isInteger(value) ? value : '';
+                },
+              },
             },
           },
         },
