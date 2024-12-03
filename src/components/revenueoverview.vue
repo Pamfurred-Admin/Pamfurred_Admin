@@ -65,7 +65,7 @@ export default {
           labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
           datasets: [
             {
-              label: 'Revenue',
+              label: 'Done Appointments',
               data: salesData.value,
               borderColor: '#D14C01',
               borderWidth: 2,
