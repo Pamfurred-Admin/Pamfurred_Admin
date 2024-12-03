@@ -1,4 +1,5 @@
 <template>
+  <div>
   <button
     class="bg-blue-700 text-white font-medium py-2 px-2 rounded-md hover:bg-blue-900 focus:outline-none"
     @click="toggleView"
@@ -8,8 +9,6 @@
     <div class="bg-white p-8 rounded-md shadow-lg w-1/3">
       <h2 class="text-xl font-semibold mb-4">Provider Details</h2>
       <div v-if="provider" class="space-y-4 text-left">
-        <p><strong>Business Owner First Name:</strong> {{ provider.first_name || 'N/A' }}</p>
-        <p><strong>Business Owner Last Name:</strong> {{ provider.last_name || 'N/A' }}</p>
         <p><strong>Establishment Name:</strong> {{ provider.name || 'N/A' }}</p>
         <p><strong>Business Email:</strong> {{ provider.email || 'N/A' }}</p>
         <p><strong>Phone Number:</strong> {{ provider.phone_number || 'N/A' }}</p>
@@ -33,6 +32,7 @@
       </div>
     </div>
   </div>
+</div>
 </template>
 
 <script>
