@@ -13,7 +13,7 @@ module.exports = {
         'custom-red': '#A03E06',
         'custom-pencil': '#FFDD2B',
         'custom-delete': '#B30000',
-        'custom-viewmore':'#F7BD62'
+        'custom-viewmore':'#FEC206'
       },
       boxShadow: {
         'bottom': "1px 2px 2px 0 rgba(0.1, 0.1, 0.1, 0.1)"

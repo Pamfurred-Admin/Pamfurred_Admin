@@ -32,7 +32,7 @@ export default {
           .select('appointment_date, total_amount')
           .filter('appointment_date', 'gte', `${selectedYear.value}-01-01`)
           .filter('appointment_date', 'lt', `${parseInt(selectedYear.value) + 1}-01-01`)
-        
+          .filter('appointment_status', 'eq', 'Done');
         if (error) {
           console.error('Error fetching data from Supabase:', error);
           return;

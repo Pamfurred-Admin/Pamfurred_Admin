@@ -9,12 +9,12 @@
         <p class="pl-5 pb-2"><strong>Contact Number:</strong> {{ registration.phone_number }}</p>
       </div>
     </div>
+
     <div v-else class="text-xl text-left text-gray-900">
       <p>No pending registrations.</p>
     </div>
-    
 <div v-if="hasMore" class="text-center mt-4">
-  <button @click="loadMore" class="inline-block mt-4 bg-custom-viewmore text-black font-medium rounded-md py-1.5 px-4 text-sm hover:bg-custom-pencil text-center">
+  <button @click="loadMore" class="inline-block bg-custom-viewmore text-black font-medium rounded-md py-1.5 px-4 text-sm hover:bg-custom-pencil">
     View More
   </button>
 </div>
