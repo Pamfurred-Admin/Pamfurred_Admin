@@ -42,19 +42,6 @@
         </div>
 
         <div class="mb-4">
-          <label class="block text-gray-700 text-sm font-bold mb-2 text-left" for="username">
-            Username
-          </label>
-          <input
-            v-model="form.username"
-            type="text"
-            id="username"
-            placeholder="Enter Username"
-            class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-0 focus:border-blue-500"
-          />
-        </div>
-
-        <div class="mb-4">
           <label class="block text-gray-700 text-sm font-bold mb-2 text-left" for="password">
             Password
           </label>
@@ -183,7 +170,6 @@ export default {
         firstName: "",
         lastName: "",
         email: "",
-        username: "",
         password: "",
         doorNo: "",
         street: "",
@@ -268,7 +254,6 @@ export default {
     p_first_name: this.form.firstName,
     p_last_name: this.form.lastName,
     p_password: this.form.password,
-    p_username: this.form.username,
     p_email: this.form.email,
     p_user_type: 'pet_owner',
     p_floor_unit_room: this.form.doorNo,
@@ -297,7 +282,6 @@ export default {
         firstName: "",
         lastName: "",
         email: "",
-        username: "",
         password: "",
         doorNo: "",
         street: "",
