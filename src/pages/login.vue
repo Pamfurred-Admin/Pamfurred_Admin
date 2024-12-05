@@ -51,29 +51,37 @@ export default {
       errorMessage.value = '';
       loading.value = true;
 
-      // Validate input
       if (!email.value || !password.value) {
         errorMessage.value = 'Please enter email and password.';
         loading.value = false;
         return;
       }
 
-      // Supabase auth login
       const { data: { user }, error } = await supabase.auth.signInWithPassword({
         email: email.value,
         password: password.value,
       });
 
       if (error) {
-  console.error('Login Error:', error.message);  // Log the actual error message
-  errorMessage.value = 'Invalid email or password.';
-  loading.value = false;
-  return;
-}
-
+        console.error('Login Error:', error.message);
+        errorMessage.value = 'Invalid email or password.';
+        loading.value = false;
+        return;
+      }
 
       if (user) {
-        // Login successful, redirect without setting local session
+        const { data: userProfile, error: profileError } = await supabase
+          .from('user')
+          .select('user_type')
+          .eq('user_id', user.id)
+          .single();
+
+        if (profileError || userProfile.user_type !== 'admin') {
+          errorMessage.value = 'Access restricted for Admins only.';
+          loading.value = false;
+          return;
+        }
+
         router.push('/dashboard');
       }
       loading.value = false;
@@ -95,5 +103,4 @@ export default {
   },
 };
 </script>
-
 <style></style>
