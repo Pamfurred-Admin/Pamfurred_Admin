@@ -69,22 +69,19 @@ const router = createRouter({
   routes,
 });
 
-// Global route guard
 router.beforeEach(async (to, from, next) => {
-  // Skip the check for the login route
   if (to.name === "LogIn") {
     return next();
   }
 
-  // Check if user is logged in using supabase.auth.getSession()
   const {
     data: { session },
   } = await supabase.auth.getSession();
 
   if (session) {
-    next(); // Allow access if logged in
+    next();
   } else {
-    next("/"); // Redirect to login if not logged in
+    next("/"); 
   }
 });
 
