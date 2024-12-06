@@ -24,7 +24,7 @@
       <table class="min-w-full table-fixed">
         <thead class="bg-gray-100">
           <tr>
-            <th class="w-2/12 p-2 text-center">Daily Pet Limit</th>
+            <th class="w-2/12 p-2 text-center">Service Provider ID</th>
             <th class="w-3/12 p-2 text-center">Establishment Name</th>
             <th class="w-2/12 p-2 text-center">Contact No.</th>
             <th class="w-4/12 p-2 text-center">Email Address</th>
@@ -37,7 +37,7 @@
             :key="user.id"
             :class="{ 'bg-gray-50': user.id % 2 === 0 }"
           >
-            <td class="w-2/12 p-2">{{ user.numberOfPets }}</td>
+            <td class="w-2/12 p-2">{{ user.sp_id }}</td>
             <td class="w-3/12 p-2">{{ user.estName }}</td>
             <td class="w-2/12 p-2">{{ user.contactNo }}</td>
             <td class="w-4/12 p-2">{{ user.email }}</td>
@@ -131,7 +131,6 @@ export default {
         this.users = data.map(user => ({
           sp_id: user.sp_id,
           user_id: user.user_id,
-          numberOfPets: user.number_of_pets,
           estName: user.name,
           contactNo: user.phone_number,
           email: user.email

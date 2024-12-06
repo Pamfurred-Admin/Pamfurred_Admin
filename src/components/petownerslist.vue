@@ -126,6 +126,9 @@ export default {
     }
   },
   methods: {
+    deleteUser() {
+      this.$emit('delete', this.user);
+    },
   async fetchUsersWithPetOwners() {
     console.log("Fetching users with pet owners...");
     const { data, error } = await supabase
@@ -177,29 +180,70 @@ export default {
       });
     },
     async handleDelete(user) {
+  console.log("User data:", user); // Log the user object to see its properties
+
+  // Check if both pet_owner_id and user_id are present
   if (!user.pet_owner_id || !user.user_id) {
     console.error("Missing pet_owner_id or user_id");
     this.errorMessage = "Missing required user data.";
-    return;
+    return; // Exit if the necessary IDs are missing
   }
 
   try {
+    // Step 1: Delete appointments related to the pet_owner_id
+    const { error: appointmentError } = await supabase
+      .from('appointment')
+      .delete()
+      .eq('pet_owner_id', user.pet_owner_id);
+
+    if (appointmentError) {
+      console.error("Error deleting from appointment table:", appointmentError);
+      this.errorMessage = "Failed to delete appointments.";
+      return;
+    }
+
+    // Step 2: Delete notifications related to the pet_owner_id
+    const { error: notificationError } = await supabase
+      .from('notification')
+      .delete()
+      .in('appointment_id', (
+        await supabase
+          .from('appointment')
+          .select('appointment_id')
+          .eq('pet_owner_id', user.pet_owner_id)
+      ).data.map(appointment => appointment.appointment_id)); // Get the list of appointment_ids for the user
+
+    if (notificationError) {
+      console.error("Error deleting from notification table:", notificationError);
+      this.errorMessage = "Failed to delete notifications.";
+      return;
+    }
+
+    // Step 3: Delete feedback related to the pet_owner_id
+    const { error: feedbackError } = await supabase
+      .from('feedback')
+      .delete()
+      .eq('pet_owner_id', user.pet_owner_id);
+
+    if (feedbackError) {
+      console.error("Error deleting from feedback table:", feedbackError);
+      this.errorMessage = "Failed to delete feedback.";
+      return;
+    }
+
+    // Step 4: Delete the pet_owner record
     const { error: petOwnerError } = await supabase
       .from('pet_owner')
       .delete()
       .eq('pet_owner_id', user.pet_owner_id);
 
     if (petOwnerError) {
-      if (petOwnerError.code === '23503' && petOwnerError.message.includes("appointment")) {
-        this.errorMessage = "Cannot delete user because they have active appointments.";
-        alert(this.errorMessage);
-      } else {
-        console.error("Error deleting from pet_owner table:", petOwnerError);
-        this.errorMessage = "Failed to delete user.";
-      }
+      console.error("Error deleting from pet_owner table:", petOwnerError);
+      this.errorMessage = "Failed to delete pet owner.";
       return;
     }
 
+    // Step 5: Delete the user from the 'user' table
     const { error: userError } = await supabase
       .from('user')
       .delete()
@@ -211,12 +255,24 @@ export default {
       return;
     }
 
-    this.users = this.users.filter(u => u.user_id !== user.user_id);
+    // Step 6: Optionally, delete the user from 'auth.users' table
+    const { error: authUserError } = await supabase
+      .from('auth.users')
+      .delete()
+      .eq('id', user.user_id);
 
+    if (authUserError) {
+      console.error("Error deleting from auth.users table:", authUserError);
+      this.errorMessage = "Failed to delete user from auth.";
+      return;
+    }
+
+    // Remove the user from the local list after successful deletion
+    this.users = this.users.filter(u => u.user_id !== user.user_id);
     this.errorMessage = ''; 
-    alert("User deleted successfully.");
-    
-    window.location.reload();  
+    alert("User and related records deleted successfully.");
+
+    window.location.reload();  // Refresh the page to show updated data
   } catch (err) {
     console.error("Unexpected error during deletion:", err);
     this.errorMessage = "An unexpected error occurred during deletion.";
