@@ -10,9 +10,9 @@
         v-for="provider in providers.slice(0, 4)" :key="provider.sp_id"
       >
         <img :src="provider.image" alt="Provider Logo" class="w-10 h-10 rounded-full mr-3">
-        <div class="text-left whitespace-nowrap">
-          <p class="text-gray-900 font-semibold truncate" style="max-width: 140px;">{{ provider.name }}</p>
-          <p class="text-gray-500 text-sm">Daily Pet Limit: {{ provider.number_of_pets }}</p>
+        <div class="text-left w-48">
+          <p class="text-gray-900 font-semibold truncate whitespace-nowrap" style="max-width: 140px;">{{ provider.name }}</p>
+          <p class="text-gray-500 text-sm truncate whitespace-nowrap w-40">{{ provider.email }}</p>
         </div>
       </li>
     </ul>
